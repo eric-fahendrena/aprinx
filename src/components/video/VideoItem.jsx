@@ -2,19 +2,24 @@ import { CirclePlay } from "lucide-react"
 import { Link } from "react-router-dom"
 import ProfilePicture from "../profile/ProfilePicture"
 
-function VideoItem({ vId="", title="", authorName="", authorPicture, thumbnail, date }) {
+function VideoItem({ vId="", cId="", title="", authorName="", authorPicture, thumbnail, date }) {
   return (
     <div className="p-5">
-      <Link to={`/videos/${vId}`}>
+      <Link to={`/courses/${cId}/videos/${vId}`}>
         <div className="h-[160pt] bg-zinc-950 rounded relative">
-          <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center text-white -z-0">
+          {thumbnail && (
+            <img src={thumbnail} alt={title} className="w-full h-full" />
+          )}
+          <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center text-white -z-0" style={{
+            backgroundColor: "#0002"
+          }}>
             <CirclePlay size={40} />
           </div>
         </div>
       </Link>
       <div className="py-3 flex">
-        <div className="w-1/6">
-          <ProfilePicture />
+        <div className="w-1/6 flex items-center">
+          <img src={authorPicture} alt="..." className="w-[32pt] h-[32pt] rounded-full" />
         </div>
         <div className="w-5/6 pe-2">
           <div className="font-bold w-full overflow-hidden whitespace-nowrap">{title.substring(0, 38)}</div>

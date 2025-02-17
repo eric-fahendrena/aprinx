@@ -6,25 +6,30 @@ import VideoItem from "./video/VideoItem"
 import BottomNavbar from "./commons/BottomNavbar"
 import { useContext, useEffect, useState } from "react"
 import { CourseContext } from "../contexts/CourseContext"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { Plus } from "lucide-react"
 
 function CourseDetailPage() {
-  const { getCourse } = useContext(CourseContext)
+  const { getCourse, getVideos } = useContext(CourseContext)
   const params = useParams()
   const [course, setCourse] = useState(null)
+  const [videos, setVideos] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
       const course = await getCourse(params.cId)
       setCourse(course)
+      const videos = await getVideos(course.id)
+      setVideos(videos)
     })()
   }, [])
 
   return (
     <>
-      <Header title={"Maitriser Python"} />
       {course && (
         <>
+          <Header title={course.title} />
           <CourseCoverPhoto src={course.cover_photo} />
           <div className="container mx-auto pb-[56pt]">
             <CourseActionBar />
@@ -36,23 +41,36 @@ function CourseDetailPage() {
               authorPicture={course.author_picture}
             />
             <div className="py-5">
-              <VideoItem 
-                vId="video1"
-                title="C'est quoi un langage de programmation ?"
-                authorName="Mathieu Nebra"
-                date={"Il y a 1 an"}
-              />
-              <VideoItem 
-                vId="video2"
-                title="Pourquoi Python ?"
-                authorName="Mathieu Nebra"
-                date={"Il y a 1 an"}
-              />
+              {videos && videos.map((video, idx) => {
+                return (
+                  <VideoItem 
+                    cId={video.course_id}
+                    vId={video.id}
+                    title={video.title}
+                    authorName={video.author_name}
+                    authorPicture={video.author_picture}
+                    date={video.date}
+                    thumbnail={video.thumbnail}
+                    key={idx}
+                  />
+                )
+              })}
+              <div 
+                className="fixed bottom-5 end-5"
+                onClick={() => navigate(`/courses/${course.id}/videos/add`)}
+              >
+                <button className="bg-red-800 text-white px-3 py-2 rounded-full z-50">
+                  <Plus className="inline me-1" strokeWidth={3} />
+                  <span className="font-bold">
+                    Ajouter une vidéo
+                  </span>
+                </button>
+              </div>
             </div>
           </div>  
         </>
       )}
-      <BottomNavbar />
+      {/* <BottomNavbar /> */}
     </>
   )
 }

@@ -1,12 +1,28 @@
-import { CirclePlay } from "lucide-react"
+import DPlayer from "dplayer"
+import { useEffect, useRef } from "react"
 
-function VideoPlayer() {
+function VideoPlayer({ src, thumbnail }) {
+  const container = useRef()
+
+  useEffect(() => {
+    const dp = new DPlayer({
+      container: container.current,
+      screenshot: true,
+      video: {
+        url: src,
+        pic: thumbnail,
+        thumbnails: thumbnail,
+      },
+    })
+  }, [])
   return (
     <>
-      <div className="h-[160pt] bg-zinc-950 relative">
-        <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center text-white -z-0">
-          <CirclePlay size={40} />
-        </div>
+      <div className="h-[160pt] bg-zinc-950 relative" ref={container}>
+        {/* <video 
+          src={src} 
+          className="w-full h-full"
+          controls
+        ></video> */}
       </div>
     </>
   )

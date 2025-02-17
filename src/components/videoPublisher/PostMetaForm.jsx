@@ -25,9 +25,8 @@ function PostMetaForm({ onNext, onPrev }) {
     postData.title = titleIpt
     postData.description = descIpt
     postData.access = access
-    localStorage.setItem("post_data", JSON.stringify(postData))
     
-    onNext && onNext()
+    onNext(postData)
   }
 
   function prev() {

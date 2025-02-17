@@ -1,24 +1,68 @@
 import { Upload } from "lucide-react"
 import Button from "../commons/Button"
+import { useRef, useState } from "react"
+import VideoPlayer from "../video/VideoPlayer"
 
 function VideoUploader({ onBack, onFileReady, canNext, onNext }) {
+  const fileIpt = useRef()
+  const [preview, setPreview] = useState(null)
+
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setPreview(URL.createObjectURL(file))
+      onFileReady(file)
+    }
+  }
+
   return (
     <>
-      <div>
+      <div className="">
         <div className="container mx-auto">
-          <div className="h-[240pt] flex items-center justify-center text-center">
-            <div className="p-5">
-              <h1 className="text-3xl text-zinc-950 font-bold mb-3">Publier une vidéo éducative</h1>
-              <div className="py-3">
-                <button 
-                  className="bg-blue-600 text-white p-5 rounded-full"
-                  // this is, for now, just a similation of file ready events
-                  onClick={onFileReady}
-                >
-                  <Upload className="inline-block" />
-                </button>
+          <div className="h-[240pt] flex items-center justify-center">
+            <div className="w-full p-5">
+              <h1 className="text-xl text-zinc-950 font-bold mb-5">Publier une vidéo éducative</h1>
+              <div className="w-full h-[160pt] bg-black text-white mb-5 flex items-center justify-center">
+                {preview ? (
+                  <VideoPlayer src={preview} />
+                ) : (
+                  <div>
+                    <button 
+                      className="text-center"
+                      onClick={(e) => {
+                        fileIpt.current.click()
+                      }}
+                    >
+                      <Upload className="inline me-2" />
+                      <span>
+                        Téléverser une vidéo
+                      </span>
+                    </button>
+                  </div>
+                )}
               </div>
-              <p className="text-zinc-600">Téléverser une vidéo</p>
+              <div className="">
+                <input 
+                  type="file" 
+                  className="hidden" 
+                  ref={fileIpt} 
+                  accept="video/*"
+                  onChange={handleVideoChange}
+                />
+                {preview && (
+                  <button 
+                    className="border p-2 rounded"
+                    onClick={(e) => {
+                      fileIpt.current.click()
+                    }}
+                  >
+                    <Upload className="inline me-2" />
+                    <span>
+                      Choisir une autre vidéo
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

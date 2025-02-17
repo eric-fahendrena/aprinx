@@ -9,7 +9,7 @@ function Button({ children, variant="primary", disabled=false, onClick }) {
   }
   if (variant === "light") {
     bgClass = "bg-white"
-    colorClass = "text-zinc-600"
+    colorClass = "text-zinc-900"
     borderClass = "border"
   }
 

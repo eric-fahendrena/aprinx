@@ -1,6 +1,6 @@
 import ProfilePicture from "../profile/ProfilePicture"
 
-function VideoMetadata({ title, category, description, authorName }) {
+function VideoMetadata({ title, category, description, authorName, authorPicture }) {
   return (
     <div className="px-5 py-2">
       <div className="mb-2">
@@ -12,7 +12,7 @@ function VideoMetadata({ title, category, description, authorName }) {
       </div>
       <div className="flex">
         <div className="w-1/6">
-          <ProfilePicture />
+          <ProfilePicture src={authorPicture} />
         </div>
         <div className="w-5/6">
           <div className="font-bold">{authorName}</div>

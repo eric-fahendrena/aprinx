@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 /**
  * fetch user token
@@ -84,5 +84,60 @@ export const fetchCourse = async (cId) => {
     return data;
   } catch (error) {
     console.error("Error", error);
+  }
+}
+
+export const fetchRandCourse = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/random`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const sendCourseVideo = async (vData) => {
+  const token = localStorage.getItem("token")
+  const formData = new FormData()
+  formData.append("author_id", vData.author_id) 
+  formData.append("video_file", vData.video_file)
+  formData.append("thumbnail_file", vData.thumbnail_file)
+  formData.append("title", vData.metadata.title)
+  formData.append("description", vData.metadata.description)
+  formData.append("access", vData.metadata.access)
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/${vData.course_id}/videos/add`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+      body: formData,
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const fetchCourseVideos = async (cId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const fetchCourseVideo = async (cId, vId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos/${vId}`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
   }
 }

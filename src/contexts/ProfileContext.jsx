@@ -8,15 +8,19 @@ export const ProfileProvider = ({ children }) => {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
-    fetchProfile().then(data => {
+    (async () => {
+      setIsLoading(true)
+      const data = await fetchProfile()
       if (!data) {
         setError(true)
+        setIsLoading(false)
+        localStorage.setItem("is_authenticated", false)
         return
       }
       setProfile(data)
       setIsLoading(false)
-    })
+      localStorage.setItem("is_authenticated", true)
+    })()
   }, [])
 
   return (

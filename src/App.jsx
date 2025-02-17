@@ -15,6 +15,7 @@ import VerifyTransactionPage from "./components/VerifyTransactionPage.jsx"
 import CourseDetailPage from "./components/CourseDetailPage.jsx"
 import SearchPage from "./components/SearchPage.jsx"
 import CourseCreatorPage from "./components/CourseCreatorPage.jsx"
+import AuthenticatedRoute from "./AuthenticatedRoute.jsx"
 
 function App() {
   return (
@@ -24,11 +25,23 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/courses/create" element={<CourseCreatorPage />} />
-            <Route path="/courses/create/:step" element={<CourseCreatorPage />} />
-            <Route path="/videos/:vId" element={<VideoDetailPage />} />
+            <Route path="/courses/create" element={(
+              <AuthenticatedRoute>
+                <CourseCreatorPage />
+              </AuthenticatedRoute>
+            )} />
+            <Route path="/courses/create/:step" element={(
+              <AuthenticatedRoute>
+                <CourseCreatorPage />
+              </AuthenticatedRoute>
+            )} />
+            <Route path="/courses/:cId/videos/:vId" element={<VideoDetailPage />} />
             <Route path="/videos/:vId/buy" element={<BuyVideoPage />} />
-            <Route path="/videos/create" element={<VideoPublisherPage />} />
+            <Route path="/courses/:cId/videos/add" element={(
+              <AuthenticatedRoute>
+                <VideoPublisherPage />
+              </AuthenticatedRoute>
+            )} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/videos/:vId/payment" element={<PendingPaymentPage />} />

@@ -1,60 +1,62 @@
-import React from "react"
+import React, { useRef, useState } from "react"
 import { Upload } from "lucide-react"
 import Button from "../commons/Button"
 
-function VideoThumbnailUploader({ onBack, onPublish }) {
-  function back() {
-    onBack && onBack()
+function VideoThumbnailUploader({ onPrev, onFileReady, onNext }) {
+  const fileIpt = useRef()
+  const [tnFile, setTnFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+
+  const tnFileChangeHandler = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setPreview(URL.createObjectURL(file))
+      onFileReady && onFileReady(file)
+    }
+  }
+  const next = () => {
+    onNext && onNext()
   }
 
-  let postDataStr = localStorage.getItem("post_data")
-  let postDataJson = JSON.parse(postDataStr)
-  let splitDescription = postDataJson.description.split("\n")
+  const prev = () => {
+    onPrev && onPrev()
+  }
 
   return (
     <>
-      <div className="mb-12">
-        <div className="h-[160pt] bg-zinc-600 relative">
-          <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center">
-            <div className="text-white text-center px-5">
-              <div>Votre publication est presque terminée.</div>
-              <div className="font-bold mb-3">Voulez-vous ajouter une miniature à votre vidéo?</div>
-              <button className="">
-                <Upload className="inline-block mb-2" />
-              </button>
-              <div>Téléverser une photo</div>
-            </div>
-          </div>
+      <div className="px-5">
+        <p className="mb-5">Votre publication est presque términée. Il reste une tâche à faire.</p>
+        <div className="h-[160pt] bg-black text-white rounded flex items-center justify-center mb-3">
+          <input type="file" className="hidden" ref={fileIpt} accept="image/*" onChange={tnFileChangeHandler} />
+          {preview ? (
+            <img src={preview} alt="miniature" className="w-full h-full object-cover" />
+          ) : (
+            <button 
+              className="text-center"
+              onClick={() => fileIpt.current.click()}
+            >
+              <Upload className="inline" /><br />
+              <span>Ajouter une miniature</span>
+            </button>
+          )}
         </div>
-        <div className="container mx-auto">
-          <div className="p-5">
-            <h4 className="font-bold text-zinc-600 mb-2">{postDataJson.title}</h4>
-            <p className="text-lg">
-              {splitDescription.map((text, idx) => {
-                return (
-                  <React.Fragment key={idx}>
-                    {text}<br />
-                  </React.Fragment>
-                )
-              })}
-            </p>
-          </div>
-        </div>
+        {preview && (
+          <button className="px-2 py-2 border rounded" onClick={() => fileIpt.current.click()}><Upload className="inline me-2" />Choisir une autre photo</button>
+        )}
       </div>
-
       <div className="fixed bottom-0 start-0 end-0 py-5">
         <div className="container mx-auto px-4">
           <div className="flex">
           <div className="w-1/2 px-1">
               <Button 
                 variant="secondary"
-                onClick={back}
+                onClick={prev}
               >
                 Retour
               </Button>
             </div>
             <div className="w-1/2 px-1">
-              <Button>
+              <Button onClick={next}>
                 Publier
               </Button>
             </div>
