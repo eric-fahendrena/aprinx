@@ -6,15 +6,15 @@ function CourseItem({ cId="", title="", authorName="", authorPicture, coverPhoto
   return (
     <div className="p-5">
       <Link to={`/courses/${cId}`}>
-        <div className="h-[160pt] bg-zinc-950 rounded overflow-hidden relative">
+        <div className="h-[160pt] bg-zinc-950 rounded-3xl overflow-hidden relative">
           <img src={coverPhoto} alt="cover photo" className="w-full h-full object-cover" />
           <div 
             className="absolute top-0 bottom-0 start-0 end-0 flex items-end justify-start p-2 text-white -z-0"
             style={{
-              backgroundColor: "#0004",
+              backgroundColor: "#0002",
             }}
           >
-            <div className="bg-red-800 text-white p-2 rounded text-xs font-bold uppercase">{category}</div>
+            <div className="bg-red-800 text-white px-3 py-2 rounded-full text-xs uppercase">{category}</div>
           </div>
         </div>
       </Link>

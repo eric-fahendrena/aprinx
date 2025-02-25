@@ -2,7 +2,7 @@ import { useState } from "react"
 import Radio from "../commons/Radio"
 import Button from "../commons/Button"
 
-function PostMetaForm({ onNext, onPrev }) {
+function VideoMetaForm({ onNext, onPrev }) {
   const [titleIpt, setTitleIpt] = useState("")
   const [titleIptError, setTitleIptError] = useState(false)
   const [titleIptHelper, setTitleIptHelper] = useState("")
@@ -119,4 +119,4 @@ function PostMetaForm({ onNext, onPrev }) {
   )
 }
 
-export default PostMetaForm
+export default VideoMetaForm

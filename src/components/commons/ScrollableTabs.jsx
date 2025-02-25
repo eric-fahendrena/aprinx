@@ -12,7 +12,7 @@ function ScrollableTab() {
         {tags.map((tag, idx) => {
           return (
             <div key={idx} className="px-1 inline-block">
-              <div className={`py-2 px-3 ${tag.active ? "bg-red-800 text-white" : "bg-zinc-200"} font-bold rounded-lg`}>
+              <div className={`py-2 px-3 ${tag.active ? "bg-red-800 text-white" : "bg-zinc-200"} rounded-full`}>
                 {tag.name}
               </div>
             </div>

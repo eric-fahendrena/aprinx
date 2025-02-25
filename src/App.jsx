@@ -8,23 +8,22 @@ import VideoDetailPage from "./components/VideoDetailPage"
 import VideoPublisherPage from "./components/VideoPublisherPage.jsx"
 import ProfilePage from "./components/ProfilePage"
 import LoginPage from "./components/LoginPage"
-import BuyVideoPage from "./components/BuyVideoPage"
-import PendingPaymentPage from "./components/PendingPaymentPage.jsx"
-import BuyersPaymentsPage from "./components/BuyersPaymentsPage.jsx"
-import VerifyTransactionPage from "./components/VerifyTransactionPage.jsx"
 import CourseDetailPage from "./components/CourseDetailPage.jsx"
 import SearchPage from "./components/SearchPage.jsx"
 import CourseCreatorPage from "./components/CourseCreatorPage.jsx"
 import AuthenticatedRoute from "./AuthenticatedRoute.jsx"
+import PhoneNumberEditorPage from "./components/PhoneNumberEditorPage.jsx"
 
 function App() {
   return (
     <>
-      <div className="text-zinc-900">
+      <div className="text-zinc-900 prompt-light">
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/courses/:cId" element={<CourseDetailPage />} />
             <Route path="/courses/create" element={(
               <AuthenticatedRoute>
                 <CourseCreatorPage />
@@ -35,19 +34,22 @@ function App() {
                 <CourseCreatorPage />
               </AuthenticatedRoute>
             )} />
-            <Route path="/courses/:cId/videos/:vId" element={<VideoDetailPage />} />
-            <Route path="/videos/:vId/buy" element={<BuyVideoPage />} />
+            <Route path="/courses/:cId/videos/:vId" element={(
+              <AuthenticatedRoute>
+                <VideoDetailPage />
+              </AuthenticatedRoute>
+            )} />
             <Route path="/courses/:cId/videos/add" element={(
               <AuthenticatedRoute>
                 <VideoPublisherPage />
               </AuthenticatedRoute>
             )} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/videos/:vId/payment" element={<PendingPaymentPage />} />
-            <Route path="/payments" element={<BuyersPaymentsPage />} />
-            <Route path="/transactions/verify" element={<VerifyTransactionPage />} />
-            <Route path="/courses/:cId" element={<CourseDetailPage />} />
+            <Route path="/profile/edit/phone" element={(
+              <AuthenticatedRoute>
+                <PhoneNumberEditorPage />
+              </AuthenticatedRoute>
+            )} />
           </Routes>
         </Router>
       </div>

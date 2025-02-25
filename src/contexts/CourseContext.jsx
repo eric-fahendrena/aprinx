@@ -4,9 +4,9 @@ import { socket } from "../socket";
 
 export const CourseContext = createContext()
 export const CourseProvider = ({ children }) => {
-  const [allCourses, setAllCourses] = useState(null)
+  const [displayedCourses, setDisplayedCourses] = useState([])
   const createCourse = async (data) => {
-    await addCourse(data)
+    return await addCourse(data)
   }
   const getCourse = async (cId) => {
     const course = await fetchCourse(cId)
@@ -29,20 +29,8 @@ export const CourseProvider = ({ children }) => {
     return video
   }
 
-  
-
-  useEffect(() => {
-    (async () => {
-      const allCourses = await fetchAllCourses()
-      setAllCourses(allCourses)
-    })()
-    socket.on("create-video-progress", (progress) => {
-      console.log(progress)
-    })
-  }, [])
-
   return (
-    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, allCourses, addVideo, getVideos, getVideo }}>
+    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, displayedCourses, setDisplayedCourses, addVideo, getVideos, getVideo }}>
       {children}
     </CourseContext.Provider>
   )

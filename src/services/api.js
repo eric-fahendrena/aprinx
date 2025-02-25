@@ -44,9 +44,32 @@ export const fetchProfile = async () => {
   }
 }
 
+export const updatePhoneNumber = async (pnbData) => {
+  console.log(JSON.stringify(pnbData))
+  try {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${API_BASE_URL}/api/users/profile/phone-number/update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(pnbData),
+    })
+    if (response.status !== 200) {
+      return { error: true, code: response.status }
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
 export const addCourse = async (data) => {
   const formData = new FormData()
   formData.append("category", data.category)
+  formData.append("price", data.price)
   formData.append("title", data.title)
   formData.append("description", data.description)
   formData.append("cover_photo_file", data.coverPhotoFile)
@@ -60,6 +83,10 @@ export const addCourse = async (data) => {
       },
       body: formData,
     })
+
+    if (response.status === 400) {
+      return { error: true, code: 400 }
+    }
     const data = await response.json()
     return data
   } catch (error) {
@@ -115,6 +142,9 @@ export const sendCourseVideo = async (vData) => {
       },
       body: formData,
     })
+    if (!response.ok) {
+      return { error: true, code: response.status }
+    }
     const data = await response.json()
     return data
   } catch (error) {
@@ -135,6 +165,46 @@ export const fetchCourseVideos = async (cId) => {
 export const fetchCourseVideo = async (cId, vId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos/${vId}`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const sendTransaction = async (tData) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transactions/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(tData),
+    })
+    const data = await response.json()
+    if (response.status !== 200) 
+      return { error: true, code: response.status }
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const fetchTransaction = async (transId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transactions?trans_id=${transId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    if (response.status !== 200) {
+      console.error(await response.json())
+      return { error: true, code: response.status }
+    }
     const data = await response.json()
     return data
   } catch (error) {

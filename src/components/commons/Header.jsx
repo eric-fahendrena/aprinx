@@ -31,7 +31,7 @@ function Header({ title, backLink }) {
       ) : (
         <header className="h-[32pt] bg-white text-zinc-600 sticky top-0 left-0 right-0 z-20 flex items-center">
           <div className="container mx-auto flex justify-between px-5">
-            <div className="flex items-center uppercase">
+            <div className="flex items-center font-bold">
               <Link className="me-2" to={backLink}>
                 <ChevronLeft strokeWidth={3.5} />
               </Link>

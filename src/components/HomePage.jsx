@@ -2,7 +2,7 @@ import Header from "./commons/Header"
 import ScrollableTab from "./commons/ScrollableTabs"
 import BottomNavbar from "./commons/BottomNavbar"
 import CourseItem from "./course/CourseItem"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { CourseContext } from "../contexts/CourseContext"
 import LazyObserver from "./commons/LazyObserver"
 import dayjs from "dayjs"
@@ -13,18 +13,18 @@ dayjs.extend(relativeTime)
 dayjs.locale("fr")
 
 function HomePage() {
-  const allCourses = []
-  const [displayedCourses, setDisplayedCourses] = useState([])
+  const { displayedCourses, setDisplayedCourses} = useContext(CourseContext)
+  // const [displayedCourses, setDisplayedCourses] = useState([])
   const { getRandCourse } = useContext(CourseContext)
+  // load random courses
   const addCourseToDisplay = async () => {
-    console.log("In View")
-    const randCourse = await getRandCourse()
-    const randCourse2 = await getRandCourse()
-    const randCourse3 = await getRandCourse()
+    const randCourses = []
+    for (let i = 0; i < 5; i++) {
+      const randCourse = await getRandCourse()
+      randCourses.push(randCourse)
+    }
     setDisplayedCourses((prevCourses) => {
-      console.log("Prev Courses")
-      console.log(prevCourses)
-      return [...prevCourses, randCourse, randCourse2, randCourse3]
+      return [...prevCourses].concat(randCourses)
     })
   }
 

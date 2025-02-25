@@ -6,11 +6,11 @@ function VideoItem({ vId="", cId="", title="", authorName="", authorPicture, thu
   return (
     <div className="p-5">
       <Link to={`/courses/${cId}/videos/${vId}`}>
-        <div className="h-[160pt] bg-zinc-950 rounded relative">
+        <div className="h-[160pt] relative">
           {thumbnail && (
-            <img src={thumbnail} alt={title} className="w-full h-full" />
+            <img src={thumbnail} alt={title} className="w-full h-full rounded-3xl" />
           )}
-          <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center text-white -z-0" style={{
+          <div className="absolute top-0 bottom-0 start-0 end-0 rounded-3xl overflow-hidden flex items-center justify-center text-white -z-0" style={{
             backgroundColor: "#0002"
           }}>
             <CirclePlay size={40} />

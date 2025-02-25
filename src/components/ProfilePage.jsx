@@ -1,13 +1,16 @@
 import Header from "./commons/Header"
 import BottomNavbar from "./commons/BottomNavbar"
 import Button from "./commons/Button"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { useNavigate } from "react-router-dom"
 import { User, User2 } from "lucide-react"
+import BottomSheet from "./commons/BottomSheet"
+import CourseTransactionsManager from "./course/CourseTransactionsManager"
 
 function ProfilePage() {
   const { profile, isLoading, error } = useContext(ProfileContext)
+  const [openTransManager, setOpenTransManager] = useState(false)
   const navigate = useNavigate()
 
   if (isLoading) {
@@ -23,14 +26,19 @@ function ProfilePage() {
       <Header title={"Tojo Guitariste"} backLink={"/"} />
       <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center">
         {!error ? (
-          <div className="text-center">
+          <>
+          <div className="text-center w-full p-5">
             <img 
               src={profile.picture} 
               alt={`${profile.given_name} photo`} 
               className="w-[56pt] h-[56pt] inline-block rounded-full mb-3" 
             />
             <div className="font-bold text-[16pt] text-zinc-600">{profile.name}</div>
+            <div className="py-3">
+              <Button variant="secondary" onClick={() => setOpenTransManager(true)}>Gérer les transactions</Button>
+            </div>
           </div>
+          </>
         ) : (
           <div className="text-center p-5">
             <div className="mb-5 text-zinc-600">
@@ -44,6 +52,9 @@ function ProfilePage() {
         )}
       </div>
       <BottomNavbar current="profile" />
+      <BottomSheet open={openTransManager} onClose={() => setOpenTransManager(false)}>
+        <CourseTransactionsManager />
+      </BottomSheet>
     </>
   )
 }
