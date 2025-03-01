@@ -11,7 +11,7 @@ import FullScreenStatus from "./commons/FullScreenStatus"
 
 function VideoPublisherPage() {
   const { profile, isLoading, error } = useContext(ProfileContext)
-  const { addVideo } = useContext(CourseContext)
+  const { addVideo, videoUploadProgression } = useContext(CourseContext)
   const params = useParams()
   const [success, setSuccess] = useState(null)
   const [publishing, setPublishing] = useState(false)
@@ -70,7 +70,17 @@ function VideoPublisherPage() {
         {step === "sending" ? (
           <>
             {publishing && (
-              <PublishingLoader />
+              <>
+                {/* <PublishingLoader /> */}
+                <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div>Téléchargement du vidéo</div>
+                    <div className="w-[240pt] h-[2pt]">
+                      <div className="h-full bg-red-800" style={{ width: `${videoUploadProgression}%` }}></div>
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
             {success === true && (
               <FullScreenStatus status="success" message={"Vidéo publiée avec succès"} linkText={"Révenir au cours"} href={`/courses/${createdVideo.course_id}`}  />

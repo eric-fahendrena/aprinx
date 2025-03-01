@@ -1,3 +1,6 @@
+import axios from "axios";
+import { Form } from "react-router-dom";
+
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 /**
@@ -124,15 +127,33 @@ export const fetchRandCourse = async () => {
   }
 }
 
+export const uploadFile = async (file, type, onUploadProgress) => {
+  const formData = new FormData()
+  formData.append("file", file)
+  formData.append("upload_preset", "aprix_1")
+  formData.append("cloud_name", "dbmbskzzr")
+
+  try {
+    const response = await axios.post(`https://api.cloudinary.com/v1_1/dbmbskzzr/${type}/upload`, formData, {
+      onUploadProgress: (progressEvent) => {
+        return onUploadProgress && onUploadProgress(progressEvent)
+      },
+    })
+    const data = await response.data
+    return data
+  } catch (error) {
+    console.log("Error", error)
+  }
+}
 export const sendCourseVideo = async (vData) => {
   const token = localStorage.getItem("token")
   const formData = new FormData()
   formData.append("author_id", vData.author_id) 
-  formData.append("video_file", vData.video_file)
-  formData.append("thumbnail_file", vData.thumbnail_file)
-  formData.append("title", vData.metadata.title)
-  formData.append("description", vData.metadata.description)
-  formData.append("access", vData.metadata.access)
+  formData.append("url", vData.url)
+  formData.append("thumbnail", vData.thumbnail)
+  formData.append("title", vData.title)
+  formData.append("description", vData.description)
+  formData.append("access", vData.access)
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${vData.course_id}/videos/add`, {

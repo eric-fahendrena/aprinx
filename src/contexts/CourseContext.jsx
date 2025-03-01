@@ -1,9 +1,10 @@
 import { createContext, useEffect, useState } from "react";
-import { addCourse, fetchAllCourses, fetchCourse, fetchCourseVideos, sendCourseVideo, fetchCourseVideo, fetchRandCourse } from "../services/api";
+import { addCourse, fetchAllCourses, fetchCourse, fetchCourseVideos, sendCourseVideo, fetchCourseVideo, fetchRandCourse, uploadFile } from "../services/api";
 import { socket } from "../socket";
 
 export const CourseContext = createContext()
 export const CourseProvider = ({ children }) => {
+  const [videoUploadProgression, setVideoUploadProgression] = useState(0)
   const [displayedCourses, setDisplayedCourses] = useState([])
   const createCourse = async (data) => {
     return await addCourse(data)
@@ -17,7 +18,25 @@ export const CourseProvider = ({ children }) => {
     return course
   }
   const addVideo = async (vData) => {
-    const courseVideo = await sendCourseVideo(vData)
+    const videoUploadData = await uploadFile(vData.video_file, "video", (progressEvent) => {
+      const { loaded, total } = progressEvent;
+      const percent = Math.round((loaded * 100) / total)
+      setVideoUploadProgression(percent)
+    })
+    console.log(videoUploadData)
+    console.log("video url");
+    console.log(videoUploadData.url)
+    const thumbnailUploadData = await uploadFile(vData.thumbnail_file, "image")
+    const courseVideo = await sendCourseVideo({
+      course_id: vData.course_id,
+      author_id: vData.author_id,
+      title: vData.metadata.title,
+      description: vData.metadata.description,
+      access: vData.metadata.access,
+      url: videoUploadData.url,
+      thumbnail: thumbnailUploadData.url,
+    })
+    setVideoUploadProgression(0)
     return courseVideo
   }
   const getVideos = async (cId) => {
@@ -30,7 +49,7 @@ export const CourseProvider = ({ children }) => {
   }
 
   return (
-    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, displayedCourses, setDisplayedCourses, addVideo, getVideos, getVideo }}>
+    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
       {children}
     </CourseContext.Provider>
   )
