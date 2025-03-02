@@ -127,6 +127,43 @@ export const fetchRandCourse = async () => {
   }
 }
 
+export const sendReactionToCourse = async (cId) => {
+  try {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/react`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    if (response.status !== 200) {
+      return { error: true, code: response.status }
+    }
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const fetchCourseLiked = async (cId) => {
+  try {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/is-liked`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    if (response.status !== 200)
+      return { error: true, code: response.status }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
 export const uploadFile = async (file, type, onUploadProgress) => {
   const formData = new FormData()
   formData.append("file", file)

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { addCourse, fetchAllCourses, fetchCourse, fetchCourseVideos, sendCourseVideo, fetchCourseVideo, fetchRandCourse, uploadFile } from "../services/api";
+import { addCourse, fetchCourse, fetchCourseVideos, sendCourseVideo, fetchCourseVideo, fetchRandCourse, uploadFile, sendReactionToCourse, fetchCourseLiked } from "../services/api";
 import { socket } from "../socket";
 
 export const CourseContext = createContext()
@@ -16,6 +16,17 @@ export const CourseProvider = ({ children }) => {
   const getRandCourse = async () => {
     const course = await fetchRandCourse()
     return course
+  }
+  const reactCourse = async (cId) => {
+    const result = await sendReactionToCourse(cId)
+    return result
+  }
+  const courseLiked = async (cId) => {
+    const result = await fetchCourseLiked(cId)
+    console.log(result)
+    if (result.error)
+      return false
+    return result.value
   }
   const addVideo = async (vData) => {
     const videoUploadData = await uploadFile(vData.video_file, "video", (progressEvent) => {
@@ -49,7 +60,7 @@ export const CourseProvider = ({ children }) => {
   }
 
   return (
-    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
+    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, reactCourse, courseLiked, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
       {children}
     </CourseContext.Provider>
   )

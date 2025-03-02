@@ -44,19 +44,12 @@ function CourseDetailPage() {
           <Header title={course.title} backLink={"/"} />
           <CourseCoverPhoto src={course.cover_photo} />
           <div className="container mx-auto pb-[56pt]">
-            {/* <CourseActionBar /> */}
-            {course.author_id !== profile.id ? (
+            <CourseActionBar course={course} />
+            {course.author_id !== profile.id && (
               <div className="p-5">
                 <Button onClick={openPaymentForm}>
                   <ShoppingCart strokeWidth={2} className="inline-block me-2" /> 
                   Acheter le cours
-                </Button>
-              </div>
-            ) : (
-              <div className="p-5">
-                <Button variant="secondary" onClick={() => setOpenTransManager(true)}>
-                  <ArrowRightLeft strokeWidth={2.5} className="inline-block me-2" />
-                  Gérer les transactions
                 </Button>
               </div>
             )}
