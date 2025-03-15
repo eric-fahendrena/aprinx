@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Form } from "react-router-dom";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -14,10 +13,7 @@ export const fetchUserToken = async () => {
       method: "GET",
       credentials: "include",
     });
-    console.log(response)
     const data = await response.json();
-    console.log("Fetch user token")
-    console.log(data)
     return data;
   } catch (error) {
     console.error("Error", error);
@@ -69,22 +65,16 @@ export const updatePhoneNumber = async (pnbData) => {
   }
 }
 
-export const addCourse = async (data) => {
-  const formData = new FormData()
-  formData.append("category", data.category)
-  formData.append("price", data.price)
-  formData.append("title", data.title)
-  formData.append("description", data.description)
-  formData.append("cover_photo_file", data.coverPhotoFile)
-
+export const createCourseRequest = async (cData) => {
   try {
     const token = localStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/courses/add`, {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: formData,
+      body: JSON.stringify(cData),
     })
 
     if (response.status === 400) {
@@ -97,9 +87,25 @@ export const addCourse = async (data) => {
   }
 }
 
-export const fetchAllCourses = async () => {
+export const deleteCourseRequest = async (courseId) => {
+  const token = localStorage.getItem("token")
   try {
-    const response = await fetch(`${API_BASE_URL}/api/courses`);
+    const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/delete`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getAllCoursesRequest = async (offset, limit) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses?limit=${limit}&offset=${offset}`);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -107,7 +113,7 @@ export const fetchAllCourses = async () => {
   }
 }
 
-export const fetchCourse = async (cId) => {
+export const getCourseRequest = async (cId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${cId}`);
     const data = await response.json();
@@ -117,7 +123,7 @@ export const fetchCourse = async (cId) => {
   }
 }
 
-export const fetchRandCourse = async () => {
+export const getRandCourseRequest = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/random`)
     const data = await response.json()
@@ -127,10 +133,10 @@ export const fetchRandCourse = async () => {
   }
 }
 
-export const sendReactionToCourse = async (cId) => {
+export const createCourseLikeRequest = async (cId) => {
   try {
     const token = localStorage.getItem("token")
-    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/react`, {
+    const response = await fetch(`${API_BASE_URL}/api/course-likes/${cId}/add`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -146,17 +152,17 @@ export const sendReactionToCourse = async (cId) => {
   }
 }
 
-export const fetchCourseLiked = async (cId) => {
+export const getCourseLikeRequest = async (cId) => {
   try {
     const token = localStorage.getItem("token")
-    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/is-liked`, {
+    const response = await fetch(`${API_BASE_URL}/api/course-likes/${cId}`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
       },
     })
     if (response.status !== 200)
-      return { error: true, code: response.status }
+      throw new Error("Error", response.status)
     const data = await response.json()
     return data
   } catch (error) {
@@ -164,7 +170,7 @@ export const fetchCourseLiked = async (cId) => {
   }
 }
 
-export const uploadFile = async (file, type, onUploadProgress) => {
+export const uploadFileRequest = async (file, type, onUploadProgress) => {
   const formData = new FormData()
   formData.append("file", file)
   formData.append("upload_preset", "aprix_1")
@@ -182,23 +188,17 @@ export const uploadFile = async (file, type, onUploadProgress) => {
     console.log("Error", error)
   }
 }
-export const sendCourseVideo = async (vData) => {
+export const createCourseVideoRequest = async (vData) => {
   const token = localStorage.getItem("token")
-  const formData = new FormData()
-  formData.append("author_id", vData.author_id) 
-  formData.append("url", vData.url)
-  formData.append("thumbnail", vData.thumbnail)
-  formData.append("title", vData.title)
-  formData.append("description", vData.description)
-  formData.append("access", vData.access)
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${vData.course_id}/videos/add`, {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: formData,
+      body: JSON.stringify(vData),
     })
     if (!response.ok) {
       return { error: true, code: response.status }
@@ -210,7 +210,7 @@ export const sendCourseVideo = async (vData) => {
   }
 }
 
-export const fetchCourseVideos = async (cId) => {
+export const getCourseVideosRequest = async (cId) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos`)
     const data = await response.json()
@@ -220,9 +220,15 @@ export const fetchCourseVideos = async (cId) => {
   }
 }
 
-export const fetchCourseVideo = async (cId, vId) => {
+export const getCourseVideoRequest = async (cId, vId) => {
+  const token = localStorage.getItem("token")
   try {
-    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos/${vId}`)
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos/${vId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
     const data = await response.json()
     return data
   } catch (error) {
@@ -250,7 +256,7 @@ export const sendTransaction = async (tData) => {
   }
 }
 
-export const fetchTransaction = async (transId) => {
+export const getTransactionRequest = async (transId) => {
   const token = localStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions?trans_id=${transId}`, {
@@ -263,6 +269,170 @@ export const fetchTransaction = async (transId) => {
       console.error(await response.json())
       return { error: true, code: response.status }
     }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const confirmTransactionRequest = async (transId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transactions/confirm?trans_id=${transId}`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const refuseTransactionRequest = async (transId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transaction/refuse?trans_id=${transId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log("Error", error)
+  }
+}
+
+export const createCourseCommentRequest = async (cId, cmtData) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/comments/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(cmtData),
+    })
+    if (response.status !== 200)
+      throw new Error("Error", response.status)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getCourseCommentsRequest = async (cId, query) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/comments?limit=${query.limit}&offset=${query.offset}`);
+    if (response.status !== 200)
+      throw new Error("Error", response.status);
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+export const getNotificationsRequest = async () => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getUnseenNotificationsCountRequest = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notifications/unseen-count`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const seeAllNotificationRequest = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notifications/see-all`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const createCourseAccessRequest = async (courseId, userId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/user-course-access/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ courseId, userId })
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getCourseAccessRequest = async (courseId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/user-course-access/${courseId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json();
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const createDeletedCourseRequest = async (dcData) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/deleted-courses/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(dcData),
+    })
     const data = await response.json()
     return data
   } catch (error) {

@@ -6,6 +6,10 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import { ProfileProvider } from './contexts/ProfileContext.jsx'
 import { CourseProvider } from './contexts/CourseContext.jsx'
 import { TransactionProvider } from './contexts/TransactionContext.jsx'
+import { CommentProvider } from './contexts/CommentContext.jsx'
+import { NotificationProvider } from "./contexts/NotificationContext.jsx"
+import { CourseAccessProvider } from './contexts/CourseAccessContext.jsx'
+import { DeletedCourseProvider } from './contexts/DeletedCourseContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -13,7 +17,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ProfileProvider>
         <CourseProvider>
           <TransactionProvider>
-            <App />
+            <CommentProvider>
+              <NotificationProvider>
+                <CourseAccessProvider>
+                  <DeletedCourseProvider>
+                    <App />
+                  </DeletedCourseProvider>
+                </CourseAccessProvider>
+              </NotificationProvider>
+            </CommentProvider>
           </TransactionProvider>
         </CourseProvider>
       </ProfileProvider>

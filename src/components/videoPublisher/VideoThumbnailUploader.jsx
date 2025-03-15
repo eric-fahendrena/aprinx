@@ -26,7 +26,7 @@ function VideoThumbnailUploader({ onPrev, onFileReady, onNext }) {
     <>
       <div className="px-5">
         <p className="mb-5">Votre publication est presque términée. Il reste une tâche à faire.</p>
-        <div className="h-[160pt] bg-black text-white rounded flex items-center justify-center mb-3">
+        <div className="h-[160pt] bg-black text-white rounded-3xl overflow-hidden flex items-center justify-center mb-3">
           <input type="file" className="hidden" ref={fileIpt} accept="image/*" onChange={tnFileChangeHandler} />
           {preview ? (
             <img src={preview} alt="miniature" className="w-full h-full object-cover" />

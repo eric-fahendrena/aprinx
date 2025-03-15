@@ -8,10 +8,10 @@ function Header({ title, backLink }) {
   return (
     <>
       {!title ? (
-        <header className="h-[32pt] bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
+        <header className="h-[40pt] bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
           <div className="container mx-auto flex justify-between px-5">
-            <div className="w-[24pt] h-[24pt] flex items-center justify-center font-bold text-2xl">
-              S
+            <div className="text-red-800 flex items-center justify-center font-bold text-2xl">
+              Aprix
             </div>
             <div className="flex">
               <button className="me-5">

@@ -16,7 +16,7 @@ function CourseCreatorPage() {
   const [coverPhotoFile, setCoverPhotoFile] = useState(null)
   const { createCourse } = useContext(CourseContext)
   
-  async function create() {
+  async function handleCreateClick() {
     const courseData = new Object()
     courseData.coverPhotoFile = coverPhotoFile
     courseData.category = localStorage.getItem("course_category_ipt")
@@ -35,7 +35,7 @@ function CourseCreatorPage() {
     setCreating(false)
   }
 
-  function undo() {
+  function handleUndoClick() {
     localStorage.setItem("course_category_ipt", "")
     localStorage.setItem("course_price_ipt", "")
     localStorage.setItem("course_title_ipt", "")
@@ -44,8 +44,8 @@ function CourseCreatorPage() {
     navigate("/")
   }
 
-  window.addEventListener("popstate", undo)
-  window.addEventListener("unload", undo)
+  window.addEventListener("popstate", handleUndoClick)
+  window.addEventListener("unload", handleUndoClick)
 
   return (
     <>
@@ -58,11 +58,11 @@ function CourseCreatorPage() {
         <div className="w-1/2 p-1">
           <Button 
             variant="secondary"
-            onClick={undo}
+            onClick={handleUndoClick}
           >Annuler</Button>
         </div>
         <div className="w-1/2 p-1">
-          <Button onClick={create}>Créer</Button>
+          <Button onClick={handleCreateClick}>Créer</Button>
         </div>
       </div>
       {creating && (

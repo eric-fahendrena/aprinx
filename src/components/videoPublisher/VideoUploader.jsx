@@ -9,6 +9,7 @@ function VideoUploader({ onBack, onFileReady, canNext, onNext }) {
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0]
+    console.log(URL.createObjectURL(file))
     if (file) {
       setPreview(URL.createObjectURL(file))
       onFileReady(file)
@@ -21,8 +22,8 @@ function VideoUploader({ onBack, onFileReady, canNext, onNext }) {
         <div className="container mx-auto">
           <div className="h-[240pt] flex items-center justify-center">
             <div className="w-full p-5">
-              <h1 className="text-xl text-zinc-950 font-bold mb-5">Publier une vidéo éducative</h1>
-              <div className="w-full h-[160pt] bg-black text-white mb-5 flex items-center justify-center">
+              <h1 className="font-[500] text-xl text-zinc-600 mb-5">Publier une vidéo éducative</h1>
+              <div className="w-full h-[160pt] bg-black rounded-3xl overflow-hidden text-white mb-5 flex items-center justify-center">
                 {preview ? (
                   <VideoPlayer src={preview} />
                 ) : (

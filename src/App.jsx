@@ -13,8 +13,24 @@ import SearchPage from "./components/SearchPage.jsx"
 import CourseCreatorPage from "./components/CourseCreatorPage.jsx"
 import AuthenticatedRoute from "./AuthenticatedRoute.jsx"
 import PhoneNumberEditorPage from "./components/PhoneNumberEditorPage.jsx"
+import NotificationsPage from "./components/NotificationsPage.jsx"
+import { connectSocket, disconnectSocket } from "./services/socketService.js"
+import { useContext, useEffect } from "react"
+import { ProfileContext } from "./contexts/ProfileContext.jsx"
+import { AuthContext } from "./contexts/AuthContext.jsx"
 
 function App() {
+  const { profile } = useContext(ProfileContext)
+
+  useEffect(() => {
+    if (profile) {
+      connectSocket(profile.id)
+    }
+    return () => {
+      disconnectSocket()
+    }
+  }, [profile])
+
   return (
     <>
       <div className="text-zinc-900 prompt-light">
@@ -42,6 +58,11 @@ function App() {
             <Route path="/courses/:cId/videos/add" element={(
               <AuthenticatedRoute>
                 <VideoPublisherPage />
+              </AuthenticatedRoute>
+            )} />
+            <Route path="/notifications" element={(
+              <AuthenticatedRoute>
+                <NotificationsPage />
               </AuthenticatedRoute>
             )} />
             <Route path="/profile" element={<ProfilePage />} />

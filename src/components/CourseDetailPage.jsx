@@ -12,18 +12,21 @@ import { Plus } from "lucide-react"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { ShoppingCart, ArrowRightLeft  } from "lucide-react"
 import CoursePaymentForm from "./course/CoursePaymentForm"
+import CourseDetailLoader from "./course/CourseDetailLoader"
+import { CourseAccessContext } from "../contexts/CourseAccessContext"
 
 function CourseDetailPage() {
   const { getCourse, getVideos } = useContext(CourseContext)
-  const { profile } = useContext(ProfileContext)
+  const { profile, isLoading } = useContext(ProfileContext)
+  const { getCourseAccess } = useContext(CourseAccessContext)
+  const [hasAccess, setHasAccess] = useState(null)
   const params = useParams()
   const [course, setCourse] = useState(null)
   const [videos, setVideos] = useState(null)
   const navigate = useNavigate()
   const [paymentFormOpen, setPaymentFormOpen] = useState(false)
-  const [openTransManager, setOpenTransManager] = useState(false)
 
-  const openPaymentForm = () => {
+  const handleBuyCourseClick = () => {
     setPaymentFormOpen(true)
   }
 
@@ -32,22 +35,49 @@ function CourseDetailPage() {
     (async () => {
       const course = await getCourse(params.cId)
       const videos = await getVideos(course.id)
+      const courseAccess = await getCourseAccess(course.id)
       setCourse(course)
       setVideos(videos)
+      console.log(courseAccess)
+      console.log(course.author_id, profile.id)
+      if (courseAccess || course.author_id === profile.id) {
+        console.log("Has access")
+        setHasAccess(true)
+      } else {
+        console.log("Doesn't have access")
+        setHasAccess(false)
+      }
     })()
-  }, [])
+  }, [profile])
 
   return (
     <>
-      {course && (
+      {!course ? (
+        <>
+          <CourseDetailLoader />
+        </>
+      ) : (
         <>
           <Header title={course.title} backLink={"/"} />
           <CourseCoverPhoto src={course.cover_photo} />
+          {(profile && profile.id === course.author_id) && (
+            <div 
+              className="fixed bottom-5 end-5 z-50"
+              onClick={() => navigate(`/courses/${course.id}/videos/add`)}
+            >
+              <button className="bg-red-800 text-white px-3 py-2 rounded-full z-50">
+                <Plus className="inline me-1" strokeWidth={3} />
+                <span className="font-bold">
+                  Ajouter une vidéo
+                </span>
+              </button>
+            </div>
+          )}
           <div className="container mx-auto pb-[56pt]">
             <CourseActionBar course={course} />
-            {course.author_id !== profile.id && (
+            {!hasAccess && (
               <div className="p-5">
-                <Button onClick={openPaymentForm}>
+                <Button onClick={handleBuyCourseClick}>
                   <ShoppingCart strokeWidth={2} className="inline-block me-2" /> 
                   Acheter le cours
                 </Button>
@@ -71,23 +101,16 @@ function CourseDetailPage() {
                     authorPicture={video.author_picture}
                     date={video.date}
                     thumbnail={video.thumbnail}
+                    isAccessible={hasAccess || video.access === "free"}
                     key={idx}
+                    onClick={() => {
+                      if (video.access !== "free" && !hasAccess) {
+                        setPaymentFormOpen(true)
+                      }
+                    }}
                   />
                 )
               })}
-              {(profile && profile.id === course.author_id) && (
-                <div 
-                  className="fixed bottom-5 end-5"
-                  onClick={() => navigate(`/courses/${course.id}/videos/add`)}
-                >
-                  <button className="bg-red-800 text-white px-3 py-2 rounded-full z-50">
-                    <Plus className="inline me-1" strokeWidth={3} />
-                    <span className="font-bold">
-                      Ajouter une vidéo
-                    </span>
-                  </button>
-                </div>
-              )}
             </div>
           </div>  
           

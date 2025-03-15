@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import ProfilePicture from "../profile/ProfilePicture"
 
 function CourseItem({ cId="", title="", authorName="", authorPicture, coverPhoto, date, category }) {
-  console.log(coverPhoto)
   return (
     <div className="p-5">
       <Link to={`/courses/${cId}`}>

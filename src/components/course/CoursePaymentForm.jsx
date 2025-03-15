@@ -34,7 +34,7 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
   return (
     <>
       {open && (
-        <div className="absolute top-0 bottom-0 start-0 end-0 p-5 flex items-center justify-center" style={{
+        <div className="fixed top-0 bottom-0 start-0 end-0 p-5 flex items-center justify-center" style={{
           backdropFilter: "blur(2px)"
         }}>
           {!profile.id ? (

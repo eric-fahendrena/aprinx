@@ -1,44 +1,51 @@
-import { createContext, useEffect, useState } from "react";
-import { addCourse, fetchCourse, fetchCourseVideos, sendCourseVideo, fetchCourseVideo, fetchRandCourse, uploadFile, sendReactionToCourse, fetchCourseLiked } from "../services/api";
-import { socket } from "../socket";
+import { createContext, useContext, useEffect, useState } from "react";
+import { createCourseRequest, getCourseRequest, getRandCourseRequest, uploadFileRequest, createCourseVideoRequest, getCourseVideosRequest, getCourseVideoRequest, getCourseLikeRequest, createCourseLikeRequest, deleteCourseRequest, getAllCoursesRequest } from "../services/api";
+import { AuthContext } from "./AuthContext";
 
 export const CourseContext = createContext()
 export const CourseProvider = ({ children }) => {
+  const { registerToken } = useContext(AuthContext)
   const [videoUploadProgression, setVideoUploadProgression] = useState(0)
   const [displayedCourses, setDisplayedCourses] = useState([])
+  
   const createCourse = async (data) => {
-    return await addCourse(data)
+    const coverPhotoUploadData = await uploadFileRequest(data.coverPhotoFile, "image")
+    data.coverPhotoUrl = coverPhotoUploadData.url
+    console.log(data)
+    return await createCourseRequest(data)
+  }
+  const deleteCourse = async (courseId) => {
+    const deletedCourse = await deleteCourseRequest(courseId)
+    return deletedCourse
   }
   const getCourse = async (cId) => {
-    const course = await fetchCourse(cId)
+    const course = await getCourseRequest(cId)
     return course
   }
+  const getAllCourses = async (offset, limit) => {
+    const allCourses = await getAllCoursesRequest(offset, limit)
+    return allCourses
+  }
   const getRandCourse = async () => {
-    const course = await fetchRandCourse()
+    const course = await getRandCourseRequest()
     return course
   }
   const reactCourse = async (cId) => {
-    const result = await sendReactionToCourse(cId)
+    const result = await createCourseLikeRequest(cId)
     return result
   }
-  const courseLiked = async (cId) => {
-    const result = await fetchCourseLiked(cId)
-    console.log(result)
-    if (result.error)
-      return false
-    return result.value
+  const getCourseLike = async (cId) => {
+    const result = await getCourseLikeRequest(cId)
+    return result
   }
   const addVideo = async (vData) => {
-    const videoUploadData = await uploadFile(vData.video_file, "video", (progressEvent) => {
+    const videoUploadData = await uploadFileRequest(vData.video_file, "video", (progressEvent) => {
       const { loaded, total } = progressEvent;
       const percent = Math.round((loaded * 100) / total)
       setVideoUploadProgression(percent)
     })
-    console.log(videoUploadData)
-    console.log("video url");
-    console.log(videoUploadData.url)
-    const thumbnailUploadData = await uploadFile(vData.thumbnail_file, "image")
-    const courseVideo = await sendCourseVideo({
+    const thumbnailUploadData = await uploadFileRequest(vData.thumbnail_file, "image")
+    const courseVideo = await createCourseVideoRequest({
       course_id: vData.course_id,
       author_id: vData.author_id,
       title: vData.metadata.title,
@@ -51,16 +58,22 @@ export const CourseProvider = ({ children }) => {
     return courseVideo
   }
   const getVideos = async (cId) => {
-    const courseVideos = await fetchCourseVideos(cId)
+    const courseVideos = await getCourseVideosRequest(cId)
     return courseVideos
   }
   const getVideo = async (cId, vId) => {
-    const video = await fetchCourseVideo(cId, vId)
+    const video = await getCourseVideoRequest(cId, vId)
     return video
   }
 
+  useEffect(() => {
+    (async () => {
+      await registerToken()
+    })()
+  }, [])
+  
   return (
-    <CourseContext.Provider value={{ createCourse, getCourse, getRandCourse, reactCourse, courseLiked, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
+    <CourseContext.Provider value={{ createCourse, deleteCourse, getCourse, getAllCourses, getRandCourse, reactCourse, getCourseLike, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
       {children}
     </CourseContext.Provider>
   )

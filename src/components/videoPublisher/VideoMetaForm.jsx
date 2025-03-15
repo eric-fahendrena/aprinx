@@ -1,6 +1,8 @@
 import { useState } from "react"
 import Radio from "../commons/Radio"
 import Button from "../commons/Button"
+import InputText from "../commons/InputText"
+import Textarea from "../commons/Textarea"
 
 function VideoMetaForm({ onNext, onPrev }) {
   const [titleIpt, setTitleIpt] = useState("")
@@ -41,30 +43,27 @@ function VideoMetaForm({ onNext, onPrev }) {
       <div className="mb-12">
         <div className="container mx-auto">
           <div className="p-5">
-            <div className="h-[160pt] bg-zinc-600"></div>
+            <h1 className="font-[500] text-xl text-zinc-600">Ajouter des méta donnés</h1>
             <div className="py-5">
               <div className="py-2">
-                <label htmlFor="titleInp" className="block mb-2 font-bold text-zinc-600">Titre</label>
-                <input 
-                  id="titleInp" 
-                  type="text" 
-                  placeholder="Titre du contenu" 
-                  className={`w-full border-2 rounded p-3 font-bold focus:border-blue-600 outline-none ${titleIptError ? "border-red-600" : ""}`}
+                <InputText 
+                  id="titleIpt"
+                  label="Titre"
+                  placeholder="Titre de la vidéo"
                   value={titleIpt}
-                  onChange={(e) => setTitleIpt(e.target.value)}
+                  onChange={e => setTitleIpt(e.target.value)}
                 />
                 <div className="py-2 text-red-600 text-sm font-bold">{titleIptHelper}</div>
               </div>
               <div className="py-2">
-                <label htmlFor="descInp" className="block mb-2 font-bold text-zinc-600">Description (Optionnel)</label>
-                <textarea 
-                  id="descInp" 
-                  placeholder="Description du contenu" 
-                  rows={5} 
-                  className="w-full border-2 rounded p-3 font-bold focus:border-blue-600 outline-none"
+                <Textarea 
+                  id="descIpt"
+                  label="Description"
+                  placeholder="Description de la vidéo"
+                  rows={5}
                   value={descIpt}
-                  onChange={(e) => setDescIpt(e.target.value)}
-                ></textarea>
+                  onChange={e => setDescIpt(e.target.value)}
+                />
               </div>
               <div className="py-2">
                 <div className="mb-2 font-bold text-zinc-600">Accès</div>
@@ -83,7 +82,6 @@ function VideoMetaForm({ onNext, onPrev }) {
                       label={"Payant"} 
                       id={"saleRadio"} 
                       name={"access"} 
-                      disabled 
                       onChange={(e) => e.target.checked && setAccess("sale")}
                     />
                   </div>

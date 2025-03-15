@@ -1,11 +1,13 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { fetchProfile, updatePhoneNumber } from "../services/api"
+import { AuthContext } from "./AuthContext"
 
 export const ProfileContext = createContext()
 export const ProfileProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [profile, setProfile] = useState({})
   const [error, setError] = useState(false)
+  const { registerToken } = useContext(AuthContext)
 
   const savePhoneNumber = async (phoneNbData) => {
     const updatedProfile = await updatePhoneNumber(phoneNbData)
@@ -14,6 +16,7 @@ export const ProfileProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+      await registerToken()
       setIsLoading(true)
       const data = await fetchProfile()
       if (!data) {

@@ -14,18 +14,22 @@ dayjs.locale("fr")
 
 function HomePage() {
   const { displayedCourses, setDisplayedCourses} = useContext(CourseContext)
-  // const [displayedCourses, setDisplayedCourses] = useState([])
-  const { getRandCourse } = useContext(CourseContext)
+  const { getAllCourses } = useContext(CourseContext)
+  const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
+  const coursesLimit = 10
+  let coursesOffset = 0
+
   // load random courses
-  const addCourseToDisplay = async () => {
-    const randCourses = []
-    for (let i = 0; i < 5; i++) {
-      const randCourse = await getRandCourse()
-      randCourses.push(randCourse)
-    }
+  const handleLazyObserverInView = async () => {
+    console.log("Getting all courses...")
+    const loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
+    console.log("Loaded courses", loadedCourses)
     setDisplayedCourses((prevCourses) => {
-      return [...prevCourses].concat(randCourses)
+      return [...prevCourses].concat(loadedCourses)
     })
+    coursesOffset += coursesLimit
+    if (loadedCourses.length <= 0)
+      setLazyObserverVisible(false)
   }
 
   return (
@@ -51,7 +55,15 @@ function HomePage() {
             />
           )
         })}
-        <LazyObserver onInView={addCourseToDisplay} />
+        {lazyObserverVisible ? (
+          <div className="p-5">
+            <LazyObserver onInView={handleLazyObserverInView} />
+          </div>
+        ) : (
+          <div className="p-5 text-center text-zinc-500">
+            Aucun cours à charger
+          </div>
+        )}
       </div>
       <BottomNavbar current="home" />
     </>
