@@ -14,29 +14,56 @@ dayjs.locale("fr")
 
 function HomePage() {
   const { displayedCourses, setDisplayedCourses} = useContext(CourseContext)
-  const { getAllCourses } = useContext(CourseContext)
+  const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
   const coursesLimit = 10
   let coursesOffset = 0
+  let category;
 
   // load random courses
   const handleLazyObserverInView = async () => {
-    console.log("Getting all courses...")
-    const loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
-    console.log("Loaded courses", loadedCourses)
+    let loadedCourses;
+    console.log("Offset", coursesOffset)
+    console.log(category)
+    if (!category) {
+      console.log("Getting all course")
+      loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
+      console.log(loadedCourses.length, "courses loaded !")
+    } else {
+      console.log("Searching by category...")
+      loadedCourses = await getCoursesByKeyword(category, coursesOffset, coursesLimit)
+      console.log(loadedCourses.length, "courses found")
+    }
+    console.log(loadedCourses)
     setDisplayedCourses((prevCourses) => {
       return [...prevCourses].concat(loadedCourses)
     })
+
+
     coursesOffset += coursesLimit
     if (loadedCourses.length <= 0)
       setLazyObserverVisible(false)
   }
 
+  const handleScrollTabSelect = async (tag) => {
+    coursesOffset = 0
+    if (tag.value === "all") {
+      category = null
+    } else {
+      category = JSON.stringify({
+        value: tag.value,
+        label: tag.label,
+      })
+    }
+    setDisplayedCourses([])
+    await handleLazyObserverInView()
+  }
+
   return (
     <>
       <Header />
-      <ScrollableTab />
-      <div className="container mx-auto pb-[56pt]">
+      <ScrollableTab onSelect={handleScrollTabSelect}/>
+      <div className="container mx-auto pt-5 pb-[56pt]">
         {displayedCourses.map((course, idx) => {
           const dateMs = parseInt(course.date)
           const dateSeconds = Math.floor(dateMs / 1000)

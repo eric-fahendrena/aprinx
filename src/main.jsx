@@ -10,6 +10,7 @@ import { CommentProvider } from './contexts/CommentContext.jsx'
 import { NotificationProvider } from "./contexts/NotificationContext.jsx"
 import { CourseAccessProvider } from './contexts/CourseAccessContext.jsx'
 import { DeletedCourseProvider } from './contexts/DeletedCourseContext.jsx'
+import { SubscriptionProvider } from './contexts/SubscriptionContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <NotificationProvider>
                 <CourseAccessProvider>
                   <DeletedCourseProvider>
-                    <App />
+                    <SubscriptionProvider>
+                      <App />
+                    </SubscriptionProvider>
                   </DeletedCourseProvider>
                 </CourseAccessProvider>
               </NotificationProvider>

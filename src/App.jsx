@@ -14,10 +14,16 @@ import CourseCreatorPage from "./components/CourseCreatorPage.jsx"
 import AuthenticatedRoute from "./AuthenticatedRoute.jsx"
 import PhoneNumberEditorPage from "./components/PhoneNumberEditorPage.jsx"
 import NotificationsPage from "./components/NotificationsPage.jsx"
+import UsersListPage from "./components/UsersListPage.jsx"
 import { connectSocket, disconnectSocket } from "./services/socketService.js"
 import { useContext, useEffect } from "react"
 import { ProfileContext } from "./contexts/ProfileContext.jsx"
-import { AuthContext } from "./contexts/AuthContext.jsx"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import "dayjs/locale/fr"
+
+dayjs.extend(relativeTime)
+dayjs.locale("fr")
 
 function App() {
   const { profile } = useContext(ProfileContext)
@@ -69,6 +75,11 @@ function App() {
             <Route path="/profile/edit/phone" element={(
               <AuthenticatedRoute>
                 <PhoneNumberEditorPage />
+              </AuthenticatedRoute>
+            )} />
+            <Route path="/users" element={(
+              <AuthenticatedRoute>
+                <UsersListPage />
               </AuthenticatedRoute>
             )} />
           </Routes>

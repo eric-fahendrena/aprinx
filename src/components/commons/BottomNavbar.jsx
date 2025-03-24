@@ -2,21 +2,25 @@ import { Home, Search, Plus, Bell, User } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useContext } from "react"
 import { NotificationContext } from "../../contexts/NotificationContext"
+import { ProfileContext } from "../../contexts/ProfileContext"
 
 function BottomNavbar({ current="" }) {
   const { unseenNotificationsCount } = useContext(NotificationContext)
+  const { profile } = useContext(ProfileContext)
 
   return (
-    <div className="fixed bottom-0 start-0 end-0 h-[48pt] bg-white flex items-center justify-around z-10">
+    <div className="fixed bottom-3 start-6 end-6 h-[48pt] bg-white shadow rounded-3xl flex items-center justify-around z-10">
       <Link to={"/"}>
         <Home className={current === "home" ? "text-red-800" : "none"} />
       </Link>
       <Link to={"/search"}>
         <Search className={current === "search" ? "text-red-800" : "none"} />
       </Link>
-      <Link to={"/courses/create"} className="bg-red-800 text-white px-3 py-1 rounded-md">
-        <Plus />
-      </Link>
+      {profile && profile.role !== "USER" && (
+        <Link to={"/courses/create"} className="bg-red-800 text-white px-3 py-1 rounded-md">
+          <Plus />
+        </Link>
+      )}
       <Link to={"/notifications"}>
         <div className="relative">
           {unseenNotificationsCount > 0 && (

@@ -1,7 +1,16 @@
 import { ArrowLeft, Mic } from "lucide-react"
 import BottomNavbar from "../commons/BottomNavbar"
+import { useContext, useState } from "react"
 
-function SearchField() {
+function SearchField({ onSearch }) {
+  const [searchInput, setSearchInput] = useState("")
+
+  const handleSearchKeyUp = async (e) => {
+    if (e.key === "Enter") {
+      onSearch(searchInput)
+    }
+  }
+
   return (
     <>
       <div className="flex items-center">
@@ -15,6 +24,9 @@ function SearchField() {
             type="search" 
             placeholder="Rechercher"
             className="w-5/6 bg-zinc-200 focus:bg-zinc-300 outline-none border px-3 py-2 rounded-full"
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            onKeyUp={handleSearchKeyUp}
           />
           <div className="w-1/6 flex justify-center">
             <button className="bg-zinc-200 p-2 rounded-full">

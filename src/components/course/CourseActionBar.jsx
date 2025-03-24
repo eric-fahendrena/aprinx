@@ -35,10 +35,11 @@ function CourseActionBar({ course }) {
     setLiked(result.liked)
     socket.emit("askCourseLikesCount", course.id)
     if (result.liked && course.author_id !== profile.id) {
-      socket.emit("sendLikeNotification", {
+      socket.emit("sendNotification", {
         userId: course.author_id,
         courseId: course.id,
         authorNames: `${profile.name}`,
+        type: "LIKE",
       })
     }
   }
@@ -71,10 +72,11 @@ function CourseActionBar({ course }) {
     if (course.author_id === createdComment.author_id)
       return
 
-    socket.emit("sendCommentNotification", {
+    socket.emit("sendNotification", {
       userId: course.author_id,
       courseId: course.id,
       authorNames: `${createdComment.author_name}`,
+      type: "COMMENT",
     })
   }
   

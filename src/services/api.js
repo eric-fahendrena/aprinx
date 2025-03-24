@@ -43,6 +43,32 @@ export const fetchProfile = async () => {
   }
 }
 
+export const getAllUsersRequest = async (offset, limit) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users?offset=${offset}&limit=${limit}`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const convertUserToTeacherRequest = async (userId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users/${userId}/convert-to-teacher`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
 export const updatePhoneNumber = async (pnbData) => {
   console.log(JSON.stringify(pnbData))
   try {
@@ -110,6 +136,16 @@ export const getAllCoursesRequest = async (offset, limit) => {
     return data;
   } catch (error) {
     console.error("Error", error);
+  }
+}
+
+export const getCoursesByKeywordRequest = async (keyword, offset, limit) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/courses/search?keyword=${keyword}&offset=${offset}&limit=${limit}`)
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
   }
 }
 
@@ -236,7 +272,7 @@ export const getCourseVideoRequest = async (cId, vId) => {
   }
 }
 
-export const sendTransaction = async (tData) => {
+export const sendCourseTransactionRequest = async (tdata) => {
   const token = localStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions/add`, {
@@ -245,7 +281,7 @@ export const sendTransaction = async (tData) => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify(tData),
+      body: JSON.stringify(tdata),
     })
     const data = await response.json()
     if (response.status !== 200) 
@@ -253,6 +289,38 @@ export const sendTransaction = async (tData) => {
     return data
   } catch (error) {
     console.error("Error", error)
+  }
+}
+
+export const getCourseTransactionsRequest = async (offset, limit) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transactions?offset=${offset}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log("Error", error)
+  }
+}
+
+export const getCourseTransactionCountRequest = async () => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/course-transactions/count`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log("Error", error)
   }
 }
 
@@ -276,7 +344,7 @@ export const getTransactionRequest = async (transId) => {
   }
 }
 
-export const confirmTransactionRequest = async (transId) => {
+export const confirmCourseTransactionRequest = async (transId) => {
   const token = localStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions/confirm?trans_id=${transId}`, {
@@ -432,6 +500,22 @@ export const createDeletedCourseRequest = async (dcData) => {
         "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(dcData),
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getSubscriptionRequest = async (userId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/teacher-subscriptions/${userId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
     })
     const data = await response.json()
     return data

@@ -7,6 +7,7 @@ import { useContext, useState } from "react"
 import { CourseContext } from "../contexts/CourseContext"
 import FullScreenLoader from "./commons/FullScreenLoader"
 import FullScreenStatus from "./commons/FullScreenStatus"
+import { ProfileContext } from "../contexts/ProfileContext"
 
 function CourseCreatorPage() {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ function CourseCreatorPage() {
   const [createdCourse, setCreatedCourse] = useState(null)
   const [coverPhotoFile, setCoverPhotoFile] = useState(null)
   const { createCourse } = useContext(CourseContext)
+  const { profile } = useContext(ProfileContext)
   
   async function handleCreateClick() {
     const courseData = new Object()
@@ -50,31 +52,39 @@ function CourseCreatorPage() {
   return (
     <>
       <Header title={"Créer un cours"} backLink={"/"} />
-      <div className="container mx-auto p-5">
-        <CoverPhotoUploader onFileReady={file => setCoverPhotoFile(file)} />
-        <MetadataForm />
-      </div>
-      <div className="fixed bottom-0 start-0 end-0 px-4 flex items-center">
-        <div className="w-1/2 p-1">
-          <Button 
-            variant="secondary"
-            onClick={handleUndoClick}
-          >Annuler</Button>
+      {profile.role === "ADMIN" || profile.role === "TEACHER" ? (
+        <>
+          <div className="container mx-auto p-5">
+            <CoverPhotoUploader onFileReady={file => setCoverPhotoFile(file)} />
+            <MetadataForm />
+          </div>
+          <div className="fixed bottom-0 start-0 end-0 px-4 flex items-center">
+            <div className="w-1/2 p-1">
+              <Button 
+                variant="secondary"
+                onClick={handleUndoClick}
+              >Annuler</Button>
+            </div>
+            <div className="w-1/2 p-1">
+              <Button onClick={handleCreateClick}>Créer</Button>
+            </div>
+          </div>
+          {creating && (
+            <FullScreenLoader title={"Création en cours"} />
+          )}
+          {success === true && (
+            <FullScreenStatus 
+              status="success" 
+              message={"Cours créé avec succès !"} 
+              linkText={"Voir le cours"}
+              href={`/courses/${createdCourse.id}`}
+            />
+          )}
+        </>
+      ) : (
+        <div className="container mx-auto p-5 flex items-center justify-center">
+          <div className="text-zinc-600">Vous n'avez pas la permission à consulter cette page !</div>
         </div>
-        <div className="w-1/2 p-1">
-          <Button onClick={handleCreateClick}>Créer</Button>
-        </div>
-      </div>
-      {creating && (
-        <FullScreenLoader title={"Création en cours"} />
-      )}
-      {success === true && (
-        <FullScreenStatus 
-          status="success" 
-          message={"Cours créé avec succès !"} 
-          linkText={"Voir le cours"}
-          href={`/courses/${createdCourse.id}`}
-        />
       )}
     </>
   )

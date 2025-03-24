@@ -2,144 +2,111 @@ import LazyObserver from "../commons/LazyObserver"
 import InputText from "../commons/InputText"
 import Textarea from "../commons/Textarea"
 import Button from "../commons/Button"
-import { useContext, useState } from "react"
-import { TransactionContext } from "../../contexts/TransactionContext"
-import { CourseAccessContext } from "../../contexts/CourseAccessContext"
-import { socket } from "../../services/socketService"
+import { useContext, useEffect, useState } from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
+import { TransactionContext } from "../../contexts/TransactionContext"
+import dayjs from "dayjs"
 
 function CourseTransactionsManager({ courseId }) {
-  const { profile } = useContext(ProfileContext)
-  const [refused, setRefused] = useState(false)
-  const [transIdIpt, setTransIdIpt] = useState("")
-  const [verifying, setVerifying] = useState(false)
-  const { verifyTransaction, confirmTransaction, refuseTransaction } = useContext(TransactionContext)
-  const [transaction, setTransaction] = useState(null)
-  const { createCourseAccess } = useContext(CourseAccessContext)
+  const { getCourseTransactions, getCourseTransactionCount, confirmCourseTransaction } = useContext(TransactionContext)
+  const [transactions, setTransactions] = useState([])
+  const [transactionCount, setTransactionCount] = useState()
+  const [transactionDetailOpen, setTransactionDetailOpen] = useState(false)
+  const [currentTransactionDetail, setCurrentTransactionDetail] = useState()
   const [confirming, setConfirming] = useState(false)
-  const [refusalMessageInput, setRefusalMessageInput] = useState("")
+  let offset = 0
+  let limit = 10
 
-  const handleVerifyClick = async () => {
-    setVerifying(true)
-    const trans = await verifyTransaction(transIdIpt)
-    setVerifying(false)
-    if (!trans) {
-      setTransaction(null)
-      return
+  const handleObserverInView = async () => {
+    const transactions = await getCourseTransactions(offset, limit)
+    if (transactions) {
+      setTransactions(prev => {
+        return [...prev].concat(transactions)
+      })
+      offset += 10
     }
-    setTransaction(trans)
   }
 
-  const handleRefuseClick = () => {
-    setRefused(true)
+  const handleOpenClick = (trans) => {
+    setCurrentTransactionDetail(trans)
+    setTransactionDetailOpen(true)
   }
 
-  const handleUndoRefusedClick = () => {
-    setRefused(false)
+  const handleCloseClick = () => {
+    setTransactionDetailOpen(false)
   }
 
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = async (transId) => {
     setConfirming(true)
-    const confirmedTrans = await confirmTransaction(transaction.trans_id)
-    console.log("Transaction confirmed !")
-    if (confirmedTrans) {
-      const courseAccess = await createCourseAccess(confirmedTrans.course_id, confirmedTrans.buyer_id)
-      if (courseAccess) {
-        socket.emit("sendCourseAccessNotification", { 
-          courseId: courseAccess.course_id,
-          userId: courseAccess.user_id,
-          authorNames: `${profile.name}`,
-        })
-      }
-    }
-    transaction.status = confirmedTrans.status
+    const confirmedTransaction = await confirmCourseTransaction(transId)
+    console.log("Confirmed transaction", confirmedTransaction)
     setConfirming(false)
+    setTransactionDetailOpen(false)
   }
 
-  const handleRefusalMessageChange = (e) => {
-    setRefusalMessageInput(e.target.value)
-  }
-
-  const handleSendRefusalClick = async () => {
-    const refusedTrans = await refuseTransaction(transIdIpt)
-  }
+  useEffect(() => {
+    (async () => {
+      const transactionCount = await getCourseTransactionCount()
+      setTransactionCount(transactionCount)
+    })()
+  }, [])
 
   return (
-    <div>
-      <div className="mb-10">
-        <div className="mb-3">
-          <InputText 
-            label="ID de transaction"
-            placeholder="Entrez l'ID de transaction"
-            value={transIdIpt}
-            onChange={e => setTransIdIpt(e.target.value)}
-          />
-        </div>
-        <div>
-          <Button onClick={handleVerifyClick}>{verifying ? "..." : "Verifier"}</Button>
-        </div>
-      </div>
-
-      {transaction && (
-        <div className="flex border p-3 rounded-3xl mb-3">
-          <div className="w-1/5">
-            <div className="w-[32pt] h-[32pt] bg-zinc-700 rounded-full"></div>
-          </div>
-          <div className="w-4/5">
-            <div className="font-bold">{transaction.buyer_name}</div>
-            <div className="">Trans. ID : <strong className="text-red-800">{transaction.trans_id}</strong></div>
-            <div className="">Exp. : <strong className="text-red-800">{transaction.trans_exp_name}</strong></div>
-            <div className="text-zinc-600">{transaction.date}</div>
-            {transaction.status === "confirmed" && (
-              <div className="text-green-600 text-sm">Confirmée</div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {!refused ? (
-        <>
-          {transaction && (
-            <>
-              {transaction.status === "pending" && (
-                <div className="flex py-3">
-                  <div className="px-1 w-1/2">
-                    <Button 
-                      variant="secondary" 
-                      disabled={refused}
-                      onClick={handleRefuseClick}
-                    >Réfuser</Button>
-                  </div>
-                  <div className="px-1 w-1/2">
-                    <Button disabled={refused} onClick={handleConfirmClick}>{confirming ? "..." : "Confirmer"}</Button>
-                  </div>
+    <div className="h-full">
+      <div className="font-[500] mb-5">Transaction pour les cours ({transactionCount})</div>
+      <div>
+        {transactions && transactions.map((trans, idx) => {
+          const dateSeconds = parseInt(trans.date) / 1000
+          
+          return (
+            <div className="mb-3 p-4 border rounded-3xl flex" key={idx}>
+              <div className="w-1/3">
+                <div className="w-full h-[80pt] rounded-3xl bg-black overflow-hidden">
+                  <img src={trans.screenshot_url} alt="Capture d'écran" className="w-full h-full object-contain" />
                 </div>
-              )}
-            </>
+              </div>
+              <div className="w-2/3 px-5">
+                <div className="font-[500]">{trans.buyer_name}</div>
+                <div className="text-zinc-600 mb-3">{dayjs.unix(dateSeconds).fromNow()}</div>
+                {trans.status === "CONFIRMED" && (
+                  <div className="text-green-600">Confirmée</div>
+                )}
+                {trans.status === "PENDING" && (
+                  <Button onClick={() => handleOpenClick(trans)}>Ouvrir</Button>
+                )}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      <LazyObserver onInView={handleObserverInView} />
+
+      {transactionDetailOpen && (
+        <div 
+          className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center"
+          style={{
+            backdropFilter: "blur(15px)"
+          }}
+        >
+          {currentTransactionDetail && (
+            <div className="bg-white p-5 rounded-3xl w-5/6 shadow">
+              <div className="font-[500]">{currentTransactionDetail.buyer_name}</div>
+              <div className="mb-5 text-zinc-600 text-sm">{dayjs.unix(parseInt(currentTransactionDetail.date) / 1000).fromNow()}</div>
+              <div className="h-[320pt] mb-5 bg-black rounded-3xl">
+                <img src={currentTransactionDetail.screenshot_url} alt="Capture d'écran du preuve" className="w-full h-full object-contain" />
+              </div>
+              <div className="flex">
+                <div className="w-1/2 pe-1">
+                  <Button variant="secondary" onClick={handleCloseClick} disabled={confirming}>Fermer</Button>
+                </div>
+                <div className="w-1/2">
+                  <Button onClick={() => handleConfirmClick(currentTransactionDetail.id)} disabled={confirming}>{confirming ? "..." : "Confirmer"}</Button>
+                </div>
+              </div>
+            </div>
           )}
-        </>
-      ) : (
-        <div className="py-3">
-          <div className="mb-3">
-            <Textarea
-              id="refusalMessageInput"
-              label="Message de refus"
-              placeholder="Message de refus"
-              value={refusalMessageInput}
-              onChange={handleRefusalMessageChange}
-            ></Textarea>
-          </div>
-          <div className="flex">
-            <div className="w-1/2 px-1">
-              <Button variant="secondary" onClick={handleUndoRefusedClick}>Annuler</Button>
-            </div>
-            <div className="w-1/2 px-1">
-              <Button>Envoyer</Button>
-            </div>
-          </div>
         </div>
       )}
-      {/* <LazyObserver /> */}
     </div>
   )
 }

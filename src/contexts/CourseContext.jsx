@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { createCourseRequest, getCourseRequest, getRandCourseRequest, uploadFileRequest, createCourseVideoRequest, getCourseVideosRequest, getCourseVideoRequest, getCourseLikeRequest, createCourseLikeRequest, deleteCourseRequest, getAllCoursesRequest } from "../services/api";
+import { createCourseRequest, getCourseRequest, getRandCourseRequest, uploadFileRequest, createCourseVideoRequest, getCourseVideosRequest, getCourseVideoRequest, getCourseLikeRequest, createCourseLikeRequest, deleteCourseRequest, getAllCoursesRequest, getCoursesByKeywordRequest } from "../services/api";
 import { AuthContext } from "./AuthContext";
 
 export const CourseContext = createContext()
@@ -8,6 +8,18 @@ export const CourseProvider = ({ children }) => {
   const [videoUploadProgression, setVideoUploadProgression] = useState(0)
   const [displayedCourses, setDisplayedCourses] = useState([])
   
+  const categories = [
+    {value: "programing", label: "Programmation"},
+    {value: "language", label: "Langue"},
+    {value: "music", label: "Musique"},
+    {value: "computer-science", label: "Informatique"},
+    {value: "general-education", label: "Enseignement Général"},
+    {value: "mathematics", label: "Mathématiques"},
+    {value: "physic-chimie", label: "Physique et Chimie"},
+    {value: "technologie", label: "Technologie"},
+    {value: "dessin", label: "Dessin"},
+  ]
+
   const createCourse = async (data) => {
     const coverPhotoUploadData = await uploadFileRequest(data.coverPhotoFile, "image")
     data.coverPhotoUrl = coverPhotoUploadData.url
@@ -25,6 +37,10 @@ export const CourseProvider = ({ children }) => {
   const getAllCourses = async (offset, limit) => {
     const allCourses = await getAllCoursesRequest(offset, limit)
     return allCourses
+  }
+  const getCoursesByKeyword = async (keyword, offset, limit) => {
+    const courses = await getCoursesByKeywordRequest(keyword, offset, limit)
+    return courses
   }
   const getRandCourse = async () => {
     const course = await getRandCourseRequest()
@@ -73,7 +89,7 @@ export const CourseProvider = ({ children }) => {
   }, [])
   
   return (
-    <CourseContext.Provider value={{ createCourse, deleteCourse, getCourse, getAllCourses, getRandCourse, reactCourse, getCourseLike, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
+    <CourseContext.Provider value={{ categories, createCourse, deleteCourse, getCourse, getAllCourses, getCoursesByKeyword, getRandCourse, reactCourse, getCourseLike, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
       {children}
     </CourseContext.Provider>
   )

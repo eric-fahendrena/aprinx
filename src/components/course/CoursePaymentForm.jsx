@@ -1,34 +1,42 @@
 import InputText from "../commons/InputText"
 import Button from "../commons/Button"
-import { useContext, useState } from "react"
-import { TransactionContext } from "../../contexts/TransactionContext"
+import { useContext, useRef, useState } from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
-import { LogIn, UserCircle } from "lucide-react"
+import { LogIn, Upload } from "lucide-react"
+import { TransactionContext } from "../../contexts/TransactionContext"
 import { useNavigate } from "react-router-dom"
 
 function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneAssociatedName, onClose, onSaveData }) {
   const { profile } = useContext(ProfileContext)
-  const { saveTransaction } = useContext(TransactionContext)
-  const [transIdIpt, setTransIdIpt] = useState("")
-  const [transExpName, setTransExpName] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [preview, setPreview] = useState()
+  const inputFile = useRef()
+  const [file, setFile] = useState()
+  const { sendCourseTransaction } = useContext(TransactionContext)
   const navigate = useNavigate()
-  
-  const save = async () => {
-    const tData = new Object()
-    tData.course_id = courseId
-    tData.buyer_id = buyerId
-    tData.trans_id = transIdIpt
-    tData.trans_exp_name = transExpName
-    tData.status = "pending"
+  const [sending, setSending] = useState(false)
 
-    console.log("Saving...")
-    setIsLoading(true)
-    const savedTrans = await saveTransaction(tData)
-    console.log("Saving finished")
-    setIsLoading(false)
-    console.log(savedTrans)
-    onSaveData && onSaveData(savedTrans)
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result)
+      }
+      reader.readAsDataURL(file)
+      setFile(file)
+    }
+  }
+  const handleUploadButtonClick = () => {
+    inputFile.current.click()
+  }
+  const handleSendClick = async () => {
+    setSending(true)
+    const transData = await sendCourseTransaction({
+      screenshotFile: file,
+      courseId
+    })
+    console.log("Trans data", transData)
+    setSending(false)
   }
 
   return (
@@ -53,38 +61,32 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
           ) : (
             <div className="p-5 border rounded-3xl bg-white w-full shadow-xl">
               <h2 className="text-[1.5rem] font-bold">Acheter le cours</h2>
-              <p className="mb-3">Envoyer {price} ariary à {phoneNumber} ({phoneAssociatedName}), puis entrez l'ID de Transaction ainsi que le nom d'éxpediteur.</p>
-              <div className="mb-3">
-                <InputText 
-                  id="transIdIpt"
-                  label="ID de transaction"
-                  placeholder="ID de transaction"
-                  value={transIdIpt}
-                  onChange={(e) => setTransIdIpt(e.target.value)}
-                />
+              <p className="mb-3">Envoyer {price}Ar à 0{phoneNumber} ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
+              <input 
+                type="file" 
+                onChange={handleFileChange} 
+                accept="image/*" 
+                ref={inputFile}
+                className="hidden"
+              />
+              <div>
+                <button className="border px-5 py-1 rounded-3xl" onClick={handleUploadButtonClick}>
+                  <Upload size={16} className="inline me-2" />
+                  Ajouter une photo
+                </button>
               </div>
-              <div className="mb-5">
-                <InputText 
-                  id="transExpNameIpt"
-                  label="Nom associé au numero"
-                  placeholder="Nom associé au numero de téléphone"
-                  value={transExpName}
-                  onChange={(e) => setTransExpName(e.target.value)}
-                />
-              </div>
-              <div className="flex">
-                <div className="w-1/2 px-1">
-                  <Button variant="secondary" disabled={isLoading} onClick={onClose}>Annuler</Button>
+              {preview && (
+                <div className="mt-3">
+                  <div className="w-1/3">
+                    <div className="w-full h-[80pt] rounded-3xl overflow-hidden bg-zinc-200">
+                      <img src={preview} alt="preview" className="w-full h-full object-cover" />
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    <Button onClick={handleSendClick} disabled={sending}>{sending ? "..." : "Envoyer"}</Button>
+                  </div>
                 </div>
-                <div className="w-1/2 px-1">
-                  <Button 
-                    disabled={isLoading}
-                    onClick={save}
-                  >
-                    {isLoading ? "..." : "Enregistrer"}
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
           )}
         </div>

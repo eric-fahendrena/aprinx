@@ -1,32 +1,17 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import InputNumber from "../../commons/InputNumber"
 import InputText from "../../commons/InputText"
 import Textarea from "../../commons/Textarea"
 import Select from "react-select"
+import { CourseContext } from "../../../contexts/CourseContext"
 
 function MetadataForm() {
   const [priceIpt, setPriceIpt] = useState("")
   const [titleIpt, setTitleIpt] = useState("")
   const [descriptionIpt, setDescriptionIpt] = useState("")
+  const { categories } = useContext(CourseContext)
 
-  const categoriesOptions = [
-    {
-      value: "programing",
-      label: "Programmation"
-    },
-    {
-      value: "language",
-      label: "Langue"
-    },
-    {
-      value: "music",
-      label: "Musique"
-    },
-    {
-      value: "sport",
-      label: "Sport",
-    }
-  ]
+  const categoriesOptions = categories
 
   function categoryOnChangeHandler(val) {
     localStorage.setItem("course_category_ipt", JSON.stringify(val))

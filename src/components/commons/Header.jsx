@@ -1,10 +1,15 @@
-import { Search, Menu, ChevronLeft, X } from "lucide-react"
+import { Menu, ChevronLeft, X, Grip, Users } from "lucide-react"
 import Navbar from "./Navbar"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { ProfileContext } from "../../contexts/ProfileContext"
+import Button from "./Button"
 
 function Header({ title, backLink }) {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false)
+  const [administrationOpen, setAdministrationOpen] = useState(false)
+  const { profile } = useContext(ProfileContext)
+
   return (
     <>
       {!title ? (
@@ -14,9 +19,11 @@ function Header({ title, backLink }) {
               Aprix
             </div>
             <div className="flex">
-              <button className="me-5">
-                <Search />
-              </button>
+              {(profile && profile.role === "ADMIN") && (
+                <button className="me-5" onClick={() => setAdministrationOpen(true)}>
+                  <Grip />
+                </button>
+              )}
               <button onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
                 {isNavbarOpen ? (
                   <X />
@@ -29,7 +36,7 @@ function Header({ title, backLink }) {
           <Navbar isOpen={isNavbarOpen} />
         </header>
       ) : (
-        <header className="h-[32pt] bg-white text-zinc-600 sticky top-0 left-0 right-0 z-20 flex items-center">
+        <header className="h-[40pt] bg-white text-zinc-600 sticky top-0 left-0 right-0 z-20 flex items-center">
           <div className="container mx-auto flex justify-between px-5">
             <div className="flex items-center font-bold">
               <Link className="me-2" to={backLink}>
@@ -37,13 +44,32 @@ function Header({ title, backLink }) {
               </Link>
               {title}
             </div>
-            <div className="flex text-white">
-              <button>
-                <Search />
-              </button>
-            </div>
           </div>
         </header>
+      )}
+
+      {administrationOpen && (
+        <div 
+          className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center z-[9999]"
+          style={{
+            backdropFilter: "blur(12px)"
+          }}
+        >
+          <div className="bg-white p-5 rounded-3xl w-5/6">
+            <div className="font-[500]">Administration</div>
+            <div className="py-5 flex">
+              <div>
+                <Link to={"/users"} className="inline-block border p-5 rounded-3xl">
+                  <Users size={32} className="mb-2" />
+                  Utilisateurs
+                </Link>
+              </div>
+            </div>
+            <div>
+              <Button variant="secondary" onClick={() => setAdministrationOpen(false)}>Fermer</Button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   )

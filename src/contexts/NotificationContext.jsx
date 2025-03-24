@@ -30,7 +30,8 @@ export const NotificationProvider = ({ children }) => {
 
 		const handleReceiveNotification = async (notification) => {
 			console.log("Receive notification", notification)
-			setUnseenNotificationsCount(await getUnseenNotificationsCount())
+			const unseenNotificationCount = await getUnseenNotificationsCount()
+			setUnseenNotificationsCount(unseenNotificationCount)
 		}
 
 		socket.on("receiveNotification", handleReceiveNotification)
