@@ -35,10 +35,10 @@ function CourseDetailPage() {
     // get course and its videos
     (async () => {
       const course = await getCourse(params.cId)
+      setCourse(course)
       setLoading(false)
       const videos = await getVideos(course.id)
       const courseAccess = await getCourseAccess(course.id)
-      setCourse(course)
       setVideos(videos)
       console.log(courseAccess)
       console.log(course.author_id, profile.id)
@@ -54,7 +54,6 @@ function CourseDetailPage() {
 
   return (
     <>
-
       {loading ? (
         <>
           <div className="container mx-auto md:px-40 lg:px-60">
@@ -73,7 +72,7 @@ function CourseDetailPage() {
                 <meta property="og:image" content={course.cover_photo} />
               </Helmet>
 
-              <header className="px-5 md:mx-40 lg:mx-60 py-3 bg-[#800] text-white">
+              <header className="px-5 md:mx-40 lg:mx-60 sticky top-0 py-3 bg-[#800] text-white z-10">
                 <div className="font-[500]">
                   <Link to={"/"}>
                     <ArrowLeft className="inline me-2" />
