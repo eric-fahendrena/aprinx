@@ -14,25 +14,20 @@ function SearchField({ onSearch }) {
   return (
     <>
       <div className="flex items-center">
-        <div className="w-[32pt]">
+        {/* <div className="">
           <button>
             <ArrowLeft />
           </button>
-        </div>
-        <div className="w-full flex items-center justify-center">
+        </div> */}
+        <div className="w-full">
           <input 
             type="search" 
             placeholder="Rechercher"
-            className="w-5/6 bg-zinc-200 focus:bg-zinc-300 outline-none border px-3 py-2 rounded-full"
+            className="w-full bg-zinc-200 focus:bg-zinc-300 outline-none border px-3 py-2 rounded-full"
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
             onKeyUp={handleSearchKeyUp}
           />
-          <div className="w-1/6 flex justify-center">
-            <button className="bg-zinc-200 p-2 rounded-full">
-              <Mic />
-            </button>
-          </div>
         </div>
       </div>
       <BottomNavbar current="search" />

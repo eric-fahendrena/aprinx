@@ -1,5 +1,5 @@
-import { loginWithGoogle } from "../services/auth"
+import { loginWithGoogle, logout } from "../services/auth"
 
 export const useLogin = () => {
-  return { loginWithGoogle }
+  return { loginWithGoogle, logout }
 }

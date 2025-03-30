@@ -34,7 +34,7 @@ export const fetchProfile = async () => {
       },
     })
     if (response.status !== 200) {
-      return false
+      return undefined
     }
     const data = await response.json()
     return data
@@ -84,6 +84,38 @@ export const updatePhoneNumber = async (pnbData) => {
     if (response.status !== 200) {
       return { error: true, code: response.status }
     }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getBoughtCoursesCountRequest = async () => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users/profile/bought-courses/count`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+export const getBoughtCoursesRequest = async (offset, limit) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users/profile/bought-courses?offset=${offset}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
     const data = await response.json()
     return data
   } catch (error) {
@@ -207,23 +239,27 @@ export const getCourseLikeRequest = async (cId) => {
 }
 
 export const uploadFileRequest = async (file, type, onUploadProgress) => {
-  const formData = new FormData()
-  formData.append("file", file)
-  formData.append("upload_preset", "aprix_1")
-  formData.append("cloud_name", "dbmbskzzr")
-
   try {
-    const response = await axios.post(`https://api.cloudinary.com/v1_1/dbmbskzzr/${type}/upload`, formData, {
+    console.log("Upload file")
+    const presignedUrlResponse = await fetch(`${API_BASE_URL}/api/upload/presigned-url?key=${file.name}`)
+    const psuData = await presignedUrlResponse.json()
+
+    const response = await axios.put(psuData.signedUrl, file, {
       onUploadProgress: (progressEvent) => {
         return onUploadProgress && onUploadProgress(progressEvent)
       },
+      headers: {
+        "Content-Type": file.type,
+      }
     })
     const data = await response.data
-    return data
+    console.log("Upload data", data)
+    return { url: psuData.fileUrl }
   } catch (error) {
     console.log("Error", error)
   }
 }
+
 export const createCourseVideoRequest = async (vData) => {
   const token = localStorage.getItem("token")
 
@@ -408,10 +444,10 @@ export const getCourseCommentsRequest = async (cId, query) => {
   }
 }
 
-export const getNotificationsRequest = async () => {
+export const getAllNotificationsRequest = async (offset, limit) => {
   const token = localStorage.getItem("token")
   try {
-    const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+    const response = await fetch(`${API_BASE_URL}/api/notifications?offset=${offset}&limit=${limit}`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -444,6 +480,22 @@ export const seeAllNotificationRequest = async () => {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE_URL}/api/notifications/see-all`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const readNotificationRequest = async (notifId) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/notifications/${notifId}/read`, {
       method: "PATCH",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -512,6 +564,72 @@ export const getSubscriptionRequest = async (userId) => {
   const token = localStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/teacher-subscriptions/${userId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const createSubscriptionTransactionRequest = async (tData) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(tData),
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+export const getPendingSubscriptionTransactionsRequest = async (offset, limit) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/pending?offset=${offset}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const confirmSubscriptionTransactionRequest = async (transId) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/${transId}/confirm`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getPendingSubscriptionTransactionsCountRequest = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/count`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,

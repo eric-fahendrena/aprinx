@@ -1,4 +1,4 @@
-import { Trash2, Heart, MessageSquareText, Share2, SendHorizonal, Reply } from "lucide-react"
+import { Trash2, Heart, MessageSquareText, Share2, SendHorizonal, Link } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
 import React from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
@@ -11,6 +11,7 @@ import LazyObserver from "../commons/LazyObserver"
 import { socket } from "../../services/socketService"
 import { DeletedCourseContext } from "../../contexts/DeletedCourseContext"
 import { useNavigate } from "react-router-dom"
+import dayjs from "dayjs"
 
 function CourseActionBar({ course }) {
   const { profile } = useContext(ProfileContext)
@@ -28,6 +29,8 @@ function CourseActionBar({ course }) {
   const { createDeletedCourse } = useContext(DeletedCourseContext)
   const [deleting, setDeleting] = useState(false)
   const navigate = useNavigate()
+  const [shareOpen, setShareOpen] = useState(false)
+  const [linkCopied, setLinkCopied] = useState(false)
   
   const toggleLike = async () => {
     setLiked(true)
@@ -115,6 +118,23 @@ function CourseActionBar({ course }) {
     setDeleting(false)
   }
 
+  const handleShareClick = () => {
+    setShareOpen(true)
+  }
+  const handleShareCloseClick = () => {
+    setShareOpen(false)
+  }
+  const handleCopyLinkClick = () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => {
+        console.log("Lien copié")
+        setLinkCopied(true)
+      })
+      .catch((error) => {
+        console.error("Erreur de copie", error)
+      })
+  }
+
   useEffect(() => {
     socket.emit("askCourseCommentsNumber", course.id);
     socket.emit("askCourseLikesCount", course.id);
@@ -134,49 +154,49 @@ function CourseActionBar({ course }) {
 
   return (
     <>
-      <div className="">
-        <div className="px-5 py-3 flex items-center justify-around">
-          <div className="me-5 text-center">
-            <button onClick={toggleLike}>
-              <Heart fill={liked ? "#800" : "none"} stroke={liked ? "#800" : "#000"} className="inline-block" />
-            </button>
-            <div className="text-sm">{likesCount}</div>
-          </div>
-          <div className="me-5 text-center">
-            <button onClick={handleCommentClick}>
-              <MessageSquareText className="inline-block" />
-            </button>
-            <div className="text-sm">{commentsCount}</div>
-          </div>
-          <div className="me-5 text-center">
-            <button>
-              <Share2 className="inline-block" />
-            </button>
-            <div>0</div>
-          </div>
-          {course.author_id === profile.id && (
-            <div>
-              <button className="text-red-600" onClick={handleOpenDeleteClick}>
-                <Trash2 className="inline-block" />
+      {profile && (
+        <div className="px-5 py-2">
+          <div className="px-5 py-3 shadow rounded-3xl flex items-center justify-around">
+            <div className="flex items-center">
+              <button onClick={toggleLike} className="me-1">
+                <Heart size={20} fill={liked ? "#A00" : "none"} stroke={liked ? "#A00" : "#000"} className="inline-block" />
+              </button>
+              <div className="text-sm">{likesCount}</div>
+            </div>
+            <div className="flex items-center">
+              <button onClick={handleCommentClick} className="me-1">
+                <MessageSquareText size={20} className="inline-block" />
+              </button>
+              <div className="text-sm">{commentsCount}</div>
+            </div>
+            <div className="flex items-center">
+              <button onClick={handleShareClick}>
+                <Share2 size={20} className="inline-block" />
               </button>
             </div>
-          )}
+            {course.author_id === profile.id && (
+              <div>
+                <button className="text-red-600" onClick={handleOpenDeleteClick}>
+                  <Trash2 className="inline-block" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       
-      <BottomSheet open={commentsBottomSheetOpen} onClose={handleCommentBottomSheetClose}>
-        <div className="font-[500] mb-3">Commentaires ({commentsCount})</div>
-        <div className="h-[320pt] overflow-scroll">
+      <BottomSheet title={`Commentaires (${commentsCount})`} open={commentsBottomSheetOpen} onClose={handleCommentBottomSheetClose}>
+        <div className="fixed top-0 bottom-[80pt] start-0 end-0 px-5 overflow-scroll mt-20 pb-10">
           {displayedComments && displayedComments.map((comment, index) => {
             return (
               <div className="flex mb-3" key={index}>
-                <div className="w-1/6">
-                  <img src={comment.author_picture} alt="..." className="w-[32pt] h-[32pt] bg-zinc-300 rounded-full" />
+                <div className="me-2">
+                  <img src={comment.author_picture} alt="..." className="w-[24pt] h-[24pt] bg-zinc-300 rounded-full" />
                 </div>
-                <div className="w-5/6">
-                  <div className="px-5 py-3 mb-3 bg-zinc-100 rounded-3xl inline-block">
+                <div className="">
+                  <div className="px-5 py-3 bg-zinc-100 rounded-3xl inline-block">
                     <div className="font-[500]">{comment.author_name}</div>
-                    <div>{comment.message.split("\n").map((text, idx) => {
+                    <div className="mb-1">{comment.message.split("\n").map((text, idx) => {
                       return (
                         <React.Fragment key={idx}>
                           {text}
@@ -184,6 +204,7 @@ function CourseActionBar({ course }) {
                         </React.Fragment>
                       )
                     })}</div>
+                    <div className="text-zinc-400 text-xs">{dayjs.unix(parseInt(comment.date) / 1000).fromNow()}</div>
                   </div>
                 </div>
               </div>
@@ -195,8 +216,8 @@ function CourseActionBar({ course }) {
           )}
         </div>
         
-        {profile.id && (
-          <div className="absolute bottom-0 start-0 end-0 p-5">
+        {profile && (
+          <div className="fixed bottom-0 start-0 end-0 bg-white px-5 py-3">
             <div className="mb-2">
               <Textarea 
                 placeholder="Commentaire"
@@ -237,6 +258,31 @@ function CourseActionBar({ course }) {
               <div className="w-1/2 ps-1">
                 <Button onClick={handleDeleteClick}>{deleting ? "..." : "Oui"}</Button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {shareOpen && (
+        <div 
+          className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center z-[9999]"
+          style={{
+            backdropFilter: "blur(12px)"
+          }}
+        >
+          <div className="w-5/6 bg-white p-5 rounded-3xl shadow">
+            <div className="font-[500] mb-3">Partager le cours</div>
+            <div className="py-5">
+              <div className="overflow-scroll bg-zinc-50 text-xs p-2 rounded-3xl mb-3 text-wrap">
+                <code className="">{window.location.href}</code>
+              </div>
+              <button className="px-5 py-1 text-sm bg-white border rounded-3xl" onClick={handleCopyLinkClick}>
+                <Link size={16} className="inline me-1 text-zinc-400" />
+                {linkCopied ? "Copié" : "Copier le lien"}
+              </button>
+            </div>
+            <div className="">
+              <Button variant="secondary" onClick={handleShareCloseClick}>Fermer</Button>
             </div>
           </div>
         </div>

@@ -24,7 +24,7 @@ function SearchPage() {
 
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto md:px-40 lg:px-60">
         <div className="p-5">
           <SearchField onSearch={handleSearch} />
         </div>
@@ -56,6 +56,7 @@ function SearchPage() {
           />
         )
       })}
+      <div className="py-5 mb-10"></div>
     </>
   )
 }

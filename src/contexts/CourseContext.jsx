@@ -7,6 +7,9 @@ export const CourseProvider = ({ children }) => {
   const { registerToken } = useContext(AuthContext)
   const [videoUploadProgression, setVideoUploadProgression] = useState(0)
   const [displayedCourses, setDisplayedCourses] = useState([])
+  const [tags, setTags] = useState([
+    {value: "all", label: "Tous", active: true},
+  ])
   
   const categories = [
     {value: "programing", label: "Programmation"},
@@ -86,10 +89,41 @@ export const CourseProvider = ({ children }) => {
     (async () => {
       await registerToken()
     })()
-  }, [])
+
+    console.log("Tags count", tags.length)
+
+    for (let i = 1; i < categories.length; i++) {
+      const tag = {
+        value: categories[i].value,
+        label: categories[i].label,
+        active: false
+      }
+      tags[i] = tag
+    }
+  }, [tags])
   
   return (
-    <CourseContext.Provider value={{ categories, createCourse, deleteCourse, getCourse, getAllCourses, getCoursesByKeyword, getRandCourse, reactCourse, getCourseLike, displayedCourses, setDisplayedCourses, addVideo, videoUploadProgression, getVideos, getVideo }}>
+    <CourseContext.Provider 
+      value={{ 
+        categories, 
+        tags,
+        setTags,
+        createCourse, 
+        deleteCourse, 
+        getCourse, 
+        getAllCourses, 
+        getCoursesByKeyword, 
+        getRandCourse, 
+        reactCourse, 
+        getCourseLike, 
+        displayedCourses, 
+        setDisplayedCourses, 
+        addVideo, 
+        videoUploadProgression, 
+        getVideos, 
+        getVideo 
+      }}
+    >
       {children}
     </CourseContext.Provider>
   )

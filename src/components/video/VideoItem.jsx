@@ -1,6 +1,7 @@
 import { CirclePlay } from "lucide-react"
 import { Link } from "react-router-dom"
 import { ShoppingCart } from "lucide-react"
+import dayjs from "dayjs"
 
 function VideoItem({ vId="", cId="", title="", authorName="", isAccessible, authorPicture, thumbnail, date, onClick }) {
   return (
@@ -8,7 +9,7 @@ function VideoItem({ vId="", cId="", title="", authorName="", isAccessible, auth
       <Link to={!isAccessible ? "" : `/courses/${cId}/videos/${vId}`} onClick={onClick && onClick}>
         <div className="h-[160pt] relative">
           {thumbnail && (
-            <img src={thumbnail} alt={title} className="w-full h-full rounded-3xl" />
+            <img src={thumbnail} alt={title} className="w-full h-full object-cover rounded-3xl" />
           )}
           <div className="absolute top-0 bottom-0 start-0 end-0 rounded-3xl overflow-hidden flex items-center justify-center text-white -z-0" style={{
             backgroundColor: "#0002"
@@ -33,7 +34,7 @@ function VideoItem({ vId="", cId="", title="", authorName="", isAccessible, auth
           <div className="flex text-zinc-600 text-sm">
             <div className="me-2">{authorName}</div>
             <div className="me-2">.</div>
-            <div>{date}</div>
+            <div>{dayjs.unix(parseInt(date) / 1000).fromNow()}</div>
           </div>
         </div>
       </div>

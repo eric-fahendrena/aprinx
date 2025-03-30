@@ -8,6 +8,7 @@ import { CourseContext } from "../contexts/CourseContext"
 import FullScreenLoader from "./commons/FullScreenLoader"
 import FullScreenStatus from "./commons/FullScreenStatus"
 import { ProfileContext } from "../contexts/ProfileContext"
+import { SubscriptionContext } from "../contexts/SubscriptionContext"
 
 function CourseCreatorPage() {
   const navigate = useNavigate()
@@ -17,8 +18,14 @@ function CourseCreatorPage() {
   const [coverPhotoFile, setCoverPhotoFile] = useState(null)
   const { createCourse } = useContext(CourseContext)
   const { profile } = useContext(ProfileContext)
+  const { subscription } = useContext(SubscriptionContext)
   
   async function handleCreateClick() {
+    if (!profile.phone_number) {
+      window.open("/profile/edit/phone", "_blank")
+      return
+    }
+
     const courseData = new Object()
     courseData.coverPhotoFile = coverPhotoFile
     courseData.category = localStorage.getItem("course_category_ipt")
@@ -26,12 +33,40 @@ function CourseCreatorPage() {
     courseData.title = localStorage.getItem("course_title_ipt")
     courseData.description = localStorage.getItem("course_description_ipt")
 
+    if (subscription.status !== "ACTIVE") {
+      alert("Veuillez d'abord mettre à jour votre abonnement !")
+      return
+    }
+    if (!courseData.coverPhotoFile) {
+      alert("Veuillez ajouter une photo de couverture !")
+      return
+    }
+    if (!courseData.category) {
+      alert("Veuillez séléctioner une catégorie !")
+      return
+    }
+    if (!courseData.price) {
+      alert("Veuillez ajouter le prix !")
+      return
+    }
+    if (!courseData.title) {
+      alert("Veuillez ajouter un titre !")
+      return
+    }
+    if (!courseData.description) {
+      alert("Veuillez ajouter une description !")
+      return
+    }
+
     setCreating(true)
+    console.log("Creating course");
     const result = await createCourse(courseData)
     if (result.error) {
+      console.log("Result", result)
       setSuccess(false)
       return
     }
+    console.log("Result", result)
     setCreatedCourse(result)
     setSuccess(true)
     setCreating(false)
@@ -54,11 +89,11 @@ function CourseCreatorPage() {
       <Header title={"Créer un cours"} backLink={"/"} />
       {profile.role === "ADMIN" || profile.role === "TEACHER" ? (
         <>
-          <div className="container mx-auto p-5">
+          <div className="container mx-auto p-5 md:px-40 lg:px-60">
             <CoverPhotoUploader onFileReady={file => setCoverPhotoFile(file)} />
             <MetadataForm />
           </div>
-          <div className="fixed bottom-0 start-0 end-0 px-4 flex items-center">
+          <div className="fixed bottom-0 start-0 end-0 px-4 md:px-40 lg:px-60 flex items-center">
             <div className="w-1/2 p-1">
               <Button 
                 variant="secondary"

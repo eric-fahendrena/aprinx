@@ -1,13 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { convertUserToTeacherRequest, fetchProfile, getAllUsersRequest, updatePhoneNumber } from "../services/api"
+import { convertUserToTeacherRequest, fetchProfile, getAllUsersRequest, getBoughtCoursesCountRequest, getBoughtCoursesRequest, getPendingSubscriptionTransactionsCountRequest, updatePhoneNumber } from "../services/api"
 import { AuthContext } from "./AuthContext"
 
 export const ProfileContext = createContext()
 export const ProfileProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [profile, setProfile] = useState({})
-  const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthorized, setIsAuthorized] = useState(true)
+  const [profile, setProfile] = useState()
   const { registerToken } = useContext(AuthContext)
+  const [boughtCoursesCount, setBoughtCoursesCount] = useState()
+  const [boughtCourses, setBoughtCourses] = useState([])
+  const [boughtCoursesLoading, setBoughtCoursesLoading] = useState(true)
+  const [courseTransactionsCount, setCourseTransactionsCount] = useState()
 
   const savePhoneNumber = async (phoneNbData) => {
     const updatedProfile = await updatePhoneNumber(phoneNbData)
@@ -24,25 +28,52 @@ export const ProfileProvider = ({ children }) => {
     return convertedUser
   }
 
+  const getBoughtCoursesCount = async () => {
+    const boughtCoursesCount = await getBoughtCoursesCountRequest()
+    return boughtCoursesCount
+  }
+
+  const getBoughtCourses = async (offset, limit) => {
+    const boughtCourses = await getBoughtCoursesRequest(offset, limit)
+    return boughtCourses
+  }
+
   useEffect(() => {
     (async () => {
       await registerToken()
-      setIsLoading(true)
-      const data = await fetchProfile()
-      if (!data) {
-        setError(true)
-        setIsLoading(false)
+      console.log("Fetch profile...")
+      const profile = await fetchProfile()
+      if (!profile) {
+        setIsAuthorized(false)
         localStorage.setItem("is_authenticated", false)
-        return
+      } else {
+        setIsAuthorized(true)
       }
-      setProfile(data)
+      setProfile(profile)
       setIsLoading(false)
       localStorage.setItem("is_authenticated", true)
     })()
   }, [])
 
   return (
-    <ProfileContext.Provider value={{ isLoading, profile, error, savePhoneNumber, getAllUsers, convertToTeacher }}>
+    <ProfileContext.Provider value={{ 
+      isLoading, 
+      isAuthorized, 
+      profile, 
+      savePhoneNumber, 
+      getAllUsers, 
+      convertToTeacher,
+      boughtCoursesCount,
+      setBoughtCoursesCount,
+      getBoughtCoursesCount,
+      boughtCourses,
+      setBoughtCourses,
+      getBoughtCourses,
+      boughtCoursesLoading,
+      setBoughtCoursesLoading,
+      courseTransactionsCount,
+      setCourseTransactionsCount,
+    }}>
       {children}
     </ProfileContext.Provider>
   )

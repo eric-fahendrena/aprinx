@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { PulseLoader } from "react-spinners";
 
-function LazyObserver({ onInView }) {
+function LazyObserver({ children, onInView }) {
   const element = useRef()
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -16,8 +16,10 @@ function LazyObserver({ onInView }) {
   }, [])
 
   return (
-    <div className="h-[24pt] flex items-center justify-center" ref={element}>
-      <PulseLoader color="#800" size={8} />
+    <div className={`${!children && "min-h-[24pt] flex items-center justify-center"}`} ref={element}>
+      {!children ? (
+        <PulseLoader color="#800" size={8} />
+      ) : children}
     </div>
   )
 }

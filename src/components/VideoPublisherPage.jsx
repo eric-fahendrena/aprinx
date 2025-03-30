@@ -21,12 +21,6 @@ function VideoPublisherPage() {
   const [metaData, setMetaData] = useState(null)
   const [thumbnailFile, setThumbnailFile] = useState(null)
 
-  if (isLoading) {
-    return (
-      <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center">Chargement...</div>
-    )
-  }
-
   const sendData = async () => {
     const courseVideoData = new Object()
     courseVideoData.author_id = profile.id
@@ -46,6 +40,16 @@ function VideoPublisherPage() {
     setSuccess(true)
     setPublishing(false)
     setCreatedVideo(newVideo)
+  }
+
+  window.onbeforeunload = () => {
+    return "Êtes-vous sûr de vouloir quitter la page ?"
+  }
+
+  if (isLoading) {
+    return (
+      <div className="absolute top-0 bottom-0 start-0 end-0 flex items-center justify-center">Chargement...</div>
+    )
   }
 
   return (

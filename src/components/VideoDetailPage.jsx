@@ -23,13 +23,10 @@ function VideoDetailPage() {
 
   return (
     <>
-      <Header title={"Partie 1 - Maitriser Python"} />
       {video && (
         <>
+          <Header title={video.title} />
           <VideoPlayer src={video.url} thumbnail={video.thumbnail} />
-          <div className="container mx-auto">
-            <VideoActionBar />
-          </div>
           <div>
             <VideoMetadata 
               title={video.title}

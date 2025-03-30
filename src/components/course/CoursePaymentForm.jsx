@@ -5,8 +5,9 @@ import { ProfileContext } from "../../contexts/ProfileContext"
 import { LogIn, Upload } from "lucide-react"
 import { TransactionContext } from "../../contexts/TransactionContext"
 import { useNavigate } from "react-router-dom"
+import { socket } from "../../services/socketService"
 
-function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneAssociatedName, onClose, onSaveData }) {
+function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber, phoneAssociatedName, onClose, onSaveData }) {
   const { profile } = useContext(ProfileContext)
   const [preview, setPreview] = useState()
   const inputFile = useRef()
@@ -37,6 +38,16 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
     })
     console.log("Trans data", transData)
     setSending(false)
+    
+    console.log("Emitting send notification")
+    socket.emit("sendNotification", {
+      userId: courseAuthorId,
+      courseId: courseId,
+      authorNames: profile.name,
+      type: "COURSE_TRANSACTION",
+    })
+
+    onClose()
   }
 
   return (
@@ -45,7 +56,7 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
         <div className="fixed top-0 bottom-0 start-0 end-0 p-5 flex items-center justify-center" style={{
           backdropFilter: "blur(2px)"
         }}>
-          {!profile.id ? (
+          {!profile ? (
             <div className="p-5 border rounded-3xl bg-white w-full text-center shadow-xl">
               <div className="py-5"><LogIn className="inline-block" size={40} /></div>
               <p className="text-[1.5rem] mb-5">Veuillez d'abord vous connecter</p>
@@ -61,7 +72,7 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
           ) : (
             <div className="p-5 border rounded-3xl bg-white w-full shadow-xl">
               <h2 className="text-[1.5rem] font-bold">Acheter le cours</h2>
-              <p className="mb-3">Envoyer {price}Ar à 0{phoneNumber} ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
+              <p className="mb-3">Envoyer {price}Ar à {phoneNumber} ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
               <input 
                 type="file" 
                 onChange={handleFileChange} 
@@ -82,11 +93,16 @@ function CoursePaymentForm({ courseId, buyerId, price, open, phoneNumber, phoneA
                       <img src={preview} alt="preview" className="w-full h-full object-cover" />
                     </div>
                   </div>
-                  <div className="mt-5">
-                    <Button onClick={handleSendClick} disabled={sending}>{sending ? "..." : "Envoyer"}</Button>
-                  </div>
                 </div>
               )}
+              <div className="mt-5 flex">
+                <div className="w-1/2 pe-1">
+                  <Button variant="secondary" onClick={onClose}>Retour</Button>
+                </div>
+                <div className="w-1/2">
+                  <Button onClick={handleSendClick} disabled={!preview || sending}>{sending ? "..." : "Envoyer"}</Button>
+                </div>
+              </div>
             </div>
           )}
         </div>

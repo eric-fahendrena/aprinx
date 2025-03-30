@@ -2,10 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { CourseContext } from "../../contexts/CourseContext"
 
 function ScrollableTab({ onSelect }) {
-  const { categories } = useContext(CourseContext)
-  const [tags, setTags] = useState([
-    {value: "all", label: "Tous", active: true},
-  ])
+  const { tags, setTags } = useContext(CourseContext)
 
   const handleTagClick = (tag) => {
     tags.map(item => {
@@ -20,21 +17,8 @@ function ScrollableTab({ onSelect }) {
     onSelect(tag)
   }
 
-  useEffect(() => {
-    console.log("Tags count", tags.length)
-
-    for (let i = 1; i < categories.length; i++) {
-      const tag = {
-        value: categories[i].value,
-        label: categories[i].label,
-        active: false
-      }
-      tags[i] = tag
-    }
-  }, [tags])
-  
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto md:px-40 lg:px-60">
       <div className="px-5 py-2 overflow-scroll whitespace-nowrap scrollbar-hide">
         {tags.map((tag, idx) => {
           return (

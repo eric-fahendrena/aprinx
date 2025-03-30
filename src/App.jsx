@@ -15,6 +15,8 @@ import AuthenticatedRoute from "./AuthenticatedRoute.jsx"
 import PhoneNumberEditorPage from "./components/PhoneNumberEditorPage.jsx"
 import NotificationsPage from "./components/NotificationsPage.jsx"
 import UsersListPage from "./components/UsersListPage.jsx"
+import SubscriptionTransactionsPage from "./components/SubscriptionTransactionsPage.jsx"
+import TermsAndConditionsPage from "./components/TermsAndConditionsPage.jsx"
 import { connectSocket, disconnectSocket } from "./services/socketService.js"
 import { useContext, useEffect } from "react"
 import { ProfileContext } from "./contexts/ProfileContext.jsx"
@@ -26,7 +28,7 @@ dayjs.extend(relativeTime)
 dayjs.locale("fr")
 
 function App() {
-  const { profile } = useContext(ProfileContext)
+  const { isLoading, profile } = useContext(ProfileContext)
 
   useEffect(() => {
     if (profile) {
@@ -37,6 +39,17 @@ function App() {
     }
   }, [profile])
 
+  if (isLoading) {
+    return (
+      <div className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center bg-white">
+        <div className="">
+          <div className="text-[#800] text-5xl font-bold">Aprix</div>
+          <div className="text-zinc-400 uppercase text-sm text-end">Madagascar</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="text-zinc-900 prompt-light">
@@ -45,6 +58,12 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
+            <Route path="/subscription-transactions" element={(
+              <AuthenticatedRoute>
+                <SubscriptionTransactionsPage />
+              </AuthenticatedRoute>
+            )} />
             <Route path="/courses/:cId" element={<CourseDetailPage />} />
             <Route path="/courses/create" element={(
               <AuthenticatedRoute>

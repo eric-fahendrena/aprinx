@@ -1,31 +1,45 @@
 import Button from "./commons/Button"
 import { FcGoogle } from "react-icons/fc"
 import { useLogin } from "../hooks/useLogin"
+import { ArrowLeft } from "lucide-react"
+import { Link } from "react-router-dom"
+import { Helmet } from "react-helmet"
 
 function LoginPage() {
   const { loginWithGoogle } = useLogin()
   
   return (
-    <div className="absolute top-0 bottom-0 start-0 end-0 p-5 flex flex-col justify-end"
-      style={{
-        // background: "radial-gradient(circle, rgba(136,0,0,1) 0%, rgba(110,0,0,1) 100%, rgba(49,0,0,1) 100%)"
-      }}
-    >
-      <div className="h-1/2 flex items-center justify-center">
+    <>
+      <Helmet>
+        <title>Connexion - Aprix Madagascar</title>
+        <meta name="description" content="Bienvenue sur Aprix Madagascar, une plateforme qui facilite l'échange entre les vendeurs de tutoriels vidéo et les acheteurs." />
+        <meta property="og:title" content="Connexion - Aprix Madagascar" />
+        <meta property="og:description" content="Bienvenue sur Aprix Madagascar, une plateforme qui facilite l'échange entre les vendeurs de tutoriels vidéo et les acheteurs." />
+      </Helmet>
+
+      <header className="px-5 py-3 bg-[#800] text-white flex">
+        <Link to={"/"} className="me-2">
+          <ArrowLeft />
+        </Link>
+        <div className="font-[500]">Connexion</div>
+      </header>
+      <div className=" flex items-center justify-center mt-24">
         <div className="text-[5rem] font-bold text-red-800">Aprix</div>
       </div>
-      <div>
-        <div className="text-[1.5rem] font-semibold mb-3">Connectez-vous sur <strong className="text-red-800">Aprix</strong>.</div>
-        <p className="text-[1.5rem] mb-5">Accéder à vos cours et partagez vos connaissance en un clic.</p>
-        <div className="mb-5">
-          <Button variant="light" onClick={loginWithGoogle}>
-            <FcGoogle size={24} className="inline-block me-2" />
-            Continuer avec Google
-          </Button>
+      <div className="absolute bottom-0 start-0 end-0 p-5 flex flex-col justify-end">
+        <div>
+          {/* <div className="text-[1.5rem] font-semibold mb-3">Connectez-vous sur <strong className="text-red-800">Aprix</strong>.</div> */}
+          <p className="text-[1.5rem] mb-5">Accéder à vos cours et partagez vos connaissance en un clic.</p>
+          <div className="mb-5">
+            <Button variant="light" onClick={loginWithGoogle}>
+              <FcGoogle size={24} className="inline-block me-2" />
+              Continuer avec Google
+            </Button>
+          </div>
+          <p className="text-xs">En continuant, vous acceptez <a href="/terms-and-conditions" target="_blank" className="font-[400] text-[#800]">nos conditions d'utilisation</a>.</p>
         </div>
-        <p className="text-xs">En continuant, vous acceptez nos condition d'utilisation et notre Politique de confidentialité.</p>
       </div>
-    </div>
+    </>
   )
 }
 
