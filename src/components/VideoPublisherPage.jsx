@@ -46,8 +46,10 @@ function VideoPublisherPage() {
   }
 
   const handleVideoUploaderNext = () => {
-    if (videoFile.size > 1000 * 1000) {
-      setErrorMessage("La vidéo est trop lourd ! La taille maximal acceptée est 500 Mo")
+    const MAX_FILE_SIZE = 1000 * 1000 * 500
+    const MAX_FILE_SIZE_MO = MAX_FILE_SIZE / (1000 * 1000)
+    if (videoFile.size > MAX_FILE_SIZE) {
+      setErrorMessage(`La vidéo est trop lourd ! La taille maximal acceptée est ${MAX_FILE_SIZE_MO}Mo.`)
       return
     }
     setStep("meta")

@@ -11,7 +11,10 @@ function VideoUploader({ onBack, onFileReady, canNext, onNext }) {
     const file = e.target.files[0]
     console.log(URL.createObjectURL(file))
     if (file) {
-      setPreview(URL.createObjectURL(file))
+      setPreview(null)
+      setTimeout(() => {
+        setPreview(URL.createObjectURL(file))
+      }, 1000)
       onFileReady(file)
     }
   }
@@ -52,7 +55,7 @@ function VideoUploader({ onBack, onFileReady, canNext, onNext }) {
                 />
                 {preview && (
                   <button 
-                    className="border p-2 rounded"
+                    className="border px-3 py-2 rounded-3xl"
                     onClick={(e) => {
                       fileIpt.current.click()
                     }}
