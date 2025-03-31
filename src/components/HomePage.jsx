@@ -17,9 +17,9 @@ function HomePage() {
   const { displayedCourses, setDisplayedCourses} = useContext(CourseContext)
   const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
+  const [category, setCategory] = useState()
   let coursesLimit = 10
   let coursesOffset = 0
-  const [category, setCategory] = useState()
 
   // load random courses
   const handleLazyObserverInView = async () => {

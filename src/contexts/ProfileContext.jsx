@@ -52,6 +52,7 @@ export const ProfileProvider = ({ children }) => {
       setProfile(profile)
       setIsLoading(false)
       localStorage.setItem("is_authenticated", true)
+      console.log(profile)
     })()
   }, [])
 

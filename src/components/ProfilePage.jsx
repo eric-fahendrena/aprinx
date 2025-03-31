@@ -221,7 +221,7 @@ function ProfilePage() {
             {profile.role === "ADMIN" && (
               <div className="mb-5 p-5 shadow rounded-3xl">
                 <div className="font-[400]">Abonnements en attente</div>
-                <div className="">Total : <span className="text-[2rem] font-[500]">{pendingSubTransCount}</span></div>
+                <div className="">Total : <span className="text-[2rem] font-[500]">{pendingSubTransCount <= 0 ? 0 : pendingSubTransCount}</span></div>
                 <div>
                   <Link to={"/subscription-transactions"} className="text-[#800] font-[500]">Voir les transactions</Link>
                 </div>

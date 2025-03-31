@@ -19,6 +19,7 @@ function CourseCreatorPage() {
   const { createCourse } = useContext(CourseContext)
   const { profile } = useContext(ProfileContext)
   const { subscription } = useContext(SubscriptionContext)
+  const [errorMessage, setErrorMessage] = useState("Error message")
   
   async function handleCreateClick() {
     if (!profile.phone_number) {
@@ -34,27 +35,27 @@ function CourseCreatorPage() {
     courseData.description = localStorage.getItem("course_description_ipt")
 
     if (subscription.status !== "ACTIVE") {
-      alert("Veuillez d'abord mettre à jour votre abonnement !")
+      setErrorMessage("Veuillez d'abord mettre à jour votre abonnement !")
       return
     }
     if (!courseData.coverPhotoFile) {
-      alert("Veuillez ajouter une photo de couverture !")
+      setErrorMessage("Veuillez ajouter une photo de couverture !")
       return
     }
     if (!courseData.category) {
-      alert("Veuillez séléctioner une catégorie !")
+      setErrorMessage("Veuillez séléctioner une catégorie !")
       return
     }
     if (!courseData.price) {
-      alert("Veuillez ajouter le prix !")
+      setErrorMessage("Veuillez entrer le prix !")
       return
     }
     if (!courseData.title) {
-      alert("Veuillez ajouter un titre !")
+      setErrorMessage("Veuillez ajouter un titre !")
       return
     }
     if (!courseData.description) {
-      alert("Veuillez ajouter une description !")
+      setErrorMessage("Veuillez ajouter une description !")
       return
     }
 
@@ -79,6 +80,10 @@ function CourseCreatorPage() {
     localStorage.setItem("course_description_ipt", "")
 
     navigate("/")
+  }
+
+  const handleCloseErrorClick = () => {
+    setErrorMessage("")
   }
 
   window.addEventListener("popstate", handleUndoClick)
@@ -119,6 +124,23 @@ function CourseCreatorPage() {
       ) : (
         <div className="container mx-auto p-5 flex items-center justify-center">
           <div className="text-zinc-600">Vous n'avez pas la permission à consulter cette page !</div>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div 
+          className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center z-[9999]"
+          style={{
+            backdropFilter: "blur(12px)"
+          }}
+        >
+          <div className="w-5/6 p-5 bg-white rounded-3xl shadow">
+            <div className="font-[400] mb-3">Erreur</div>
+            <div className="mb-5">{errorMessage}</div>
+            <div className="">
+              <Button variant="secondary" onClick={handleCloseErrorClick}>Fermer</Button>
+            </div>
+          </div>
         </div>
       )}
     </>

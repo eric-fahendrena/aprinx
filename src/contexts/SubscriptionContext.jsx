@@ -44,6 +44,7 @@ export const SubscriptionProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+      console.log("Getting Subscription")
       if (profile) {
         const subscription = await getSubscription(profile.id)
         setSubscription(subscription)
