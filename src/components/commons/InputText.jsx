@@ -6,7 +6,7 @@ function InputText({ id="", label="", onChange, value="", placeholder="", error=
         id={id}
         type="text" 
         placeholder={placeholder} 
-        className={`w-full rounded-3xl p-3 ${error ? "bg-red-50" : ""} outline-none focus:border-zinc-600 bg-zinc-50 focus:bg-zinc-100`}
+        className={`w-full text-sm rounded-3xl p-3 ${error ? "bg-red-50" : ""} outline-none focus:border-zinc-600 bg-zinc-50 focus:bg-zinc-100`}
         value={value}
         onChange={onChange}
       />

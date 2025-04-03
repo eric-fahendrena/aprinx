@@ -13,8 +13,8 @@ function Header({ title, backLink }) {
   return (
     <>
       {!title ? (
-        <header className="h-[40pt] md:px-40 lg:px-60 bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
-          <div className="container mx-auto flex justify-between px-5">
+        <header className="h-[40pt] bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
+          <div className="container mx-auto md:px-40 lg:px-60 flex justify-between px-5">
             <div className="text-red-800 flex items-center justify-center font-bold text-2xl">
               <Link to={"/"}>Aprix</Link>
             </div>

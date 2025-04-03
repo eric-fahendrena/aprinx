@@ -5,7 +5,7 @@ function Textarea({ id="", label="", value="", placeholder="", rows=5, onChange,
       <textarea
         id={id} 
         placeholder={placeholder}
-        className="w-full rounded-3xl p-3 outline-none focus:border-zinc-600 bg-zinc-50 focus:bg-zinc-100"
+        className="w-full text-sm rounded-3xl p-3 outline-none focus:border-zinc-600 bg-zinc-50 focus:bg-zinc-100"
         rows={rows}
         value={value}
         onChange={onChange}

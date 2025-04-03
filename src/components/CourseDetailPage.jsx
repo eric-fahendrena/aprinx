@@ -37,11 +37,7 @@ function CourseDetailPage() {
       const course = await getCourse(params.cId)
       setCourse(course)
       setLoading(false)
-      const videos = await getVideos(course.id)
       const courseAccess = await getCourseAccess(course.id)
-      setVideos(videos)
-      console.log(courseAccess)
-      console.log(course.author_id, profile.id)
       if (courseAccess || course.author_id === profile.id) {
         console.log("Has access")
         setHasAccess(true)
@@ -49,6 +45,11 @@ function CourseDetailPage() {
         console.log("Doesn't have access")
         setHasAccess(false)
       }
+      
+      const videos = await getVideos(course.id)
+      setVideos(videos)
+      console.log(courseAccess)
+      console.log(course.author_id, profile.id)
     })()
   }, [profile])
 
@@ -77,7 +78,7 @@ function CourseDetailPage() {
                   <Link to={"/"}>
                     <ArrowLeft className="inline me-2" />
                   </Link>
-                  {course.title}
+                  {course.title.substring(0, 30)} {course.title.length > 24 && "..."}
                 </div>
               </header>
               <CourseCoverPhoto src={course.cover_photo} />

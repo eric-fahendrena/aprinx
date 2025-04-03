@@ -7,6 +7,7 @@ export const CourseProvider = ({ children }) => {
   const { registerToken } = useContext(AuthContext)
   const [videoUploadProgression, setVideoUploadProgression] = useState(0)
   const [displayedCourses, setDisplayedCourses] = useState([])
+  const [noCourseToLoad, setNoCourseToLoad] = useState(false)
   const [tags, setTags] = useState([
     {value: "all", label: "Tous", active: true},
   ])
@@ -92,13 +93,13 @@ export const CourseProvider = ({ children }) => {
 
     console.log("Tags count", tags.length)
 
-    for (let i = 1; i < categories.length; i++) {
+    for (let i = 0; i < categories.length; i++) {
       const tag = {
         value: categories[i].value,
         label: categories[i].label,
         active: false
       }
-      tags[i] = tag
+      tags[i+1] = tag
     }
   }, [tags])
   
@@ -121,7 +122,9 @@ export const CourseProvider = ({ children }) => {
         addVideo, 
         videoUploadProgression, 
         getVideos, 
-        getVideo 
+        getVideo,
+        noCourseToLoad,
+        setNoCourseToLoad,
       }}
     >
       {children}

@@ -1,15 +1,18 @@
 import InputNumber from "./commons/InputNumber"
 import InputText  from "./commons/InputText"
-import Header from "./commons/Header"
+import { Link, useNavigate } from "react-router-dom"
+import { ArrowLeft } from "lucide-react"
 import Button from "./commons/Button"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { ProfileContext } from "../contexts/ProfileContext"
 
 function PhoneNumberEditorPage() {
+  const { profile } = useContext(ProfileContext)
   const { savePhoneNumber } = useContext(ProfileContext)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [associatedName, setAssociatedName] = useState("")
   const [saving, setSaving] = useState(false)
+  const navigate = useNavigate()
 
   const phoneNbChangeHandler = (e) => {
     setPhoneNumber(e.target.value)
@@ -36,18 +39,35 @@ function PhoneNumberEditorPage() {
     console.log("Finished !")
     console.log("Updated profile")
     console.log(updatedProfile)
+
+    profile.phone_number = phoneNumber
+    profile.phone_number_associated_name = associatedName
     setSaving(false)
-    window.close()
+    navigate("/")
   }
+  
+  useEffect(() => {
+    if (profile.phone_number) {
+      setPhoneNumber(profile.phone_number)
+      setAssociatedName(profile.phone_number_associated_name)
+    }
+  }, [])
 
   return (
     <>
-      <Header title={"Ajouter les infos de payement"} backLink={"/"} />
+      <header className="px-5 py-3 md:px-40 lg:px-60 bg-[#800] text-white font-[500] sticky top-0">
+        <div className="flex">
+          <Link to="/">
+            <ArrowLeft strokeWidth={2} className="me-2" />
+          </Link>
+          Informations de paiement
+        </div>
+      </header>
       <div className="absolute top-0 bottom-0 start-0 end-0 bg-white mt-[56px]">
         <div className="container mx-auto p-5">
           <div className="p-5 border rounded-3xl">
             <div className="mb-3">
-              <h1 className="mb-3 text-[1.5rem] font-bold">Ajouter les informations de payement</h1>
+              <h1 className="mb-3 text-[1.5rem] font-bold">Les informations de payement</h1>
               <p className="mb-5">Ajouter votre numéro de téléphone ainsi que le nom associé pour que vos visiteurs puissent vous payer et accéder à vos cours.</p>
               <InputNumber 
                 label="Numero de téléphone"

@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { useNavigate } from "react-router-dom"
-import { User2 } from "lucide-react"
+import { User2, Edit, Info, Phone, User } from "lucide-react"
 import BottomSheet from "./commons/BottomSheet"
 import CourseTransactionsManager from "./course/CourseTransactionsManager"
 import { SubscriptionContext } from "../contexts/SubscriptionContext"
@@ -137,6 +137,47 @@ function ProfilePage() {
       )}
 
       <div className="mt-24 px-5 md:px-40 lg:px-60">
+
+        <div className="mb-5">
+          <div className="w-full bg-white p-5 border rounded-3xl">
+            <div className="font-[400] mb-3">Informations de paiement</div>
+            {!profile.phone_number ? (
+              <div className="mb-5 text-zinc-500">
+                <Info className="inline me-2 text-red-400" />
+                Non renseigné
+              </div>
+            ) : (
+              <>
+                <div>
+                  <Phone size={16} className="inline me-2 text-zinc-400" />
+                  {profile.phone_number}
+                </div>
+                <div className="mb-3">
+                  <User size={16} className="inline me-2 text-zinc-400" />
+                  {profile.phone_number_associated_name}
+                </div>
+              </>
+            )}
+            <div>
+              {!profile.phone_number ? (
+                <Link to={"/profile/edit/phone"}>
+                  <div className="inline-flex items-center border px-3 py-1 rounded-3xl text-sm">
+                    <Edit size={16} className="me-2" />
+                    Ajouter
+                  </div>
+                </Link>
+              ) : (
+                <Link to={"/profile/edit/phone"}>
+                  <div className="inline-flex items-center border px-3 py-1 rounded-3xl text-sm">
+                    <Edit size={16} className="me-2" />
+                    Modifier
+                  </div>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+
         {boughtCoursesCount > 0 && (
           <div className="mb-5">
             <div className="font-[400] mb-3">Cours achétés</div>

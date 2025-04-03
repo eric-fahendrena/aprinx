@@ -36,7 +36,7 @@ function LoginPage() {
               Continuer avec Google
             </Button>
           </div>
-          <p className="text-xs">En continuant, vous acceptez <a href="/terms-and-conditions" target="_blank" className="font-[400] text-[#800]">nos conditions d'utilisation</a>.</p>
+          <p className="text-xs">En continuant, vous acceptez <a href="/terms-and-conditions" className="font-[400] text-[#800]">nos conditions d'utilisation</a>.</p>
         </div>
       </div>
     </>

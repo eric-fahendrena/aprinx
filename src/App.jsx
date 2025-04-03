@@ -20,6 +20,7 @@ import TermsAndConditionsPage from "./components/TermsAndConditionsPage.jsx"
 import { connectSocket, disconnectSocket } from "./services/socketService.js"
 import { useContext, useEffect } from "react"
 import { ProfileContext } from "./contexts/ProfileContext.jsx"
+import { PulseLoader } from "react-spinners"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/fr"
@@ -45,6 +46,9 @@ function App() {
         <div className="">
           <div className="text-[#800] text-5xl font-bold">Aprix</div>
           <div className="text-zinc-400 uppercase text-sm text-end">Madagascar</div>
+          <div className="py-5 text-center">
+            <PulseLoader size={8} speedMultiplier={0.5} color="#800" />
+          </div>
         </div>
       </div>
     )
@@ -52,6 +56,16 @@ function App() {
 
   return (
     <>
+      {window.innerWidth > 560 && (
+        <div 
+          className="fixed bottom-[15%] start-[25%] end-[25%] w-[400px] text-xs rounded-3xl shadow-2xl p-5 text-white z-[9999]"
+          style={{
+            backgroundColor: "#0008"
+          }}
+          >
+          <div>Les grands écrans n'est pas encore pris en charge, mais nous travaillons dessus et une mise à jour arrivera bientôt !</div>
+        </div>
+      )}
       <div className="text-zinc-900 prompt-light">
         <Router>
           <Routes>

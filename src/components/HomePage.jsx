@@ -2,7 +2,7 @@ import Header from "./commons/Header"
 import ScrollableTab from "./commons/ScrollableTabs"
 import BottomNavbar from "./commons/BottomNavbar"
 import CourseItem from "./course/CourseItem"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CourseContext } from "../contexts/CourseContext"
 import LazyObserver from "./commons/LazyObserver"
 import dayjs from "dayjs"
@@ -14,7 +14,7 @@ dayjs.extend(relativeTime)
 dayjs.locale("fr")
 
 function HomePage() {
-  const { displayedCourses, setDisplayedCourses} = useContext(CourseContext)
+  const { displayedCourses, setDisplayedCourses, noCourseToLoad, setNoCourseToLoad} = useContext(CourseContext)
   const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
   const [category, setCategory] = useState()
@@ -40,13 +40,16 @@ function HomePage() {
       return [...prevCourses].concat(loadedCourses)
     })
 
-    coursesOffset += coursesLimit
     if (loadedCourses.length < coursesLimit) {
-      setLazyObserverVisible(false)
+      setNoCourseToLoad(true)
+      return
     }
+    coursesOffset += coursesLimit
   }
 
   const handleScrollTabSelect = async (tag) => {
+    setNoCourseToLoad(false)
+    
     coursesOffset = 0
     if (tag.value === "all") {
       setCategory(null)
@@ -60,6 +63,12 @@ function HomePage() {
     // await handleLazyObserverInView()
     setLazyObserverVisible(true)
   }
+
+  useEffect(() => {
+    if (displayedCourses.length > 0) {
+      setLazyObserverVisible(false)
+    }
+  }, [])
 
   return (
     <>
@@ -89,7 +98,7 @@ function HomePage() {
             />
           )
         })}
-        {lazyObserverVisible && (
+        {!noCourseToLoad && (
           <div className="p-5">
             <LazyObserver onInView={handleLazyObserverInView} />
           </div>

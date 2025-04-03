@@ -10,6 +10,7 @@ function Navbar({ isOpen=false }) {
   const [logoutOpen, setLogoutOpen] = useState(false)
   const { logout } = useLogin()
   const [logoutLoading, setLogoutLoading] = useState(false)
+  let current = window.location.pathname
 
   const handleLogoutClick = () => {
     setLogoutOpen(true)
@@ -33,7 +34,7 @@ function Navbar({ isOpen=false }) {
       <div className="container mx-auto">
         <div className="p-5">
           <Link to={"/"}>
-            <div className=" flex items-center py-2">
+            <div className={`flex items-center py-2 ${current === "/" && "text-[#800] font-[500]"}`}>
               <Home className="me-2" />
               <div>
                 Accueil
@@ -41,7 +42,7 @@ function Navbar({ isOpen=false }) {
             </div>
           </Link>
           <Link to={"/terms-and-conditions"}>
-            <div className=" flex items-center py-2">
+            <div className={`flex items-center py-2 ${current === "/terms-and-conditions" && "text-[#800] font-[500]"}`}>
               <BookText className="me-2" />
               <div>
                 Conditions d'utilisation
