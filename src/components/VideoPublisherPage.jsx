@@ -3,7 +3,7 @@ import VideoUploader from "./videoPublisher/VideoUploader"
 import VideoMetaForm from "./videoPublisher/VideoMetaForm"
 import VideoThumbnailUploader from "./videoPublisher/VideoThumbnailUploader"
 import { useContext, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { CourseContext } from "../contexts/CourseContext"
 import PublishingLoader from "./videoPublisher/PublishingLoader"
@@ -15,6 +15,7 @@ function VideoPublisherPage() {
   const { profile, isLoading, error } = useContext(ProfileContext)
   const { addVideo, videoUploadProgression } = useContext(CourseContext)
   const params = useParams()
+  const navigate = useNavigate()
   const [success, setSuccess] = useState(null)
   const [publishing, setPublishing] = useState(false)
   const [createdVideo, setCreatedVideo] = useState(null)
@@ -70,7 +71,7 @@ function VideoPublisherPage() {
       <Header title={"Publier une vidéo"} backLink={"/"} />
       <div>
         {step === "upload" && (
-          <VideoUploader onFileReady={(file) => setVideoFile(file)} canNext={videoFile != null} onNext={handleVideoUploaderNext} />
+          <VideoUploader onFileReady={(file) => setVideoFile(file)} canNext={videoFile != null} onNext={handleVideoUploaderNext} onBack={() => navigate("/")} />
         )}
           
         {step === "meta" ? (

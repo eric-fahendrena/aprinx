@@ -17,7 +17,7 @@ function Button({ children, variant="primary", disabled=false, onClick }) {
 
   return (
     <button
-      className={`${bgClass} ${colorClass} ${borderClass} ${disabled ? "opacity-50" : ""} rounded-full w-full py-2`}
+      className={`${bgClass} ${colorClass} ${borderClass} ${disabled ? "opacity-50" : ""} rounded-full w-full py-2 text-sm`}
       disabled={disabled}
       onClick={onClick}
     >

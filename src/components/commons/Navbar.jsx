@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Home, BookText, LogOut } from "lucide-react"
+import { Home, LogIn, BookText, LogOut } from "lucide-react"
 import Button from "./Button"
 import { useContext, useState } from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
@@ -32,15 +32,14 @@ function Navbar({ isOpen=false }) {
     >
       <div className="container mx-auto">
         <div className="p-5">
-          {!isAuthorized && (
-            <div className="mb-3">
-              <Link to={"/login"}>
-                <div className="flex items-center py-2">
-                  <Button>Se Connecter</Button>
-                </div>
-              </Link>
+          <Link to={"/"}>
+            <div className=" flex items-center py-2">
+              <Home className="me-2" />
+              <div>
+                Accueil
+              </div>
             </div>
-          )}
+          </Link>
           <Link to={"/terms-and-conditions"}>
             <div className=" flex items-center py-2">
               <BookText className="me-2" />
@@ -49,6 +48,16 @@ function Navbar({ isOpen=false }) {
               </div>
             </div>
           </Link>
+          {!isAuthorized && (
+            <Link to={"/login"}>
+              <div className=" flex items-center py-2 font-[400] text-[#800]">
+                <LogIn className="me-2" />
+                <div>
+                  Se connecter
+                </div>
+              </div>
+            </Link>
+          )}
           {isAuthorized && (
             <button onClick={handleLogoutClick}>
               <div className="flex items-center py-2 text-red-600">

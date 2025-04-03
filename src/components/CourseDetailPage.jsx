@@ -154,7 +154,7 @@ function CourseDetailPage() {
                 <div className="">Not Found</div>
               </div>
               <div>
-                <Link to={"/"} className="text-[#800] font-[500]">Revenir à la page d'accueil</Link>
+                Revenir à <Link to={"/"} className="text-[#800] font-[500]">la page d'accueil</Link>
               </div>
             </div>
           )}

@@ -19,7 +19,7 @@ function CourseCreatorPage() {
   const { createCourse } = useContext(CourseContext)
   const { profile } = useContext(ProfileContext)
   const { subscription } = useContext(SubscriptionContext)
-  const [errorMessage, setErrorMessage] = useState("Error message")
+  const [errorMessage, setErrorMessage] = useState("")
   
   async function handleCreateClick() {
     if (!profile.phone_number) {
