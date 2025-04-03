@@ -15,6 +15,7 @@ function BottomSheet({ title="", children, open=false, onClose }) {
             onClick={onClose}
           >
             <ChevronDown size={40} />
+            <div className="hidden">Fermer</div>
           </button>
         </div>
         <div className="px-5 font-[500]">{title}</div>

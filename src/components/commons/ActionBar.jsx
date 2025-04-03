@@ -21,6 +21,7 @@ function ActionBar({ onLike }) {
             stroke={likeActive ? "none" : "currentColor"} 
             fill={likeActive ? "currentColor" : "none"}
           />
+          <span className="hidden">J'aime</span>
           <span className="text-sm font-bold">1M</span>
         </button>
 
@@ -28,6 +29,7 @@ function ActionBar({ onLike }) {
           className={`inline-flex items-center rounded-full px-3 py-2`}
         >
           <MessageCircle className="me-1" />
+          <span className="hidden">Commentaires</span>
           <span className="text-sm font-bold">124K</span>
         </button>
       </div>
@@ -36,6 +38,7 @@ function ActionBar({ onLike }) {
         className={`flex items-center rounded-full px-3 py-2`}
       >
         <Share2 className="me-1" />
+        <span className="hidden">Partager</span>
       </button>
     </div>
   )
