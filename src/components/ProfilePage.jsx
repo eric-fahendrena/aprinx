@@ -350,10 +350,10 @@ function ProfilePage() {
       </div>
 
       <div className="mb-[240pt]"></div>
-      <BottomNavbar current="profile" />
       <BottomSheet open={openTransManager} onClose={() => setTransManagerOpen(false)}>
         <CourseTransactionsManager />
       </BottomSheet>
+      <BottomNavbar current="profile" />
     </>
   )
 }
