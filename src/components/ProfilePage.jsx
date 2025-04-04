@@ -126,6 +126,11 @@ function ProfilePage() {
                     <div className="text-3xl">{boughtCoursesCount || 0}</div>
                     <div className="text-zinc-400 uppercase text-sm">Achétés</div>
                   </div>
+
+                  <div className="w-1/3 text-center">
+                    <div className="text-3xl">{profile.total_created_courses}</div>
+                    <div className="text-zinc-400 uppercase text-sm">Créés</div>
+                  </div>
                 </div>
               </div>
             </div>
