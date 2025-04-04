@@ -26,7 +26,7 @@ function SearchPage() {
 
   return (
     <>
-      <header className="px-5 py-3 md:px-40 lg:px-60 bg-[#800] text-white font-[500] sticky top-0">
+      <header className="px-5 py-3 md:px-40 lg:px-60 bg-[#800] text-white font-[500] sticky top-0 z-[9999]">
         <div>Recherche</div>
       </header>
       <div className="container mx-auto md:px-40 lg:px-60">
