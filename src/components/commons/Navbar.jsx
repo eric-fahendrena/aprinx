@@ -25,16 +25,16 @@ function Navbar({ isOpen=false }) {
 
   return (
     <div 
-      className="fixed top-[56px] bottom-0 start-0 end-0 bg-white"
+      className="fixed top-[48px] bottom-0 start-0 end-0 bg-white"
       style={{
         transform: !isOpen ? "translateX(100%)" : "",
         transition: "all .25s ease-in-out"
       }}
     >
-      <div className="container mx-auto">
+      <div className="container mx-auto font-[400]">
         <div className="p-5">
           <Link to={"/"}>
-            <div className={`flex items-center py-2 ${current === "/" && "text-[#800] font-[500]"}`}>
+            <div className={`flex items-center py-2`}>
               <Home className="me-2" />
               <div>
                 Accueil
@@ -42,7 +42,7 @@ function Navbar({ isOpen=false }) {
             </div>
           </Link>
           <Link to={"/terms-and-conditions"}>
-            <div className={`flex items-center py-2 ${current === "/terms-and-conditions" && "text-[#800] font-[500]"}`}>
+            <div className={`flex items-center py-2`}>
               <BookText className="me-2" />
               <div>
                 Conditions d'utilisation
@@ -51,7 +51,7 @@ function Navbar({ isOpen=false }) {
           </Link>
           {!isAuthorized && (
             <Link to={"/login"}>
-              <div className=" flex items-center py-2 font-[400] text-[#800]">
+              <div className=" flex items-center py-2">
                 <LogIn className="me-2" />
                 <div>
                   Se connecter

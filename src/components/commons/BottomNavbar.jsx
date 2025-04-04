@@ -42,7 +42,7 @@ function BottomNavbar({ current="" }) {
         {profile && (
           <>
             {(profile.role !== "USER") && (
-              <Link to={"/courses/create"} onClick={handlePlusClick} className="bg-red-800 text-white px-3 py-1 rounded-md">
+              <Link to={"/courses/create"} onClick={handlePlusClick} className="bg-red-800 text-white px-4 py-2 rounded-3xl">
                 <Plus />
               </Link>
             )}
