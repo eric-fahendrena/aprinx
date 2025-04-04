@@ -25,7 +25,6 @@ function ProfilePage() {
     profile 
   } = useContext(ProfileContext)
   const {
-    boughtCoursesCount,
     getBoughtCourses,
     setBoughtCourses,
     boughtCourses,
@@ -176,7 +175,7 @@ function ProfilePage() {
           </div>
         </div>
 
-        {boughtCoursesCount > 0 && (
+        {profile.total_bought_courses > 0 && (
           <div className="mb-5">
             <div className="font-[400] mb-3">Cours achétés</div>
             <div className="w-full overflow-scroll scrollbar-hide">
