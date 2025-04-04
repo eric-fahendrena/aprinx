@@ -307,18 +307,20 @@ function ProfilePage() {
                   <div>
                     {createdCourses.map((course, idx) => {
                       return (
-                        <div className="flex mb-3 rounded-3xl p-1" key={idx}>
-                          <div className="w-2/6">
-                            <div className="w-full h-[80px] bg-zinc-200 rounded-3xl overflow-hidden">
-                              <img src={course.cover_photo} alt={course.title} className="w-full h-full object-cover" />
+                        <Link to={`/courses/${course.id}`}>
+                          <div className="flex mb-2 rounded-3xl p-1" key={idx}>
+                            <div className="w-2/6">
+                              <div className="w-full h-[80px] bg-zinc-200 rounded-3xl overflow-hidden">
+                                <img src={course.cover_photo} alt={course.title} className="w-full h-full object-cover" />
+                              </div>
+                            </div>
+                            <div className="w-4/6 ps-3 overflow-hidden">
+                              <div className="font-[500] whitespace-nowrap">{course.title}</div>
+                              <div className="whitespace-nowrap">{course.description}</div>
+                              <div className="text-zinc-400">{dayjs.unix(parseInt(course.date) / 1000).fromNow()}</div>
                             </div>
                           </div>
-                          <div className="w-4/6 ps-3 overflow-hidden">
-                            <div className="font-[500] whitespace-nowrap">{course.title}</div>
-                            <div className="whitespace-nowrap">{course.description}</div>
-                            <div className="text-zinc-400">{dayjs.unix(parseInt(course.date) / 1000).fromNow()}</div>
-                          </div>
-                        </div>
+                        </Link>
                       )
                     })}
                   </div>
