@@ -307,7 +307,7 @@ function ProfilePage() {
                   <div>
                     {createdCourses.map((course, idx) => {
                       return (
-                        <div className="flex mb-5 hover:bg-[#8001] rounded-3xl p-1" key={idx}>
+                        <div className="flex mb-3 rounded-3xl p-1" key={idx}>
                           <div className="w-2/6">
                             <div className="w-full h-[80px] bg-zinc-200 rounded-3xl overflow-hidden">
                               <img src={course.cover_photo} alt={course.title} className="w-full h-full object-cover" />
