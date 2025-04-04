@@ -314,7 +314,7 @@ function ProfilePage() {
                             </div>
                           </div>
                           <div className="w-4/6 ps-3 overflow-hidden">
-                            <div className="font-[500]">{course.title}</div>
+                            <div className="font-[500] whitespace-nowrap">{course.title}</div>
                             <div className="whitespace-nowrap">{course.description}</div>
                             <div className="text-zinc-400">{dayjs.unix(parseInt(course.date) / 1000).fromNow()}</div>
                           </div>
