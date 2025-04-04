@@ -13,18 +13,17 @@ import dayjs from "dayjs"
 import LazyObserver from "./commons/LazyObserver"
 import { TransactionContext } from "../contexts/TransactionContext"
 import { Helmet } from "react-helmet"
+import { CreatedCourseContext } from "../contexts/CreatedCourseContext"
 
 function ProfilePage() {
   const navigate = useNavigate()
   const { getPendingSubscriptionTransactionsCount, subscription } = useContext(SubscriptionContext)
   const { getSubscription, paymentInfos } = useContext(SubscriptionContext)
   const { getCourseTransactionCount } = useContext(TransactionContext)
-  const { 
+  const {
     isLoading, 
     isAuthorized, 
-    profile 
-  } = useContext(ProfileContext)
-  const {
+    profile,
     getBoughtCourses,
     setBoughtCourses,
     boughtCourses,
@@ -33,12 +32,21 @@ function ProfilePage() {
     courseTransactionsCount,
     setCourseTransactionsCount,
   } = useContext(ProfileContext)
+  const {
+    createdCourses,
+    setCreatedCourses,
+    getCreatedCourses,
+    loadingCreatedCourses,
+    setLoadingCreatedCourses,
+  } = useContext(CreatedCourseContext)
   const [openTransManager, setTransManagerOpen] = useState(false)
   const [subscriptionDetail, setSubscriptionDetail] = useState()
   const [subscriptionFormOpen, setSubscriptionFormOpen] = useState(false)
   const [pendingSubTransCount, setPendingSubTransCount] = useState(0)
   let boughtCoursesOffset = 0
   let boughtCoursesLimit = 30
+  let createdCoursesOffset = 0
+  let createdCoursesLimit = 30
 
   const handleRenewSubscriptionClick = () => {
     setSubscriptionFormOpen(true)
@@ -59,6 +67,22 @@ function ProfilePage() {
       return
     }
     boughtCoursesOffset += boughtCoursesLimit
+  }
+
+  const handleCreatedCoursesObsInView = async () => {
+    console.log("Getting created courses...")
+    const createdCourses = await getCreatedCourses(createdCoursesOffset, createdCoursesLimit)
+    console.log("Created courses :", createdCourses)
+    setCreatedCourses(prev => {
+      return [...prev].concat(createdCourses)
+    })
+
+    if (createdCourses.length < createdCoursesLimit) {
+      setLoadingCreatedCourses(false)
+      return
+    }
+
+    createdCoursesOffset += createdCoursesLimit
   }
 
   useEffect(() => {
@@ -277,6 +301,34 @@ function ProfilePage() {
                     </div>
                   </div>
                 )}
+
+                <div className="mb-5">
+                  <div className="font-[400] mb-3">Mes cours</div>
+                  <div>
+                    {createdCourses.map((course, idx) => {
+                      return (
+                        <div className="flex mb-5 hover:bg-[#8001] rounded-3xl p-1" key={idx}>
+                          <div className="w-2/6">
+                            <div className="w-full h-[80px] bg-zinc-200 rounded-3xl overflow-hidden">
+                              <img src={course.cover_photo} alt={course.title} className="w-full h-full object-cover" />
+                            </div>
+                          </div>
+                          <div className="w-4/6 ps-3 overflow-hidden">
+                            <div className="font-[500]">{course.title}</div>
+                            <div className="whitespace-nowrap">{course.description}</div>
+                            <div className="text-zinc-400">{dayjs.unix(parseInt(course.date) / 1000).fromNow()}</div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {loadingCreatedCourses && (
+                    <div>
+                      <LazyObserver onInView={handleCreatedCoursesObsInView} />
+                    </div>
+                  )}
+                </div>
               </>
             )}
           </>

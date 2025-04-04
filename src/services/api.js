@@ -641,3 +641,22 @@ export const getPendingSubscriptionTransactionsCountRequest = async () => {
     console.error("Error", error)
   }
 }
+
+// CREATED COURSES
+// ---------------
+
+export const getCreatedCoursesRequest = async (offset, limit) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users/profile/created-courses?offset=${offset}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
