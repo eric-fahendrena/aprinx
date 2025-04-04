@@ -24,9 +24,7 @@ function ProfilePage() {
     isAuthorized, 
     profile 
   } = useContext(ProfileContext)
-  const { 
-    getBoughtCoursesCount, 
-    setBoughtCoursesCount, 
+  const {
     boughtCoursesCount,
     getBoughtCourses,
     setBoughtCourses,
@@ -68,11 +66,6 @@ function ProfilePage() {
     (async () => {
       if (isAuthorized) {
         setSubscriptionDetail(subscription)
-  
-        console.log("Getting bought courses count...")
-        const boughtCoursesCount = await getBoughtCoursesCount()
-        console.log("Bought courses count", boughtCoursesCount)
-        setBoughtCoursesCount(boughtCoursesCount)
 
         if (profile.role === "TEACHER" || profile.role === "ADMIN") {
           console.log("Getting course transactions count")
@@ -123,7 +116,7 @@ function ProfilePage() {
                 <div className="font-[400]">{profile.name}</div>
                 <div className="flex justify-around p-5">
                   <div className="w-1/3 text-center">
-                    <div className="text-3xl">{boughtCoursesCount || 0}</div>
+                    <div className="text-3xl">{profile.total_bought_courses}</div>
                     <div className="text-zinc-400 uppercase text-xs">Achétés</div>
                   </div>
 
