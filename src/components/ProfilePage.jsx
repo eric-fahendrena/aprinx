@@ -124,12 +124,12 @@ function ProfilePage() {
                 <div className="flex justify-around p-5">
                   <div className="w-1/3 text-center">
                     <div className="text-3xl">{boughtCoursesCount || 0}</div>
-                    <div className="text-zinc-400 uppercase text-sm">Achétés</div>
+                    <div className="text-zinc-400 uppercase text-xs">Achétés</div>
                   </div>
 
                   <div className="w-1/3 text-center">
                     <div className="text-3xl">{profile.total_created_courses}</div>
-                    <div className="text-zinc-400 uppercase text-sm">Créés</div>
+                    <div className="text-zinc-400 uppercase text-xs">Créés</div>
                   </div>
                 </div>
               </div>
