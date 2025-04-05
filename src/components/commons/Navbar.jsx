@@ -51,7 +51,7 @@ function Navbar({ isOpen=false }) {
           </Link>
           {!isAuthorized && (
             <Link to={"/login"}>
-              <div className=" flex items-center py-2">
+              <div className=" flex items-center py-2 text-[#800]">
                 <LogIn className="me-2" />
                 <div>
                   Se connecter

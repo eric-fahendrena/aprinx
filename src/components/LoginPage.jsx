@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc"
 import { useLogin } from "../hooks/useLogin"
 import { ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 
 function LoginPage() {
   const { loginWithGoogle } = useLogin()

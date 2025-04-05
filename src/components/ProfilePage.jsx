@@ -12,7 +12,7 @@ import SubscriptionForm from "./subscription/SubscriptionForm"
 import dayjs from "dayjs"
 import LazyObserver from "./commons/LazyObserver"
 import { TransactionContext } from "../contexts/TransactionContext"
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 import { CreatedCourseContext } from "../contexts/CreatedCourseContext"
 
 function ProfilePage() {
@@ -307,7 +307,7 @@ function ProfilePage() {
                   <div>
                     {createdCourses.map((course, idx) => {
                       return (
-                        <Link to={`/courses/${course.id}`}>
+                        <Link to={`/courses/${course.id}`} key={idx}>
                           <div className="flex mb-2 rounded-3xl p-1" key={idx}>
                             <div className="w-2/6">
                               <div className="w-full h-[80px] bg-zinc-200 rounded-3xl overflow-hidden">

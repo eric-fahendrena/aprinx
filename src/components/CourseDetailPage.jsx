@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 import Button from "./commons/Button"
 import { Link } from "react-router-dom"
 import CourseCoverPhoto from "./course/CourseCoverPhoto"

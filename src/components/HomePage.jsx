@@ -8,7 +8,7 @@ import LazyObserver from "./commons/LazyObserver"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/fr"
-import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet-async"
 
 dayjs.extend(relativeTime)
 dayjs.locale("fr")

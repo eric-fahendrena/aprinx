@@ -1,4 +1,3 @@
-import Header from "./commons/Header"
 import Button from "./commons/Button"
 import CoverPhotoUploader from "./course/creator/CoverPhotoUploader"
 import MetadataForm from "./course/creator/MetadataForm"
@@ -9,6 +8,8 @@ import FullScreenLoader from "./commons/FullScreenLoader"
 import FullScreenStatus from "./commons/FullScreenStatus"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { SubscriptionContext } from "../contexts/SubscriptionContext"
+import { ArrowLeft } from "lucide-react"
+import { Link } from "react-router-dom"
 
 function CourseCreatorPage() {
   const navigate = useNavigate()
@@ -91,7 +92,14 @@ function CourseCreatorPage() {
 
   return (
     <>
-      <Header title={"Créer un cours"} backLink={"/"} />
+      <header className="px-5 md:mx-40 lg:mx-60 sticky top-0 py-3 bg-[#800] text-white z-10">
+        <div className="font-[500]">
+          <Link to={"/"}>
+            <ArrowLeft className="inline me-2" />
+          </Link>
+          Créer un cours
+        </div>
+      </header>
       {profile.role === "ADMIN" || profile.role === "TEACHER" ? (
         <>
           <div className="container mx-auto p-5 md:px-40 lg:px-60">
