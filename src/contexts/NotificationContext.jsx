@@ -49,8 +49,22 @@ export const NotificationProvider = ({ children }) => {
 			const unseenNotificationCount = await getUnseenNotificationsCount()
 			setUnseenNotificationsCount(unseenNotificationCount)
 
-			setNotifications([])
+			setNotifications([]) // to reload notifications
 			setNothingToLoad(false)
+
+			if (Notification.permission === "granted") {
+				if (notification.type === "COURSE_TRANSACTION") {
+					new Notification("Nouvelle transaction", {
+						body: `${notification.author_names} a acheté votre cours.`
+					})
+				}
+			} else if (Notification.permission !== "denied") {
+				Notification.requestPermission().then(permission => {
+					if (permission !== "granted") {
+						new Notification("Merci d'avoir activé les notifications !")
+					}
+				})
+			}
 		}
 
 		socket.on("receiveNotification", handleReceiveNotification)
