@@ -17,6 +17,8 @@ import NotificationsPage from "./components/NotificationsPage.jsx"
 import UsersListPage from "./components/UsersListPage.jsx"
 import SubscriptionTransactionsPage from "./components/SubscriptionTransactionsPage.jsx"
 import TermsAndConditionsPage from "./components/TermsAndConditionsPage.jsx"
+import FeedbackPage from "./components/FeedbackPage.jsx"
+import FeedbackListPage from "./components/FeedbackListPage.jsx"
 import { connectSocket, disconnectSocket } from "./services/socketService.js"
 import { useContext, useEffect } from "react"
 import { ProfileContext } from "./contexts/ProfileContext.jsx"
@@ -73,6 +75,12 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/users-feedback" element={(
+              <AuthenticatedRoute>
+                <FeedbackListPage />
+              </AuthenticatedRoute>
+            )} />
             <Route path="/subscription-transactions" element={(
               <AuthenticatedRoute>
                 <SubscriptionTransactionsPage />

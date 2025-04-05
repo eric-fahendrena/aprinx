@@ -12,6 +12,7 @@ import { CourseAccessProvider } from './contexts/CourseAccessContext.jsx'
 import { DeletedCourseProvider } from './contexts/DeletedCourseContext.jsx'
 import { SubscriptionProvider } from './contexts/SubscriptionContext.jsx'
 import { CreatedCourseProvider } from './contexts/CreatedCourseContext.jsx'
+import { FeedbackProvider } from './contexts/FeedbackContext.jsx'
 import { HelmetProvider } from 'react-helmet-async'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -27,7 +28,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <DeletedCourseProvider>
                       <SubscriptionProvider>
                         <CreatedCourseProvider>
-                          <App />
+                          <FeedbackProvider>
+                            <App />
+                          </FeedbackProvider>
                         </CreatedCourseProvider>
                       </SubscriptionProvider>
                     </DeletedCourseProvider>

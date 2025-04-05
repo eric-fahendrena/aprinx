@@ -1,7 +1,7 @@
 function Textarea({ id="", label="", value="", placeholder="", rows=5, onChange, onKeyUp, onKeyDown }) {
   return (
     <div className="">
-      <label htmlFor={id} className="block mb-2 font-bold text-zinc-600">{label}</label>
+      <label htmlFor={id} className="block mb-2 font-[400] text-zinc-600">{label}</label>
       <textarea
         id={id} 
         placeholder={placeholder}

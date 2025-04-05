@@ -1,4 +1,4 @@
-import { Menu, ChevronLeft, X, Grip, Users, ArrowLeftRight } from "lucide-react"
+import { Menu, ChevronLeft, X, Grip, Users, ArrowLeftRight, MessageCircleQuestion } from "lucide-react"
 import Navbar from "./Navbar"
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -57,17 +57,23 @@ function Header({ title, backLink }) {
         >
           <div className="bg-white p-5 rounded-3xl w-5/6">
             <div className="font-[500]">Administration</div>
-            <div className="py-5 flex">
-              <div className="w-1/2">
-                <Link to={"/users"} className="inline-block border p-5 rounded-3xl">
+            <div className="py-5 flex flex-wrap">
+              <div className="w-1/2 p-2">
+                <Link to={"/users"} className="block border p-5 rounded-3xl">
                   <Users size={32} className="mb-2" />
                   Utilisateurs
                 </Link>
               </div>
-              <div className="w-1/2">
-                <Link to={"/subscription-transactions"} className="inline-block border p-5 rounded-3xl">
+              <div className="w-1/2 p-2">
+                <Link to={"/subscription-transactions"} className="block border p-5 rounded-3xl">
                   <ArrowLeftRight size={32} className="mb-2" />
                   Transactions
+                </Link>
+              </div>
+              <div className="w-1/2 p-2">
+                <Link to={"/users-feedback"} className="block border p-5 rounded-3xl">
+                  <MessageCircleQuestion size={32} className="mb-2" />
+                  Avis des utilisateurs
                 </Link>
               </div>
             </div>

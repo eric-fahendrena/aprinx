@@ -660,3 +660,39 @@ export const getCreatedCoursesRequest = async (offset, limit) => {
     console.error("Error", error)
   }
 }
+
+// FeedBack
+// --------
+
+export const createFeedbackRequest = async (feedback) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/feedback/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(feedback),
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+
+export const getAllFeedbacksRequest = async (offset, limit) => {
+  const token = localStorage.getItem("token")
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/feedback?offset=${offset}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error", error)
+  }
+}
+

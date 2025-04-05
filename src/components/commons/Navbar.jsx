@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Home, LogIn, BookText, LogOut } from "lucide-react"
+import { Home, LogIn, BookText, LogOut, MessageCircleQuestion } from "lucide-react"
 import Button from "./Button"
 import { useContext, useState } from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
@@ -38,6 +38,14 @@ function Navbar({ isOpen=false }) {
               <Home className="me-2" />
               <div>
                 Accueil
+              </div>
+            </div>
+          </Link>
+          <Link to={"/feedback"}>
+            <div className={`flex items-center py-2`}>
+              <MessageCircleQuestion className="me-2" />
+              <div>
+                Feedback et Signalement
               </div>
             </div>
           </Link>
