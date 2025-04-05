@@ -1,4 +1,5 @@
-import Header from "./commons/Header"
+import { Link } from "react-router-dom"
+import { ArrowLeft } from "lucide-react"
 import { Helmet } from "react-helmet-async"
 
 function TermsAndConditionsPage() {
@@ -7,7 +8,14 @@ function TermsAndConditionsPage() {
       <Helmet>
         <title>Conditions d'utilisation - Aprix Madagascar</title>
       </Helmet>
-      <Header />
+      <header className="px-5 md:mx-40 lg:mx-60 sticky top-0 py-3 bg-[#800] text-white z-10">
+        <div className="font-[500]">
+          <Link to={"/"}>
+            <ArrowLeft className="inline me-2" />
+          </Link>
+          Nos conditions d'utilisation
+        </div>
+      </header>
       <div className="px-5 py-5">
         <h1 className="font-[500] text-xl mb-3">Conditions d'utilisation de Aprix Madagascar</h1>
         <div className="mb-5">Dernière mise à jour : 29 Mars 2025</div>
