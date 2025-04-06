@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowLeft, VenetianMask } from "lucide-react"
 import LazyObserver from "./commons/LazyObserver"
-import { useContext, useState } from "react"
+import React, { useContext, useState } from "react"
 import { FeedbackContext } from "../contexts/FeedbackContext"
 import dayjs from "dayjs"
 
@@ -64,7 +64,12 @@ function FeedbackListPage() {
               <div className="w-5/6">
                 <div className="">
                   <div className="font-[500]">{feedback.author_name ? feedback.author_name : "Anonyme"}</div>
-                  <p>{feedback.message}</p>
+                  <p>{feedback.message.split('\n').map((text, idx) => {
+                    <React.Fragment key={idx}>
+                      {text}
+                      <br />
+                    </React.Fragment>
+                  })}</p>
                   <div className="text-xs text-zinc-400">{dayjs.unix(parseInt(feedback.date) / 1000).fromNow()}</div>
                 </div>
               </div>
