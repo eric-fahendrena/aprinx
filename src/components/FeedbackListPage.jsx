@@ -11,10 +11,12 @@ function FeedbackListPage() {
     feedbacks, 
     setFeedbacks, 
     loadingFeedbacks, 
-    setLoadingFeedbacks 
+    setLoadingFeedbacks,
+    feedbacksOffset,
+    setFeedbacksOffset,
   } = useContext(FeedbackContext)
-  let offset = 0
-  let limit = 30
+  let offset = feedbacksOffset
+  let limit = 10
 
   const handleObserverInView = async () => {
     console.log("Loading feedbacks...")
@@ -31,6 +33,7 @@ function FeedbackListPage() {
     }
 
     offset += limit
+    setFeedbacksOffset(offset)
   }
 
   return (

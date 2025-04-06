@@ -5,6 +5,7 @@ export const FeedbackContext = createContext()
 export const FeedbackProvider = ({ children }) => {
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(true)
   const [feedbacks, setFeedbacks] = useState([])
+  const [feedbacksOffset, setFeedbacksOffset] = useState(0)
 
   const createFeedback = async (data) => {
     const feedback = await createFeedbackRequest(data)
@@ -25,6 +26,8 @@ export const FeedbackProvider = ({ children }) => {
         setFeedbacks,
         loadingFeedbacks,
         setLoadingFeedbacks,
+        feedbacksOffset,
+        setFeedbacksOffset,
       }}
     >
       {children}
