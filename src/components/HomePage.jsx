@@ -25,10 +25,11 @@ function HomePage() {
   const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
   const [category, setCategory] = useState()
+  const [coursesEmpty, setCoursesEmpty] = useState(false)
   let coursesLimit = 10
   let coursesOffset = dispCoursesOffset
 
-  // load random courses
+  // load courses
   const handleLazyObserverInView = async () => {
     let loadedCourses;
     console.log("Offset", coursesOffset)
@@ -47,10 +48,18 @@ function HomePage() {
       return [...prevCourses].concat(loadedCourses)
     })
 
+    if (loadedCourses.length === 0 ) {
+      console.log("Loaded course empty")
+      setCoursesEmpty(true)
+    } else {
+      setCoursesEmpty(false)
+    }
+
     if (loadedCourses.length < coursesLimit) {
       setNoCourseToLoad(true)
       return
     }
+
 
     coursesOffset += coursesLimit
     setDispCoursesOffset(coursesOffset)
@@ -59,6 +68,8 @@ function HomePage() {
 
   const handleScrollTabSelect = async (tag) => {
     setNoCourseToLoad(false)
+    setDispCoursesOffset(0)
+    setCoursesEmpty(false)
     
     coursesOffset = 0
     if (tag.value === "all") {
@@ -113,10 +124,8 @@ function HomePage() {
             <LazyObserver onInView={handleLazyObserverInView} />
           </div>
         )}
-        {(!lazyObserverVisible && displayedCourses.length <= 0) && (
-          <div className="p-5 text-center text-zinc-500">
-            Aucun cours à charger
-          </div>
+        {coursesEmpty && (
+          <div className="text-center py-5 text-zinc-400">Aucun cours trouvé</div>
         )}
       </div>
       <BottomNavbar current="home" />
