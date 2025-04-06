@@ -14,7 +14,15 @@ dayjs.extend(relativeTime)
 dayjs.locale("fr")
 
 function HomePage() {
-  const { displayedCourses, setDisplayedCourses, noCourseToLoad, setNoCourseToLoad} = useContext(CourseContext)
+  const { 
+    displayedCourses, 
+    setDisplayedCourses, 
+    noCourseToLoad, 
+    setNoCourseToLoad,
+    dispCoursesOffset,
+    setDispCoursesOffset,
+    dispCoursesLimit,
+  } = useContext(CourseContext)
   const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
   const [category, setCategory] = useState()
@@ -24,11 +32,11 @@ function HomePage() {
   // load random courses
   const handleLazyObserverInView = async () => {
     let loadedCourses;
-    console.log("Offset", coursesOffset)
+    console.log("Offset", dispCoursesOffset)
     console.log(category)
     if (!category) {
       console.log("Getting all course")
-      loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
+      loadedCourses = await getAllCourses(dispCoursesOffset, dispCoursesLimit)
       console.log(loadedCourses.length, "courses loaded !")
     } else {
       console.log("Searching by category...")
@@ -40,11 +48,11 @@ function HomePage() {
       return [...prevCourses].concat(loadedCourses)
     })
 
-    if (loadedCourses.length < coursesLimit) {
+    if (loadedCourses.length < dispCoursesLimit) {
       setNoCourseToLoad(true)
       return
     }
-    coursesOffset += coursesLimit
+    setDispCoursesOffset(dispCoursesOffset + dispCoursesLimit)
   }
 
   const handleScrollTabSelect = async (tag) => {

@@ -11,6 +11,8 @@ export const CourseProvider = ({ children }) => {
   const [tags, setTags] = useState([
     {value: "all", label: "Tous", active: true},
   ])
+  const [dispCoursesOffset, setDispCoursesOffset] = useState(0)
+  const dispCoursesLimit = 10
   
   const categories = [
     {value: "programing", label: "Programmation"},
@@ -125,6 +127,9 @@ export const CourseProvider = ({ children }) => {
         getVideo,
         noCourseToLoad,
         setNoCourseToLoad,
+        dispCoursesOffset,
+        setDispCoursesOffset,
+        dispCoursesLimit,
       }}
     >
       {children}
