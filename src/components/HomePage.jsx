@@ -111,7 +111,7 @@ function HomePage() {
               cId={course.id}
               category={JSON.parse(course.category).label}
               title={course.title}
-              coverPhoto={course.cover_photo}
+              // coverPhoto={course.cover_photo}
               authorName={course.author_name}
               authorPicture={course.author_picture}
               date={date}
