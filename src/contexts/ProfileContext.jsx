@@ -12,6 +12,8 @@ export const ProfileProvider = ({ children }) => {
   const [boughtCourses, setBoughtCourses] = useState([])
   const [boughtCoursesLoading, setBoughtCoursesLoading] = useState(true)
   const [courseTransactionsCount, setCourseTransactionsCount] = useState()
+  const [usrListOffset, setUsrListOffset] = useState(0)
+  const usrListLimit = 10
 
   const savePhoneNumber = async (phoneNbData) => {
     const updatedProfile = await updatePhoneNumber(phoneNbData)
@@ -74,6 +76,9 @@ export const ProfileProvider = ({ children }) => {
       setBoughtCoursesLoading,
       courseTransactionsCount,
       setCourseTransactionsCount,
+      usrListOffset,
+      setUsrListOffset,
+      usrListLimit,
     }}>
       {children}
     </ProfileContext.Provider>

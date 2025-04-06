@@ -17,9 +17,10 @@ function NotificationsPage() {
     nothingToLoad,
     setNothingToLoad,
     readNotification,
+    offset,
+    setOffset,
+    limit,
   } = useContext(NotificationContext)
-  let offset = 0
-  let limit = 10
   const navigate = useNavigate()
   const [reading, setReading] = useState(false)
 
@@ -36,7 +37,7 @@ function NotificationsPage() {
       return
     }
 
-    offset += limit;
+    setOffset(offset + limit)
   }
 
   const handleNotifClick = async (e, notif) => {

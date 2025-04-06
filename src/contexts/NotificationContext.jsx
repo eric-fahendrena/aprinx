@@ -11,6 +11,8 @@ export const NotificationProvider = ({ children }) => {
 	const { registerToken } = useContext(AuthContext)
 	const [notifications, setNotifications] = useState([])
   const [nothingToLoad, setNothingToLoad] = useState(false)
+	const [offset, setOffset] = useState(0)
+	const limit = 10
 
 	const getUnseenNotificationsCount = async () => {
 		const unseenNotificationsCount = await getUnseenNotificationsCountRequest()
@@ -58,9 +60,14 @@ export const NotificationProvider = ({ children }) => {
 						body: `${notification.author_names} a acheté votre cours.`
 					})
 				}
+				if (notification.type === "COURSE_TRANSACTION_CONFIRMATION") {
+					new Notification("Transaction confirmée", {
+						body: `${notification.author_names} a confirmé votre transaction.`
+					})
+				}
 			} else if (Notification.permission !== "denied") {
 				Notification.requestPermission().then(permission => {
-					if (permission !== "granted") {
+					if (permission === "granted") {
 						new Notification("Merci d'avoir activé les notifications !")
 					}
 				})
@@ -72,7 +79,7 @@ export const NotificationProvider = ({ children }) => {
 		return () => {
 			socket.off("receiveNotification", handleReceiveNotification)
 		}
-	}, [notifications, isAuthorized])
+	}, [notifications, isAuthorized, profile])
 
 	return (
 		<NotificationContext.Provider 
@@ -86,6 +93,9 @@ export const NotificationProvider = ({ children }) => {
 				nothingToLoad,
 				setNothingToLoad,
 				readNotification,
+				offset,
+				setOffset,
+				limit,
 			}}>
 			{children}
 		</NotificationContext.Provider>

@@ -1,13 +1,18 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Header from "./commons/Header"
 import Button from "./commons/Button"
 import LazyObserver from "./commons/LazyObserver"
 import { ProfileContext } from "../contexts/ProfileContext"
 
 function UsersListPage() {
-  const { getAllUsers, profile, convertToTeacher } = useContext(ProfileContext)
-  const limit = 10
-  let offset = 0
+  const { 
+    getAllUsers, 
+    profile, 
+    convertToTeacher,
+    usrListOffset,
+    setUsrListOffset,
+    usrListLimit,
+  } = useContext(ProfileContext)
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [userToConvert, setUserToConvert] = useState(null)
@@ -15,14 +20,22 @@ function UsersListPage() {
 
   const handleLazyObserverInView = async () => {
     console.log("Lazy observer i view")
-    const users = await getAllUsers(offset, limit)
+    const users = await getAllUsers(usrListOffset, usrListLimit)
     setUsers(prev => {
       return [...prev].concat(users)
     })
-    if (users.length < 10) {
-      console.log("User length < 10")
+
+    
+    if (users.length < usrListLimit) {
+      console.log("User length <", usrListLimit)
       setLoading(false)
+      return
     }
+    setUsrListOffset(usrListOffset + usrListLimit)
+
+    console.log("Users count", users.length)
+    console.log("offset", usrListOffset)
+
   }
 
   const handleConvertToTeacherClick = (user) => {
