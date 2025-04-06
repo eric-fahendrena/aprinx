@@ -65,10 +65,12 @@ function FeedbackListPage() {
                 <div className="">
                   <div className="font-[500]">{feedback.author_name ? feedback.author_name : "Anonyme"}</div>
                   <p>{feedback.message.split('\n').map((text, idx) => {
-                    <React.Fragment key={idx}>
-                      {text}
-                      <br />
-                    </React.Fragment>
+                    return (
+                      <React.Fragment key={idx}>
+                        {text}
+                        <br />
+                      </React.Fragment>
+                    )
                   })}</p>
                   <div className="text-xs text-zinc-400">{dayjs.unix(parseInt(feedback.date) / 1000).fromNow()}</div>
                 </div>
