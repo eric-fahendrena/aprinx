@@ -9,39 +9,33 @@ function UsersListPage() {
     getAllUsers, 
     profile, 
     convertToTeacher,
-    usrListOffset,
-    setUsrListOffset,
-    usrListLimit,
+    setUsersOffset,
+    usersOffset,
     loadingUsers,
     setLoadingUsers,
   } = useContext(ProfileContext)
   const [users, setUsers] = useState([])
   const [userToConvert, setUserToConvert] = useState(null)
   const [converting, setConverting] = useState(false)
+  let offset = usersOffset
+  let limit = 10
 
   const handleLazyObserverInView = async () => {
-    console.log("Lazy observer i view")
-    const users = await getAllUsers(usrListOffset, usrListLimit)
+    console.log("Lazy observer in view")
+    const users = await getAllUsers(offset, limit)
+    console.log("users offset", offset)
     setUsers(prev => {
       return [...prev].concat(users)
     })
-
     
-    if (users.length < usrListLimit) {
-      console.log("User length <", usrListLimit)
+    if (users.length < limit) {
+      console.log("User length <", limit)
       setLoadingUsers(false)
       return
     }
-    setUsrListOffset((prev) => {
-      console.log("updating offset state...")
-      const offset = prev + usrListLimit
-      console.log("new offset", offset)
-      return offset
-    })
 
-    console.log("Users count", users.length)
-    console.log("offset", usrListOffset)
-
+    offset += limit
+    setUsersOffset(offset)
   }
 
   const handleConvertToTeacherClick = (user) => {

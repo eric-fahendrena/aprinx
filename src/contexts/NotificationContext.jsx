@@ -11,8 +11,7 @@ export const NotificationProvider = ({ children }) => {
 	const { registerToken } = useContext(AuthContext)
 	const [notifications, setNotifications] = useState([])
   const [nothingToLoad, setNothingToLoad] = useState(false)
-	const [offset, setOffset] = useState(0)
-	const limit = 10
+	const [notificationsOffset, setNotificationsOffset] = useState(0)
 
 	const getUnseenNotificationsCount = async () => {
 		const unseenNotificationsCount = await getUnseenNotificationsCountRequest()
@@ -93,9 +92,8 @@ export const NotificationProvider = ({ children }) => {
 				nothingToLoad,
 				setNothingToLoad,
 				readNotification,
-				offset,
-				setOffset,
-				limit,
+				notificationsOffset,
+				setNotificationsOffset,
 			}}>
 			{children}
 		</NotificationContext.Provider>

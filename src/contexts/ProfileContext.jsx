@@ -12,8 +12,7 @@ export const ProfileProvider = ({ children }) => {
   const [boughtCourses, setBoughtCourses] = useState([])
   const [boughtCoursesLoading, setBoughtCoursesLoading] = useState(true)
   const [courseTransactionsCount, setCourseTransactionsCount] = useState()
-  const [usrListOffset, setUsrListOffset] = useState(0)
-  const usrListLimit = 10
+  const [usersOffset, setUsersOffset] = useState(0)
   const [loadingUsers, setLoadingUsers] = useState(true)
 
   const savePhoneNumber = async (phoneNbData) => {
@@ -77,9 +76,8 @@ export const ProfileProvider = ({ children }) => {
       setBoughtCoursesLoading,
       courseTransactionsCount,
       setCourseTransactionsCount,
-      usrListOffset,
-      setUsrListOffset,
-      usrListLimit,
+      usersOffset,
+      setUsersOffset,
       loadingUsers,
       setLoadingUsers,
     }}>

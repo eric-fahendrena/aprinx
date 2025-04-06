@@ -17,12 +17,13 @@ function NotificationsPage() {
     nothingToLoad,
     setNothingToLoad,
     readNotification,
-    offset,
-    setOffset,
-    limit,
+    notificationsOffset,
+    setNotificationsOffset,
   } = useContext(NotificationContext)
   const navigate = useNavigate()
   const [reading, setReading] = useState(false)
+  let offset = notificationsOffset
+  let limit = 10
 
   const handleObserverInView = async () => {
     console.log("Getting all notifications")
@@ -36,8 +37,8 @@ function NotificationsPage() {
       setNothingToLoad(true)
       return
     }
-
-    setOffset(offset + limit)
+    offset += limit
+    setNotificationsOffset(offset)
   }
 
   const handleNotifClick = async (e, notif) => {

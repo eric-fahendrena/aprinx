@@ -21,22 +21,21 @@ function HomePage() {
     setNoCourseToLoad,
     dispCoursesOffset,
     setDispCoursesOffset,
-    dispCoursesLimit,
   } = useContext(CourseContext)
   const { getAllCourses, getCoursesByKeyword } = useContext(CourseContext)
   const [lazyObserverVisible, setLazyObserverVisible] = useState(true)
   const [category, setCategory] = useState()
   let coursesLimit = 10
-  let coursesOffset = 0
+  let coursesOffset = dispCoursesOffset
 
   // load random courses
   const handleLazyObserverInView = async () => {
     let loadedCourses;
-    console.log("Offset", dispCoursesOffset)
+    console.log("Offset", coursesOffset)
     console.log(category)
     if (!category) {
       console.log("Getting all course")
-      loadedCourses = await getAllCourses(dispCoursesOffset, dispCoursesLimit)
+      loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
       console.log(loadedCourses.length, "courses loaded !")
     } else {
       console.log("Searching by category...")
@@ -48,11 +47,14 @@ function HomePage() {
       return [...prevCourses].concat(loadedCourses)
     })
 
-    if (loadedCourses.length < dispCoursesLimit) {
+    if (loadedCourses.length < coursesLimit) {
       setNoCourseToLoad(true)
       return
     }
-    setDispCoursesOffset(dispCoursesOffset + dispCoursesLimit)
+
+    coursesOffset += coursesLimit
+    setDispCoursesOffset(coursesOffset)
+    console.log("Offset :", coursesOffset)
   }
 
   const handleScrollTabSelect = async (tag) => {
