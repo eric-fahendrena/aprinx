@@ -12,9 +12,10 @@ function UsersListPage() {
     usrListOffset,
     setUsrListOffset,
     usrListLimit,
+    loadingUsers,
+    setLoadingUsers,
   } = useContext(ProfileContext)
   const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(true)
   const [userToConvert, setUserToConvert] = useState(null)
   const [converting, setConverting] = useState(false)
 
@@ -28,10 +29,15 @@ function UsersListPage() {
     
     if (users.length < usrListLimit) {
       console.log("User length <", usrListLimit)
-      setLoading(false)
+      setLoadingUsers(false)
       return
     }
-    setUsrListOffset(usrListOffset + usrListLimit)
+    setUsrListOffset((prev) => {
+      console.log("updating offset state...")
+      const offset = prev + usrListLimit
+      console.log("new offset", offset)
+      return offset
+    })
 
     console.log("Users count", users.length)
     console.log("offset", usrListOffset)
@@ -87,7 +93,7 @@ function UsersListPage() {
       </div>
       
       <div className="py-5">
-        {loading ? (
+        {loadingUsers ? (
           <LazyObserver onInView={handleLazyObserverInView} />
         ) : (
           <div className="text-center text-zinc-600 text-sm">Il n'y a plus d'utilisateur</div>

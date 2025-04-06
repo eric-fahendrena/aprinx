@@ -26,7 +26,7 @@ export const fetchUserToken = async () => {
  */
 export const fetchProfile = async () => {
   try {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/users/me`, {
       method: "GET",
       headers: {
@@ -54,7 +54,7 @@ export const getAllUsersRequest = async (offset, limit) => {
 }
 
 export const convertUserToTeacherRequest = async (userId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}/convert-to-teacher`, {
       method: "PATCH",
@@ -72,7 +72,7 @@ export const convertUserToTeacherRequest = async (userId) => {
 export const updatePhoneNumber = async (pnbData) => {
   console.log(JSON.stringify(pnbData))
   try {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/users/profile/phone-number/update`, {
       method: "PUT",
       headers: {
@@ -92,7 +92,7 @@ export const updatePhoneNumber = async (pnbData) => {
 }
 
 export const getBoughtCoursesCountRequest = async () => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/users/profile/bought-courses/count`, {
       method: "GET",
@@ -108,7 +108,7 @@ export const getBoughtCoursesCountRequest = async () => {
 }
 
 export const getBoughtCoursesRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/users/profile/bought-courses?offset=${offset}&limit=${limit}`, {
       method: "GET",
@@ -125,7 +125,7 @@ export const getBoughtCoursesRequest = async (offset, limit) => {
 
 export const createCourseRequest = async (cData) => {
   try {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/courses/add`, {
       method: "POST",
       headers: {
@@ -146,7 +146,7 @@ export const createCourseRequest = async (cData) => {
 }
 
 export const deleteCourseRequest = async (courseId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/delete`, {
       method: "DELETE",
@@ -203,7 +203,7 @@ export const getRandCourseRequest = async () => {
 
 export const createCourseLikeRequest = async (cId) => {
   try {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/course-likes/${cId}/add`, {
       method: "POST",
       headers: {
@@ -222,7 +222,7 @@ export const createCourseLikeRequest = async (cId) => {
 
 export const getCourseLikeRequest = async (cId) => {
   try {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/course-likes/${cId}`, {
       method: "GET",
       headers: {
@@ -261,7 +261,7 @@ export const uploadFileRequest = async (file, type, onUploadProgress) => {
 }
 
 export const createCourseVideoRequest = async (vData) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
 
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${vData.course_id}/videos/add`, {
@@ -293,7 +293,7 @@ export const getCourseVideosRequest = async (cId) => {
 }
 
 export const getCourseVideoRequest = async (cId, vId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/videos/${vId}`, {
       method: "GET",
@@ -309,7 +309,7 @@ export const getCourseVideoRequest = async (cId, vId) => {
 }
 
 export const sendCourseTransactionRequest = async (tdata) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions/add`, {
       method: "POST",
@@ -329,7 +329,7 @@ export const sendCourseTransactionRequest = async (tdata) => {
 }
 
 export const getCourseTransactionsRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions?offset=${offset}&limit=${limit}`, {
       method: "GET",
@@ -345,7 +345,7 @@ export const getCourseTransactionsRequest = async (offset, limit) => {
 }
 
 export const getCourseTransactionCountRequest = async () => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions/count`, {
       method: "GET",
@@ -361,7 +361,7 @@ export const getCourseTransactionCountRequest = async () => {
 }
 
 export const getTransactionRequest = async (transId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions?trans_id=${transId}`, {
       method: "GET",
@@ -381,7 +381,7 @@ export const getTransactionRequest = async (transId) => {
 }
 
 export const confirmCourseTransactionRequest = async (transId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transactions/confirm?trans_id=${transId}`, {
       method: "PATCH",
@@ -397,7 +397,7 @@ export const confirmCourseTransactionRequest = async (transId) => {
 }
 
 export const refuseTransactionRequest = async (transId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/course-transaction/refuse?trans_id=${transId}`, {
       method: "GET",
@@ -413,7 +413,7 @@ export const refuseTransactionRequest = async (transId) => {
 }
 
 export const createCourseCommentRequest = async (cId, cmtData) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/courses/${cId}/comments/add`, {
       method: "POST",
@@ -445,7 +445,7 @@ export const getCourseCommentsRequest = async (cId, query) => {
 }
 
 export const getAllNotificationsRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/notifications?offset=${offset}&limit=${limit}`, {
       method: "GET",
@@ -461,7 +461,7 @@ export const getAllNotificationsRequest = async (offset, limit) => {
 }
 
 export const getUnseenNotificationsCountRequest = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE_URL}/api/notifications/unseen-count`, {
       method: "GET",
@@ -477,7 +477,7 @@ export const getUnseenNotificationsCountRequest = async () => {
 }
 
 export const seeAllNotificationRequest = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE_URL}/api/notifications/see-all`, {
       method: "PATCH",
@@ -493,7 +493,7 @@ export const seeAllNotificationRequest = async () => {
 }
 
 export const readNotificationRequest = async (notifId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/notifications/${notifId}/read`, {
       method: "PATCH",
@@ -509,7 +509,7 @@ export const readNotificationRequest = async (notifId) => {
 }
 
 export const createCourseAccessRequest = async (courseId, userId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/user-course-access/add`, {
       method: "POST",
@@ -527,7 +527,7 @@ export const createCourseAccessRequest = async (courseId, userId) => {
 }
 
 export const getCourseAccessRequest = async (courseId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/user-course-access/${courseId}`, {
       method: "GET",
@@ -543,7 +543,7 @@ export const getCourseAccessRequest = async (courseId) => {
 }
 
 export const createDeletedCourseRequest = async (dcData) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/deleted-courses/add`, {
       method: "POST",
@@ -561,7 +561,7 @@ export const createDeletedCourseRequest = async (dcData) => {
 }
 
 export const getSubscriptionRequest = async (userId) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/teacher-subscriptions/${userId}`, {
       method: "GET",
@@ -577,7 +577,7 @@ export const getSubscriptionRequest = async (userId) => {
 }
 
 export const createSubscriptionTransactionRequest = async (tData) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/add`, {
       method: "POST",
@@ -595,7 +595,7 @@ export const createSubscriptionTransactionRequest = async (tData) => {
 }
 
 export const getPendingSubscriptionTransactionsRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/pending?offset=${offset}&limit=${limit}`, {
       method: "GET",
@@ -611,7 +611,7 @@ export const getPendingSubscriptionTransactionsRequest = async (offset, limit) =
 }
 
 export const confirmSubscriptionTransactionRequest = async (transId) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/${transId}/confirm`, {
       method: "PATCH",
@@ -627,7 +627,7 @@ export const confirmSubscriptionTransactionRequest = async (transId) => {
 }
 
 export const getPendingSubscriptionTransactionsCountRequest = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   try {
     const response = await fetch(`${API_BASE_URL}/api/subscription-transactions/count`, {
       method: "GET",
@@ -646,7 +646,7 @@ export const getPendingSubscriptionTransactionsCountRequest = async () => {
 // ---------------
 
 export const getCreatedCoursesRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/users/profile/created-courses?offset=${offset}&limit=${limit}`, {
       method: "GET",
@@ -681,7 +681,7 @@ export const createFeedbackRequest = async (feedback) => {
 }
 
 export const getAllFeedbacksRequest = async (offset, limit) => {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   try {
     const response = await fetch(`${API_BASE_URL}/api/feedback?offset=${offset}&limit=${limit}`, {
       method: "GET",
