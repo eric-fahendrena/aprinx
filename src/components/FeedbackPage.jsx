@@ -35,7 +35,7 @@ function FeedbackPage() {
           <Link to={"/"}>
             <ArrowLeft className="inline me-2" />
           </Link>
-          Support et Feedback
+          Feedback et Signalement
         </div>
       </header>
       <div className="container mx-auto p-5">
