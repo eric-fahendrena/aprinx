@@ -92,6 +92,12 @@ function ProfilePage() {
       if (isAuthorized) {
         setSubscriptionDetail(subscription)
 
+        if (profile.phone_number.match(/^261/)) {
+          profile.phone_number = profile.phone_number.replace(/^(261)([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{2})/, "+$1 $2 $3 $4 $5")
+        } else if (profile.phone_number.match(/^0/)) {
+          profile.phone_number = profile.phone_number.replace(/^([0-9]{3})([0-9]{2})([0-9]{3})([0-9]{2})/, "$1 $2 $3 $4")
+        }
+
         if (profile.role === "TEACHER" || profile.role === "ADMIN") {
           console.log("Getting course transactions count")
           const courseTransCount = await getCourseTransactionCount()

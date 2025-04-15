@@ -34,12 +34,14 @@ function LgScreenContainer({ children }) {
                   Profil
                 </Link>
 
-                <Link to={"/courses/create"} className={`${pathname === "/courses/create" && "text-[#800] ps-2 border-s-[2px] border-[#8008]"} flex items-center font-[400] my-3`}>
-                  <div className="bg-[#800] text-white rounded me-2">
-                    <Plus size={20} />
-                  </div>
-                  Créer un cours
-                </Link>
+                {(profile.role === "ADMIN" || profile.role === "TEACHER") && (
+                  <Link to={"/courses/create"} className={`${pathname === "/courses/create" && "text-[#800] ps-2 border-s-[2px] border-[#8008]"} flex items-center font-[400] my-3`}>
+                    <div className="bg-[#800] text-white rounded me-2">
+                      <Plus size={20} />
+                    </div>
+                    Créer un cours
+                  </Link>
+                )}
               </>
             )}
           </div>

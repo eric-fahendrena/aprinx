@@ -16,6 +16,12 @@ function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber,
   const navigate = useNavigate()
   const [sending, setSending] = useState(false)
 
+  if (phoneNumber.match(/^261/)) {
+    phoneNumber = phoneNumber.replace(/^(261)([0-9]{2})([0-9]{2})([0-9]{3})([0-9]{2})/, "+$1 $2 $3 $4 $5")
+  } else if (phoneNumber.match(/^0/)) {
+    phoneNumber = phoneNumber.replace(/^([0-9]{3})([0-9]{2})([0-9]{3})([0-9]{2})/, "$1 $2 $3 $4")
+  }
+
   const handleFileChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -70,9 +76,9 @@ function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber,
               </div>
             </div>
           ) : (
-            <div className="p-5 border rounded-3xl bg-white w-full shadow-xl">
+            <div className="w-5/6 md:w-2/3 lg:w-1/3 p-5 border rounded-3xl bg-white shadow-xl">
               <h2 className="text-[1.5rem] font-bold">Acheter le cours</h2>
-              <p className="mb-3">Envoyer {price}Ar à {phoneNumber} ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
+              <p className="mb-3">Envoyer {price}Ar à <strong>{phoneNumber}</strong> ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
               <input 
                 type="file" 
                 onChange={handleFileChange} 
