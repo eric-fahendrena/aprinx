@@ -9,6 +9,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/fr"
 import { Helmet } from "react-helmet-async"
+import LgScreenContainer from "./commons/LgScreenContainer"
 
 dayjs.extend(relativeTime)
 dayjs.locale("fr")
@@ -99,8 +100,12 @@ function HomePage() {
         <meta property="og:description" content="Bienvenue sur Aprix Madagascar, une plateforme qui facilite l'échange entre les vendeurs de tutoriels vidéo et les acheteurs." />
       </Helmet>
       <Header />
-      <ScrollableTab onSelect={handleScrollTabSelect}/>
-      <div className="container mx-auto md:px-40 lg:px-60 pt-5 pb-[56pt]">
+    
+      {/* for small screens */}
+
+      <div className="md:hidden">
+        <ScrollableTab onSelect={handleScrollTabSelect}/>
+        
         {displayedCourses.map((course, idx) => {
           const dateMs = parseInt(course.date)
           const dateSeconds = Math.floor(dateMs / 1000)
@@ -119,6 +124,7 @@ function HomePage() {
             />
           )
         })}
+
         {!noCourseToLoad && (
           <div className="p-5">
             <LazyObserver onInView={handleLazyObserverInView} />
@@ -127,8 +133,48 @@ function HomePage() {
         {coursesEmpty && (
           <div className="text-center py-5 text-zinc-400">Aucun cours trouvé</div>
         )}
+
+        <BottomNavbar current="home" />
       </div>
-      <BottomNavbar current="home" />
+
+      {/* for medium screens */}
+
+      <LgScreenContainer>
+        <div className="flex flex-wrap px-5">
+          <div className="w-full">
+            <ScrollableTab onSelect={handleScrollTabSelect}/>
+          </div>
+
+          {displayedCourses.map((course, idx) => {
+            const dateMs = parseInt(course.date)
+            const dateSeconds = Math.floor(dateMs / 1000)
+            const date = dayjs.unix(dateSeconds).fromNow()
+
+            return (
+              <div className="w-full lg:w-1/2" key={idx}>
+                <CourseItem 
+                  cId={course.id}
+                  category={JSON.parse(course.category).label}
+                  title={course.title}
+                  coverPhoto={course.cover_photo}
+                  authorName={course.author_name}
+                  authorPicture={course.author_picture}
+                  date={date}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {!noCourseToLoad && (
+          <div className="p-5">
+            <LazyObserver onInView={handleLazyObserverInView} />
+          </div>
+        )}
+        {coursesEmpty && (
+          <div className="text-center py-5 text-zinc-400">Aucun cours trouvé</div>
+        )}
+      </LgScreenContainer>
     </>
   )
 }

@@ -55,7 +55,7 @@ function PhoneNumberEditorPage() {
 
   return (
     <>
-      <header className="px-5 py-3 md:px-40 lg:px-60 bg-[#800] text-white font-[500] sticky top-0">
+      <header className="px-5 py-3 bg-[#800] text-white font-[500] sticky top-0">
         <div className="flex">
           <Link to="/">
             <ArrowLeft strokeWidth={2} className="me-2" />
@@ -64,7 +64,7 @@ function PhoneNumberEditorPage() {
         </div>
       </header>
       <div className="absolute top-0 bottom-0 start-0 end-0 bg-white mt-[56px]">
-        <div className="container mx-auto p-5">
+        <div className="p-5 md:w-2/3 lg:w-1/2">
           <div className="p-5 border rounded-3xl">
             <div className="mb-3">
               <h1 className="mb-3 text-[1.5rem] font-bold">Les informations de payement</h1>

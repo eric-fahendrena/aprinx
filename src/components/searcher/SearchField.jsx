@@ -1,6 +1,4 @@
-import { ArrowLeft, Mic } from "lucide-react"
-import BottomNavbar from "../commons/BottomNavbar"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 function SearchField({ onSearch, disabled=false }) {
   const [searchInput, setSearchInput] = useState("")
@@ -32,7 +30,6 @@ function SearchField({ onSearch, disabled=false }) {
           />
         </div>
       </div>
-      <BottomNavbar current="search" />
     </>
   )
 }

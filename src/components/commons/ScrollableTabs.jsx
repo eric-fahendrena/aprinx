@@ -18,7 +18,7 @@ function ScrollableTab({ onSelect }) {
   }
 
   return (
-    <div className="container mx-auto md:px-40 lg:px-60">
+    <div className="">
       <div className="">
         <div className="px-5 py-2 overflow-scroll whitespace-nowrap scrollbar-hide">
           {tags.map((tag, idx) => {

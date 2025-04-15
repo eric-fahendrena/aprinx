@@ -58,16 +58,6 @@ function App() {
 
   return (
     <>
-      {window.innerWidth > 560 && (
-        <div 
-          className="fixed bottom-[15%] start-[25%] end-[25%] w-[400px] text-xs rounded-3xl shadow-2xl p-5 text-white z-[9999]"
-          style={{
-            backgroundColor: "#0008"
-          }}
-          >
-          <div>Les grands écrans n'est pas encore pris en charge, mais nous travaillons dessus et une mise à jour arrivera bientôt !</div>
-        </div>
-      )}
       <div className="text-zinc-900 prompt-light">
         <Router>
           <Routes>
