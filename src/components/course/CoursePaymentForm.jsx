@@ -79,8 +79,8 @@ function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber,
             <div className="w-5/6 md:w-2/3 lg:w-1/3 p-5 border rounded-3xl bg-white shadow-xl">
               <h2 className="text-[1.5rem] font-bold">Acheter le cours</h2>
               <p className="mb-3">Envoyer <strong>{price} Ar</strong> à : <br />
-                <Phone size={20} className="inline me-1 text-zinc-800" /> <strong>{phoneNumber}</strong> <br /> 
-                <User size={20} className="inline me-1 text-zinc-800" /> <strong>{phoneAssociatedName}</strong>. <br />
+                <Phone size={20} className="inline me-1 text-zinc-600" /> <strong>{phoneNumber}</strong> <br /> 
+                <User size={20} className="inline me-1 text-zinc-600" /> <strong>{phoneAssociatedName}</strong>. <br />
                 Puis envoyez une photo qui prouve la trasaction réussite</p>
               <input 
                 type="file" 
