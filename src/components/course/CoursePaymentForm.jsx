@@ -78,7 +78,10 @@ function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber,
           ) : (
             <div className="w-5/6 md:w-2/3 lg:w-1/3 p-5 border rounded-3xl bg-white shadow-xl">
               <h2 className="text-[1.5rem] font-bold">Acheter le cours</h2>
-              <p className="mb-3">Envoyer {price}Ar à <strong>{phoneNumber}</strong> ({phoneAssociatedName}), puis envoyez une photo qui prouve la trasaction réussite</p>
+              <p className="mb-3">Envoyer <strong>{price} Ar</strong> à : <br />
+                Tél : <strong>{phoneNumber}</strong> <br /> 
+                Nom : <strong>{phoneAssociatedName}</strong>. <br />
+                Puis envoyez une photo qui prouve la trasaction réussite</p>
               <input 
                 type="file" 
                 onChange={handleFileChange} 
