@@ -8,7 +8,7 @@ export const SubscriptionProvider = ({ children }) => {
   const [subscription, setSubscription] = useState()
   
   const paymentInfos = {
-    phoneNumber: "0339933134",
+    phoneNumber: "+261 37 61 489 87",
     holderName: "Razanampahendrena Jean Eric",
   }
 
