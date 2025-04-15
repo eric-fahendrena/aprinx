@@ -51,7 +51,6 @@ function CourseDetailPage() {
       console.log("Videos :", videos)
       setVideos(videos)
       console.log(courseAccess)
-      console.log(course.author_id, profile.id)
     })()
   }, [profile])
 

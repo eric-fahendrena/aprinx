@@ -19,6 +19,8 @@ function LoginPage() {
         <meta property="og:description" content="Bienvenue sur Aprix Madagascar, une plateforme qui facilite l'échange entre les vendeurs de tutoriels vidéo et les acheteurs." />
       </Helmet>
 
+      <Header />
+      
       <div className="md:hidden">
         <div className=" flex items-center justify-center mt-24">
           <div className="text-[5rem] font-bold text-red-800">Aprix</div>
@@ -38,7 +40,6 @@ function LoginPage() {
         </div>
       </div>
 
-      <Header />
       <LgScreenContainer>
         <div className="lg:w-2/3">
           <div className="px-5 mb-5">
