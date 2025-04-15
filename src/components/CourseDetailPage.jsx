@@ -26,6 +26,7 @@ function CourseDetailPage() {
   const navigate = useNavigate()
   const [paymentFormOpen, setPaymentFormOpen] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [gettingAccess, setGettingAccess] = useState(true)
 
   const handleBuyCourseClick = () => {
     setPaymentFormOpen(true)
@@ -45,6 +46,7 @@ function CourseDetailPage() {
         console.log("Doesn't have access")
         setHasAccess(false)
       }
+      setGettingAccess(false)
       
       console.log("Getting video")
       const videos = await getVideos(course.id)
@@ -98,8 +100,8 @@ function CourseDetailPage() {
               )}
               <div className="pb-[56pt]">
                 <CourseActionBar course={course} />
-                {!hasAccess && (
-                  <div className="p-5">
+                {(!hasAccess && !gettingAccess) && (
+                  <div className="p-5 md:w-1/2 lg:w-1/3">
                     <Button onClick={handleBuyCourseClick}>
                       <ShoppingCart strokeWidth={2} className="inline-block me-2" /> 
                       Acheter le cours
@@ -126,8 +128,9 @@ function CourseDetailPage() {
                         thumbnail={video.thumbnail}
                         isAccessible={hasAccess || video.access === "free"}
                         key={idx}
-                        onClick={() => {
-                          if (video.access !== "free" && !hasAccess) {
+                        onClick={(e) => {
+                          if (!profile || (video.access !== "free" && !hasAccess)) {
+                            e.preventDefault()
                             setPaymentFormOpen(true)
                           }
                         }}
@@ -149,8 +152,9 @@ function CourseDetailPage() {
                           date={video.date}
                           thumbnail={video.thumbnail}
                           isAccessible={hasAccess || video.access === "free"}
-                          onClick={() => {
-                            if (video.access !== "free" && !hasAccess) {
+                          onClick={(e) => {
+                            if (!profile || (video.access !== "free" && !hasAccess)) {
+                              e.preventDefault()
                               setPaymentFormOpen(true)
                             }
                           }}

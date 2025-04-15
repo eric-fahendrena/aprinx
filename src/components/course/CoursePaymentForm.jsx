@@ -53,11 +53,11 @@ function CoursePaymentForm({ courseId, courseAuthorId, price, open, phoneNumber,
   return (
     <>
       {open && (
-        <div className="fixed top-0 bottom-0 start-0 end-0 p-5 flex items-center justify-center" style={{
+        <div className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center" style={{
           backdropFilter: "blur(2px)"
         }}>
           {!profile ? (
-            <div className="p-5 border rounded-3xl bg-white w-full text-center shadow-xl">
+            <div className="w-5/6 md:w-2/3 lg:w-1/3 p-5 border rounded-3xl bg-white text-center shadow-xl">
               <div className="py-5"><LogIn className="inline-block" size={40} /></div>
               <p className="text-[1.5rem] mb-5">Veuillez d'abord vous connecter</p>
               <div className="flex">

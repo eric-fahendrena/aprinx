@@ -37,12 +37,17 @@ function VideoDetailPage() {
               Vidéo
             </div>
           </header>
-          <div className="fixed top-0 bottom-0 start-0 end-0 px-5 flex items-center justify-center">
-            <div className="p-5 border rounded-3xl">
+          <div className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center">
+            <div className="w-5/6 md:w-2/3 lg:w-1/3 p-5 border rounded-3xl">
               <h1 className="font-[400] text-[1.2rem] mb-3">Accès non authorisée</h1>
               <p className="mb-5">Vous ne pouvez pas regarder la vidéo tant que vous n'êtes pas connecté(e).</p>
-              <div className="">
-                <Button onClick={() => navigate("/login")}>Se connecter</Button>
+              <div className="flex">
+                <div className="w-1/2 pe-1">
+                  <Button variant="secondary" onClick={() => navigate(`/courses/${params.cId}`)}>Retour</Button>
+                </div>
+                <div className="w-1/2">
+                  <Button onClick={() => navigate("/login")}>Se connecter</Button>
+                </div>
               </div>
             </div>
           </div>
