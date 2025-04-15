@@ -92,7 +92,7 @@ function CourseCreatorPage() {
 
   return (
     <>
-      <header className="px-5 md:mx-40 lg:mx-60 sticky top-0 py-3 bg-[#800] text-white z-10">
+      <header className="px-5 sticky top-0 py-3 bg-[#800] text-white z-10">
         <div className="font-[500]">
           <Link to={"/"}>
             <ArrowLeft className="inline me-2" />
@@ -101,12 +101,12 @@ function CourseCreatorPage() {
         </div>
       </header>
       {profile.role === "ADMIN" || profile.role === "TEACHER" ? (
-        <>
-          <div className="container mx-auto p-5 md:px-40 lg:px-60">
+        <div className="md:w-2/3 lg:w-1/2 mx-auto">
+          <div className="p-5">
             <CoverPhotoUploader onFileReady={file => setCoverPhotoFile(file)} />
             <MetadataForm />
           </div>
-          <div className="fixed bottom-0 start-0 end-0 px-4 md:px-40 lg:px-60 flex items-center">
+          <div className="fixed bottom-0 w-full md:w-2/3 lg:w-1/2 px-4 flex items-center">
             <div className="w-1/2 p-1">
               <Button 
                 variant="secondary"
@@ -128,7 +128,7 @@ function CourseCreatorPage() {
               href={`/courses/${createdCourse.id}`}
             />
           )}
-        </>
+        </div>
       ) : (
         <div className="container mx-auto p-5 flex items-center justify-center">
           <div className="text-zinc-600">Vous n'avez pas la permission à consulter cette page !</div>
@@ -142,7 +142,7 @@ function CourseCreatorPage() {
             backdropFilter: "blur(12px)"
           }}
         >
-          <div className="w-5/6 p-5 bg-white rounded-3xl shadow">
+          <div className="w-5/6 md:w-1/2 lg:w-2/5 p-5 bg-white rounded-3xl shadow">
             <div className="font-[400] mb-3">Erreur</div>
             <div className="mb-5">{errorMessage}</div>
             <div className="">

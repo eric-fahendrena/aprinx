@@ -75,7 +75,7 @@ function CourseDetailPage() {
                 <meta property="og:image" content={course.cover_photo} />
               </Helmet>
 
-              <header className="px-5 md:mx-40 lg:mx-60 sticky top-0 py-3 bg-[#800] text-white z-10">
+              <header className="px-5 sticky top-0 py-3 bg-[#800] text-white z-10">
                 <div className="font-[500]">
                   <Link to={"/"}>
                     <ArrowLeft className="inline me-2" />
@@ -86,7 +86,7 @@ function CourseDetailPage() {
               <CourseCoverPhoto src={course.cover_photo} />
               {(profile && profile.id === course.author_id) && (
                 <div 
-                  className="fixed bottom-5 end-5 md:px-40 lg:px-60 z-50"
+                  className="fixed bottom-5 end-5 z-50"
                   onClick={() => navigate(`/courses/${course.id}/videos/add`)}
                 >
                   <button className="bg-red-800 text-white px-3 py-2 rounded-full z-50">
@@ -97,7 +97,7 @@ function CourseDetailPage() {
                   </button>
                 </div>
               )}
-              <div className="container mx-auto pb-[56pt] md:px-40 lg:px-60">
+              <div className="pb-[56pt]">
                 <CourseActionBar course={course} />
                 {!hasAccess && (
                   <div className="p-5">
@@ -114,7 +114,7 @@ function CourseDetailPage() {
                   authorName={course.author_name}
                   authorPicture={course.author_picture}
                 />
-                <div className="py-5">
+                <div className="py-5 md:hidden">
                   {videos && videos.map((video, idx) => {
                     return (
                       <VideoItem 
@@ -133,6 +133,30 @@ function CourseDetailPage() {
                           }
                         }}
                       />
+                    )
+                  })}
+                </div>
+
+                <div className="py-5 hidden md:flex md:flex-wrap">
+                  {videos && videos.map((video, idx) => {
+                    return (
+                      <div className="md:w-1/2 lg:w-1/3" key={idx}>
+                        <VideoItem 
+                          cId={video.course_id}
+                          vId={video.id}
+                          title={video.title}
+                          authorName={video.author_name}
+                          authorPicture={video.author_picture}
+                          date={video.date}
+                          thumbnail={video.thumbnail}
+                          isAccessible={hasAccess || video.access === "free"}
+                          onClick={() => {
+                            if (video.access !== "free" && !hasAccess) {
+                              setPaymentFormOpen(true)
+                            }
+                          }}
+                        />
+                      </div>
                     )
                   })}
                 </div>

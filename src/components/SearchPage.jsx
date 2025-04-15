@@ -1,9 +1,12 @@
 import { useContext, useState } from "react"
+import Header from "./commons/Header"
 import SearchField from "./searcher/SearchField"
 import { CourseContext } from "../contexts/CourseContext"
 import CourseItem from "./course/CourseItem"
 import dayjs from "dayjs"
 import { PulseLoader } from "react-spinners"
+import LgScreenContainer from "./commons/LgScreenContainer"
+import BottomNavbar from "./commons/BottomNavbar"
 
 function SearchPage() {
   const { getCoursesByKeyword } = useContext(CourseContext)
@@ -26,49 +29,93 @@ function SearchPage() {
 
   return (
     <>
-      <header className="px-5 py-3 md:px-40 lg:px-60 bg-[#800] text-white font-[500] sticky top-0 z-[9999]">
-        <div>Recherche</div>
-      </header>
-      <div className="container mx-auto md:px-40 lg:px-60">
-        <div className="p-5">
-          <SearchField onSearch={handleSearch} disabled={searching} />
-        </div>
-      </div>
-
-      {searching ? (
-        <div className="p-5 text-center flex items-center justify-center">
-          <div>
-            <PulseLoader color="#800" size={8} />
+      <Header />
+      <div className="md:hidden">
+        <div className="flex justify-start">
+          <div className="p-5 w-full">
+            <SearchField onSearch={handleSearch} disabled={searching} />
           </div>
         </div>
-      ) : (
-        <>
-          {noElementFound && (
-            <div className="p-5 text-center flex items-center justify-center text-zinc-400">
-              <div>Aucun éléments trouvé</div>
+        {searching ? (
+          <div className="p-5 text-center flex items-center justify-center">
+            <div>
+              <PulseLoader color="#800" size={8} />
             </div>
-          )}
-        </>
-      )}
-      {courses.map((course, idx) => {
-        const dateMs = parseInt(course.date)
-        const dateSeconds = Math.floor(dateMs / 1000)
-        const date = dayjs.unix(dateSeconds).fromNow()
+          </div>
+        ) : (
+          <>
+            {noElementFound && (
+              <div className="p-5 text-center flex items-center justify-center text-zinc-400">
+                <div>Aucun éléments trouvé</div>
+              </div>
+            )}
+          </>
+        )}
+        {courses.map((course, idx) => {
+          const dateMs = parseInt(course.date)
+          const dateSeconds = Math.floor(dateMs / 1000)
+          const date = dayjs.unix(dateSeconds).fromNow()
 
-        return (
-          <CourseItem 
-            cId={course.id}
-            category={JSON.parse(course.category).label}
-            title={course.title}
-            coverPhoto={course.cover_photo}
-            authorName={course.author_name}
-            authorPicture={course.author_picture}
-            date={date}
-            key={idx}
-          />
-        )
-      })}
-      <div className="py-5 mb-10"></div>
+          return (
+            <CourseItem 
+              cId={course.id}
+              category={JSON.parse(course.category).label}
+              title={course.title}
+              coverPhoto={course.cover_photo}
+              authorName={course.author_name}
+              authorPicture={course.author_picture}
+              date={date}
+              key={idx}
+            />
+          )
+        })}
+        <div className="py-5 mb-10"></div>
+
+        <BottomNavbar current="search" />
+      </div>
+
+      <LgScreenContainer>
+        <div className="flex justify-start">
+          <div className="w-full lg:w-1/2">
+            <h2 className="text-3xl font-[400] mb-5">Recherche</h2>
+            <SearchField onSearch={handleSearch} disabled={searching} />
+          </div>
+        </div>
+        {searching ? (
+          <div className="p-5 text-center flex items-center justify-center">
+            <div>
+              <PulseLoader color="#800" size={8} />
+            </div>
+          </div>
+        ) : (
+          <>
+            {noElementFound && (
+              <div className="p-5 text-center flex items-center justify-center text-zinc-400">
+                <div>Aucun éléments trouvé</div>
+              </div>
+            )}
+          </>
+        )}
+        {courses.map((course, idx) => {
+          const dateMs = parseInt(course.date)
+          const dateSeconds = Math.floor(dateMs / 1000)
+          const date = dayjs.unix(dateSeconds).fromNow()
+
+          return (
+            <CourseItem 
+              cId={course.id}
+              category={JSON.parse(course.category).label}
+              title={course.title}
+              coverPhoto={course.cover_photo}
+              authorName={course.author_name}
+              authorPicture={course.author_picture}
+              date={date}
+              key={idx}
+            />
+          )
+        })}
+        <div className="py-5 mb-10"></div>
+      </LgScreenContainer>
     </>
   )
 }

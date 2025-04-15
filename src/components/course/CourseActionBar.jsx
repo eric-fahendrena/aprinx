@@ -156,20 +156,20 @@ function CourseActionBar({ course }) {
     <>
       {profile && (
         <div className="px-5 py-2">
-          <div className="px-5 py-3 shadow rounded-3xl flex items-center justify-around">
-            <div className="flex items-center">
+          <div className="px-5 py-3 shadow md:shadow-none rounded-3xl flex items-center justify-around md:justify-start">
+            <div className="flex items-center md:me-8">
               <button onClick={toggleLike} className="me-1">
                 <Heart size={20} fill={liked ? "#A00" : "none"} stroke={liked ? "#A00" : "#000"} className="inline-block" />
               </button>
               <div className="text-sm">{likesCount}</div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center md:me-8">
               <button onClick={handleCommentClick} className="me-1">
                 <MessageSquareText size={20} className="inline-block" />
               </button>
               <div className="text-sm">{commentsCount}</div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center md:me-8">
               <button onClick={handleShareClick}>
                 <Share2 size={20} className="inline-block" />
               </button>

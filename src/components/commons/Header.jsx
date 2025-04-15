@@ -1,4 +1,4 @@
-import { Menu, ChevronLeft, X, Grip, Users, ArrowLeftRight, MessageCircleQuestion } from "lucide-react"
+import { Menu, ChevronLeft, X, Grip, Users, ArrowLeftRight, MessageCircleQuestion, LogIn } from "lucide-react"
 import Navbar from "./Navbar"
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -14,7 +14,7 @@ function Header({ title, backLink }) {
     <>
       {!title ? (
         <header className="h-[40pt] bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
-          <div className="container mx-auto md:px-40 lg:px-60 flex justify-between px-5">
+          <div className="w-full flex justify-between px-5">
             <div className="text-red-800 flex items-center justify-center font-bold text-2xl">
               <Link to={"/"}>Aprix</Link>
             </div>
@@ -24,19 +24,32 @@ function Header({ title, backLink }) {
                   <Grip />
                 </button>
               )}
-              <button onClick={() => setIsNavbarOpen(!isNavbarOpen)}>
+              <button 
+                onClick={() => setIsNavbarOpen(!isNavbarOpen)}
+                className="md:hidden"
+              >
                 {isNavbarOpen ? (
                   <X />
                 ) : (
                   <Menu />
                 )}
               </button>
+
+              {!profile && (
+                <Link 
+                  to={"/login"}
+                  className="hidden md:flex items-center text-white bg-red-800 rounded-3xl font-[400] px-5"
+                >
+                  <LogIn size={20} className="me-2" />
+                  Se connecter
+                </Link>
+              )}
             </div>
           </div>
           <Navbar isOpen={isNavbarOpen} />
         </header>
       ) : (
-        <header className="h-[40pt] md:px-40 lg:px-60 bg-white text-zinc-600 sticky top-0 left-0 right-0 z-20 flex items-center">
+        <header className="h-[40pt] bg-white text-zinc-600 sticky top-0 left-0 right-0 z-20 flex items-center">
           <div className="container mx-auto flex justify-between px-5">
             <div className="flex items-center font-bold">
               <Link className="me-2" to={backLink}>
