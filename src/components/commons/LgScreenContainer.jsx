@@ -2,10 +2,12 @@ import { Link } from "react-router-dom"
 import { Home, Search, Bell, User, Plus, LogOut, MessageCircleQuestion, BookText, LogIn } from "lucide-react"
 import { useContext } from "react"
 import { ProfileContext } from "../../contexts/ProfileContext"
+import { NotificationContext } from "../../contexts/NotificationContext"
 
 function LgScreenContainer({ children }) {
   const pathname = window.location.pathname
   const { profile } = useContext(ProfileContext)
+  const { unseenNotificationsCount } = useContext(NotificationContext)
 
   return (
     <div className="hidden md:flex">
@@ -25,7 +27,14 @@ function LgScreenContainer({ children }) {
             {profile && (
               <>
                 <Link to={"/notifications"} className={`${pathname === "/notifications" && "text-[#800] ps-2 border-s-[2px] border-[#8008]"} flex items-center font-[400] my-3`}>
-                  <Bell size={22} className="me-2" />
+                  <div className="relative">
+                    {unseenNotificationsCount > 0 && (
+                      <div className="absolute -top-[4pt] start-[40%] min-w-[12pt] h-[12pt] px-1 rounded-3xl bg-red-800 flex items-center justify-center text-xs text-center text-white">
+                        {unseenNotificationsCount}
+                      </div>
+                    )}
+                    <Bell size={22} className="me-2" />
+                  </div>
                   Notifications
                 </Link>
 

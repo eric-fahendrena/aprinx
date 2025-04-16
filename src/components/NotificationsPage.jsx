@@ -149,7 +149,7 @@ function NotificationsPage() {
             return (
               <Link key={idx} onClick={(e) => handleNotifClick(e, notif)}>
                 <div className={`flex border-b px-5 py-5  ${!notif.is_read ? "bg-zinc-100 border-white" : "bg-white border-zinc-200"}`}>
-                  <div className="w-1/6">
+                  <div className="w-1/6 md:w-auto md:pe-5">
                     {notif.type === "COMMENT" && (
                       <div className="w-[24pt] h-[24pt] bg-blue-400 text-white rounded-full flex items-center justify-center">
                         <MessageSquareText size={16} fill="white" />
