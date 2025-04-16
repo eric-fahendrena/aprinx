@@ -134,6 +134,8 @@ function HomePage() {
           <div className="text-center py-5 text-zinc-400">Aucun cours trouvé</div>
         )}
 
+        <div className="py-10"></div>
+
         <BottomNavbar current="home" />
       </div>
 
