@@ -76,26 +76,29 @@ function CourseTransactionsManager() {
   return (
     <div className="h-full w-full">
       <div className="font-[500] mb-5">Transaction pour les cours ({transactionCount})</div>
-      <div className="">
+      <div className="flex flex-wrap">
         {transactions && transactions.map((trans, idx) => {
           const dateSeconds = parseInt(trans.date) / 1000
           
           return (
-            <div className="mb-3 p-4 border rounded-3xl flex " key={idx}>
-              <div className="w-1/3">
-                <div className="w-full h-[80pt] rounded-3xl bg-black overflow-hidden">
-                  <img src={trans.screenshot_url} alt="Capture d'écran" className="w-full h-full object-contain" />
+            <div className="w-full md:w-1/2 lg:w-1/3 pe-2" key={idx}>
+              <div className="w-full mb-3 p-4 border rounded-3xl flex ">
+                <div className="w-1/3">
+                  <div className="w-full h-[80pt] rounded-3xl bg-black overflow-hidden">
+                    <img src={trans.screenshot_url} alt="Capture d'écran" className="w-full h-full object-contain" />
+                  </div>
                 </div>
-              </div>
-              <div className="w-2/3 px-5">
-                <div className="font-[500]">{trans.buyer_name}</div>
-                <div className="text-zinc-600 mb-3">{dayjs.unix(dateSeconds).fromNow()}</div>
-                {trans.status === "CONFIRMED" && (
-                  <div className="text-green-600">Confirmée</div>
-                )}
-                {trans.status === "PENDING" && (
-                  <Button onClick={() => handleOpenClick(trans)}>Ouvrir</Button>
-                )}
+                <div className="w-2/3 px-5">
+                  <div className="font-[500]">{trans.buyer_name}</div>
+                  <div className="text-zinc-600">Tarif : <strong className="text-green-600">{trans.amount} Ar</strong></div>
+                  <div className="text-zinc-600 mb-3">{dayjs.unix(dateSeconds).fromNow()}</div>
+                  {trans.status === "CONFIRMED" && (
+                    <div className="text-green-600">Confirmée</div>
+                  )}
+                  {trans.status === "PENDING" && (
+                    <Button onClick={() => handleOpenClick(trans)}>Ouvrir</Button>
+                  )}
+                </div>
               </div>
             </div>
           )
@@ -120,10 +123,14 @@ function CourseTransactionsManager() {
           }}
         >
           {currentTransactionDetail && (
-            <div className="bg-white p-5 rounded-3xl w-5/6 shadow">
+            <div className="w-5/6 md:w-2/3 lg:w-1/2 bg-white p-5 rounded-3xl shadow">
               <div className="font-[500]">{currentTransactionDetail.buyer_name}</div>
-              <div className="mb-5 text-zinc-600 text-sm">{dayjs.unix(parseInt(currentTransactionDetail.date) / 1000).fromNow()}</div>
-              <Link to={currentTransactionDetail.screenshot_url} target="__blank" className="block h-[320pt] mb-5 bg-black rounded-3xl">
+              <div className="text-sm">Cours : <strong>{currentTransactionDetail.course_title}</strong></div>
+              <div className="text-sm text-zinc-600">
+                Tarif : <strong className="text-green-600">{currentTransactionDetail.amount} Ar</strong>
+              </div>
+              <div className="mb-5 text-zinc-600 text-xs">{dayjs.unix(parseInt(currentTransactionDetail.date) / 1000).fromNow()}</div>
+              <Link to={currentTransactionDetail.screenshot_url} target="__blank" className="block h-[240pt] mb-5 bg-black rounded-3xl">
                 <img src={currentTransactionDetail.screenshot_url} alt="Capture d'écran du preuve" className="w-full h-full object-contain" />
               </Link>
               <div className="flex">
