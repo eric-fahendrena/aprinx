@@ -1,16 +1,13 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { ProfileContext } from "./contexts/ProfileContext";
 
 function AuthenticatedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem("is_authenticated")
-  
-  useEffect(() => {
-
-  })
+  const { profile } = useContext(ProfileContext)
   
   return (
     <>
-      {isAuthenticated === "true" ? children : (
+      {profile ? children : (
         <Navigate to={"/login"} replace />
       )}
     </>
