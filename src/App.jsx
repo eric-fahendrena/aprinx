@@ -102,7 +102,11 @@ function App() {
                 <NotificationsPage />
               </AuthenticatedRoute>
             )} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={(
+              <AuthenticatedRoute>
+                <ProfilePage />
+              </AuthenticatedRoute>
+            )} />
             <Route path="/profile/edit/phone" element={(
               <AuthenticatedRoute>
                 <PhoneNumberEditorPage />
