@@ -26,6 +26,7 @@ import { PulseLoader } from "react-spinners"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/fr"
+import logo from "/aprinx.png"
 
 dayjs.extend(relativeTime)
 dayjs.locale("fr")
@@ -46,8 +47,9 @@ function App() {
     return (
       <div className="fixed top-0 bottom-0 start-0 end-0 flex items-center justify-center bg-white">
         <div className="">
-          <div className="text-[#800] text-5xl font-bold">Aprix</div>
-          <div className="text-zinc-400 uppercase text-sm text-end">Madagascar</div>
+          <div className="w-[160px]">
+            <img src={logo} alt="Logo aprinx" className="w-full" />
+          </div>
           <div className="py-5 text-center">
             <PulseLoader size={8} speedMultiplier={0.5} color="#800" />
           </div>
