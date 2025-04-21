@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
 import LgScreenContainer from "./commons/LgScreenContainer"
+import logo from "/aprinx.png"
 
 function LoginPage() {
   const { loginWithGoogle } = useLogin()
@@ -23,7 +24,9 @@ function LoginPage() {
       
       <div className="md:hidden">
         <div className=" flex items-center justify-center mt-24">
-          <div className="text-[5rem] font-bold text-red-800">Aprix</div>
+          <div className="w-[240px]">
+            <img src={logo} alt="Logo aprinx" className="w-ful" />
+          </div>
         </div>
         <div className="absolute bottom-0 start-0 end-0 p-5 flex flex-col justify-end">
           <div>
@@ -43,7 +46,9 @@ function LoginPage() {
       <LgScreenContainer>
         <div className="lg:w-2/3">
           <div className="px-5 mb-5">
-            <div className="text-[5rem] font-bold text-red-800">Aprix</div>
+            <div className="w-[240px]">
+              <img src={logo} alt="Logo aprinx" className="w-ful" />
+            </div>
           </div>
           <div className="p-5 flex flex-col justify-end">
             <div>
