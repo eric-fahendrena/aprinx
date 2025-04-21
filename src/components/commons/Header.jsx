@@ -4,6 +4,7 @@ import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ProfileContext } from "../../contexts/ProfileContext"
 import Button from "./Button"
+import logo from "/aprinx.png"
 
 function Header({ title, backLink }) {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false)
@@ -16,7 +17,11 @@ function Header({ title, backLink }) {
         <header className="h-[40pt] bg-white sticky top-0 left-0 right-0 z-20 flex items-center">
           <div className="w-full flex justify-between px-5">
             <div className="text-red-800 flex items-center justify-center font-bold text-2xl">
-              <Link to={"/"}>Aprix</Link>
+              <Link to={"/"}>
+                <div className="w-[80px]">
+                  <img src={logo} alt="Logo aprinx" className="w-ful" />
+                </div>
+              </Link>
             </div>
             <div className="flex">
               {(profile && profile.role === "ADMIN") && (
