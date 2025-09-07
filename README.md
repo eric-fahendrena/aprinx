@@ -28,7 +28,7 @@ npm install
 npm run dev
 ```
 
-👉 Don’t forget to check out the Aprinx API 
+👉 Don’t forget to check out the [Aprinx API](https://github.com/eric-fahendrena/aprinx-api.git) 
 repository to get the API base URL (VITE_API_URL).
 
 ## 🤝 Contributing
