@@ -7,6 +7,10 @@
 Aprinx Madagascar is a platform that connects **video course sellers** and **buyers**.  
 It simplifies payments and makes online learning accessible to everyone in Madagascar.
 
+<div align="center">
+  <img alt="screenshot" src="./public/screenshot.png" width="240" />
+</div>
+
 ---
 
 ## 🚀 Getting Started
