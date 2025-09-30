@@ -29,7 +29,7 @@ export const CourseProvider = ({ children }) => {
   const createCourse = async (data) => {
     const coverPhotoUploadData = await uploadFileRequest(data.coverPhotoFile, "image")
     data.coverPhotoUrl = coverPhotoUploadData.url
-    console.log(data)
+    
     return await createCourseRequest(data)
   }
   const deleteCourse = async (courseId) => {
@@ -92,8 +92,6 @@ export const CourseProvider = ({ children }) => {
     (async () => {
       await registerToken()
     })()
-
-    console.log("Tags count", tags.length)
 
     for (let i = 0; i < categories.length; i++) {
       const tag = {

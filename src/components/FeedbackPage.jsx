@@ -22,10 +22,8 @@ function FeedbackPage() {
       authorId: anonymous ? null : (profile ? profile.id : null),
       message,
     }
-    console.log(feedback)
-    console.log("Creating feedback...")
+    // Creating feedback...
     const createdFeedback = await createFeedback(feedback)
-    console.log("Created feedback", createdFeedback)
     setSending(false)
     setMessage("")
   }

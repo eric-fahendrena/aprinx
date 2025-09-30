@@ -43,7 +43,7 @@ export const ProfileProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       await registerToken()
-      console.log("Fetch profile...")
+      // Fetch profile...
       const profile = await fetchProfile()
       if (!profile) {
         setIsAuthorized(false)
@@ -54,7 +54,6 @@ export const ProfileProvider = ({ children }) => {
       setProfile(profile)
       setIsLoading(false)
       localStorage.setItem("is_authenticated", true)
-      console.log(profile)
     })()
   }, [])
 

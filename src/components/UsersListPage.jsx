@@ -21,15 +21,14 @@ function UsersListPage() {
   let limit = 10
 
   const handleLazyObserverInView = async () => {
-    console.log("Lazy observer in view")
+    // Lazy observer in view
     const users = await getAllUsers(offset, limit)
-    console.log("users offset", offset)
     setUsers(prev => {
       return [...prev].concat(users)
     })
     
     if (users.length < limit) {
-      console.log("User length <", limit)
+      // User length < limit
       setLoadingUsers(false)
       return
     }
@@ -47,11 +46,10 @@ function UsersListPage() {
   }
 
   const handleConfirmConversionClick = async (userId) => {
-    console.log("Converting...")
+    // Converting...
     setConverting(true)
     const convertedUser = await convertToTeacher(userId)
     setConverting(false)
-    console.log(convertedUser)
   }
 
   return (

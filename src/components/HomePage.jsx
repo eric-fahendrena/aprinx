@@ -33,24 +33,19 @@ function HomePage() {
   // load courses
   const handleLazyObserverInView = async () => {
     let loadedCourses;
-    console.log("Offset", coursesOffset)
-    console.log(category)
     if (!category) {
-      console.log("Getting all course")
+      // Getting all course
       loadedCourses = await getAllCourses(coursesOffset, coursesLimit)
-      console.log(loadedCourses.length, "courses loaded !")
     } else {
-      console.log("Searching by category...")
+      // Searching by category...
       loadedCourses = await getCoursesByKeyword(category, coursesOffset, coursesLimit)
-      console.log(loadedCourses.length, "courses found")
     }
-    console.log(loadedCourses)
     setDisplayedCourses((prevCourses) => {
       return [...prevCourses].concat(loadedCourses)
     })
 
     if (loadedCourses.length === 0 ) {
-      console.log("Loaded course empty")
+      // Loaded course empty
       setCoursesEmpty(true)
     } else {
       setCoursesEmpty(false)
@@ -64,7 +59,6 @@ function HomePage() {
 
     coursesOffset += coursesLimit
     setDispCoursesOffset(coursesOffset)
-    console.log("Offset :", coursesOffset)
   }
 
   const handleScrollTabSelect = async (tag) => {

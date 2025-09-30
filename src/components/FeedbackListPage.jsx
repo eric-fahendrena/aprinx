@@ -19,9 +19,8 @@ function FeedbackListPage() {
   let limit = 10
 
   const handleObserverInView = async () => {
-    console.log("Loading feedbacks...")
+    // Loading feedbacks...
     const feedbacks = await getAllFeedbacks(offset, limit)
-    console.log("feedbacks :", feedbacks)
     
     setFeedbacks(prev => {
       return [...prev].concat(feedbacks)

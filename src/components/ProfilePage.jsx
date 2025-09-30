@@ -58,9 +58,8 @@ function ProfilePage() {
   }
 
   const handleBoughtCoursesObserverInView = async () => {
-    console.log("Getting bought courses")
+    // Getting bought courses
     const boughtCourses = await getBoughtCourses(boughtCoursesOffset, boughtCoursesLimit)
-    console.log("Bought courses", boughtCourses)
     setBoughtCourses(prev => {
       return [...prev].concat(boughtCourses)
     })
@@ -72,9 +71,8 @@ function ProfilePage() {
   }
 
   const handleCreatedCoursesObsInView = async () => {
-    console.log("Getting created courses...")
+    // Getting created courses...
     const createdCourses = await getCreatedCourses(createdCoursesOffset, createdCoursesLimit)
-    console.log("Created courses :", createdCourses)
     setCreatedCourses(prev => {
       return [...prev].concat(createdCourses)
     })
@@ -99,16 +97,14 @@ function ProfilePage() {
         }
 
         if (profile.role === "TEACHER" || profile.role === "ADMIN") {
-          console.log("Getting course transactions count")
+          // Getting course transactions count
           const courseTransCount = await getCourseTransactionCount()
-          console.log("Course transactions count", courseTransCount)
           setCourseTransactionsCount(courseTransCount)
         }
 
         if (profile && profile.role === "ADMIN") {
-          console.log("Getting pending subscription transaction count")
+          // Getting pending subscription transaction count
           const pendingSubTransCount = await getPendingSubscriptionTransactionsCount()
-          console.log("Pending subscription transactions count", pendingSubTransCount)
           setPendingSubTransCount(pendingSubTransCount)
         }
       }

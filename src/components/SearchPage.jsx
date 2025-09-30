@@ -17,14 +17,13 @@ function SearchPage() {
   let limit = 30
   
   const handleSearch = async (keyword) => {
-    console.log("Searching...")
+    // Searching...
     setSearching(true)
     setCourses([])
     const searchedCourses = await getCoursesByKeyword(keyword, offset, limit)
     setSearching(false)
     setNoElementFound(searchedCourses.length <= 0)
     setCourses((prev) => [...prev].concat(searchedCourses))
-    console.log(searchedCourses.length, "courses are found")
   }
 
   return (

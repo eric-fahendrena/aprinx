@@ -33,13 +33,11 @@ function PhoneNumberEditorPage() {
 
     data.phone_number = phoneNumber
     data.phone_number_associated_name = associatedName
-    console.log("Saving...")
+    // Saving...
     setSaving(true)
     const updatedProfile = await savePhoneNumber(data)
-    console.log("Finished !")
-    console.log("Updated profile")
-    console.log(updatedProfile)
-
+    // Finished!
+    
     profile.phone_number = phoneNumber
     profile.phone_number_associated_name = associatedName
     setSaving(false)

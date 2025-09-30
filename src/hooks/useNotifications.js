@@ -7,11 +7,11 @@ const useNotifications = () => {
 
   useEffect(() => {
     const handleReceiveNotification = (notification) => {
-      console.log("Receive notification", notification)
+      // Receive notification
       setNotifications(prev => [notification, ...prev])
     }
 
-    console.log("On receiveNotification...")
+    // On receiveNotification...
     socket.on("receiveNotification", handleReceiveNotification)
     
     return () => {

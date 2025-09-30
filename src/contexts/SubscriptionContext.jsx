@@ -7,6 +7,7 @@ export const SubscriptionProvider = ({ children }) => {
   const { profile } = useContext(ProfileContext)
   const [subscription, setSubscription] = useState()
   
+  // this is an example. Please get these infos from database.
   const paymentInfos = {
     phoneNumber: "+261 37 61 489 87",
     holderName: "Razanampahendrena Jean Eric",
@@ -18,7 +19,7 @@ export const SubscriptionProvider = ({ children }) => {
   }
 
   const createSubscriptionTransaction = async (tData) => {
-    console.log("Uploading screenshot...");
+    // Uploading screenshot...
     const screenshotUpdloadData = await uploadFileRequest(tData.screenshotFile, "image");
     const transaction = await createSubscriptionTransactionRequest({
       screenshotUrl: screenshotUpdloadData.url,
@@ -44,7 +45,7 @@ export const SubscriptionProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("Getting Subscription")
+      // Getting Subscription
       if (profile) {
         const subscription = await getSubscription(profile.id)
         setSubscription(subscription)

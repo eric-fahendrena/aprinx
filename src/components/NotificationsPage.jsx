@@ -28,9 +28,8 @@ function NotificationsPage() {
   let limit = 10
 
   const handleObserverInView = async () => {
-    console.log("Getting all notifications")
+    // Getting all notifications
     const notifications = await getAllNotifications(offset, limit)
-    console.log("Notifications", notifications)
     setNotifications(prev => {
       return [...prev].concat(notifications)
     })
@@ -47,14 +46,13 @@ function NotificationsPage() {
     e.preventDefault()
     if (!notif.is_read) {
       setReading(true)
-      console.log("Reading notification", notif.id)
+      // Reading notification
       const updatedNotification = await readNotification(notif.id)
-      console.log("Updated notification", updatedNotification)
       setReading(false)
       notif.is_read = true
     }
     if (notif.type === "COMMENT" || notif.type === "LIKE" || notif.type === "COURSE_TRANSACTION_CONFIRMATION" || notif.type === "COURSE_ACCESS") {
-      console.log("Navigate")
+      // Navigate
       navigate(`/courses/${notif.course_id}`)
     }
     if (notif.type === "COURSE_TRANSACTION") {
@@ -64,7 +62,7 @@ function NotificationsPage() {
 
   useEffect(() => {
     (async () => {
-      console.log("Seeing all notification...")
+      // Seeing all notification...
       reinitUnseenNotificationsCount()
       const seenNotifications = await seeAllNotifications()
     })()

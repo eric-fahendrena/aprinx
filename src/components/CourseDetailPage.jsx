@@ -40,19 +40,17 @@ function CourseDetailPage() {
       setLoading(false)
       const courseAccess = await getCourseAccess(course.id)
       if (courseAccess || (profile && course.author_id === profile.id)) {
-        console.log("Has access")
+        // has access
         setHasAccess(true)
       } else {
-        console.log("Doesn't have access")
+        // Doesn't have access
         setHasAccess(false)
       }
       setGettingAccess(false)
       
-      console.log("Getting video")
+      // Getting video
       const videos = await getVideos(course.id)
-      console.log("Videos :", videos)
       setVideos(videos)
-      console.log(courseAccess)
     })()
   }, [profile])
 

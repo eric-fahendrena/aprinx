@@ -70,7 +70,6 @@ export const convertUserToTeacherRequest = async (userId) => {
 }
 
 export const updatePhoneNumber = async (pnbData) => {
-  console.log(JSON.stringify(pnbData))
   try {
     const token = localStorage.getItem("token")
     const response = await fetch(`${API_BASE_URL}/api/users/profile/phone-number/update`, {
@@ -141,7 +140,7 @@ export const createCourseRequest = async (cData) => {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error", error)
+    console.error("Error", error)
   }
 }
 
@@ -240,7 +239,7 @@ export const getCourseLikeRequest = async (cId) => {
 
 export const uploadFileRequest = async (file, type, onUploadProgress) => {
   try {
-    console.log("Upload file")
+    // Upload file
     const presignedUrlResponse = await fetch(`${API_BASE_URL}/api/upload/presigned-url?key=${file.name}`)
     const psuData = await presignedUrlResponse.json()
 
@@ -253,10 +252,10 @@ export const uploadFileRequest = async (file, type, onUploadProgress) => {
       }
     })
     const data = await response.data
-    console.log("Upload data", data)
+
     return { url: psuData.fileUrl }
   } catch (error) {
-    console.log("Error", error)
+    console.error("Error", error)
   }
 }
 
@@ -340,7 +339,7 @@ export const getCourseTransactionsRequest = async (offset, limit) => {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error", error)
+    console.error("Error", error)
   }
 }
 
@@ -356,7 +355,7 @@ export const getCourseTransactionCountRequest = async () => {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error", error)
+    console.error("Error", error)
   }
 }
 
@@ -408,7 +407,7 @@ export const refuseTransactionRequest = async (transId) => {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error", error)
+    console.error("Error", error)
   }
 }
 

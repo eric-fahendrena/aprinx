@@ -46,7 +46,7 @@ export const NotificationProvider = ({ children }) => {
 		})()
 
 		const handleReceiveNotification = async (notification) => {
-			console.log("Receive notification", notification)
+			// Receive notification", notification
 			const unseenNotificationCount = await getUnseenNotificationsCount()
 			setUnseenNotificationsCount(unseenNotificationCount)
 

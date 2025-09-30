@@ -25,18 +25,17 @@ function SubscriptionTransactionsPage() {
     setCurrentTrans(null)
   }
   const handleConfirmClick = async () => {
-    console.log("Confirming transaction...")
+    // Confirming transaction...
     setConfirming(true)
     const confirmedTrans = await confirmSubscriptionTransaction(currentTrans.id)
-    console.log("Confirmed transaction", confirmedTrans)
+    
     setConfirming(false)
     setDetailOpen(false)
   }
 
   const handleLazyObserverInView = async () => {
-    console.log("Getting transactions")
+    // Getting transactions
     const transactions = await getPendingSubscriptionTransactions(offset, limit)
-    console.log("Transactions", transactions)
     setTransactions(prev => {
       return [...prev].concat(transactions)
     })

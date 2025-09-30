@@ -61,14 +61,12 @@ function CourseCreatorPage() {
     }
 
     setCreating(true)
-    console.log("Creating course");
+    // create course
     const result = await createCourse(courseData)
     if (result.error) {
-      console.log("Result", result)
       setSuccess(false)
       return
     }
-    console.log("Result", result)
     setCreatedCourse(result)
     setSuccess(true)
     setCreating(false)
